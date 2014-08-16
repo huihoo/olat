@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="SeleniumTesting72x" verbose="1" >
+
+  <test name="fragile" junit="true">
+    <classes>
+      <class name="org.olat.test.functional.lr.CPTest" />
+      <class name="org.olat.test.functional.portfolio.CreateFillAndShareMapTest" />
+      <class name="org.olat.test.functional.codepoints.cluster.CopyCourseTest" />
+      <class name="org.olat.test.functional.course.assessment.BulkAssessmentTest" />
+      <class name="org.olat.test.functional.course.run.EditInfoMessageTest" />
+      <class name="org.olat.test.functional.course.run.UploadFilesInCourseTest" />      
+      <class name="org.olat.test.functional.course.run.ConcurrentEditCourseNodeTest" />
+      <class name="org.olat.test.functional.course.run.CourseImportWithAllBBTest" />
+      <class name="org.olat.test.functional.codepoints.cluster.AssessmentWithCodepointsTest" />
+    </classes>
+  </test>
+
+</suite>
+
+

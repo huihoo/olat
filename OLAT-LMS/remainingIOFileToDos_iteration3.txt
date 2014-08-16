@@ -1,0 +1,7 @@
+org.olat.presentation.course.archiver
+org.olat.presentation.course.nodes.iq
+org.olat.presentation.course.nodes.cp
+
+org.olat.presentation.course.repository.ImportCourseController (1d)
+org.olat.presentation.course.editor.PublishProcess (0,5d)
+org.olat.presentation.forum (2d) 

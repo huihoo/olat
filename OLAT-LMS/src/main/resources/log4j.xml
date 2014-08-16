@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+
+
+<!-- pattern layout reference: http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/EnhancedPatternLayout.html -->
+
+<!-- This is just a minimal log4j config to get you started, for a production system adapt it for your needs -->
+<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+  	 <layout class="org.olat.system.logging.log4j.PatternLayoutWithCounter">
+         <param name="ConversionPattern" value="%d || %-5p || %-8# || %-20X{username} || %-30c{1} || %m || %-15X{ip} || %c%n"/>
+      </layout>
+</appender>
+
+<!-- uncomment and add path if you like a logfile 
+<appender name="syslog" class="org.apache.log4j.DailyRollingFileAppender">
+  <param name="File" value="/tmp/olat.log"/>
+  <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+  <layout class="org.olat.system.logging.log4j.PatternLayoutWithCounter">
+         <param name="ConversionPattern" value="%d || %-5p || %-8# || %-20X{username} || %-30c{1}  || [%t]  || %-15X{ip} || %m || %X{referer} || %X{useragent} %n"/>
+      </layout>
+</appender>
+  -->
+
+<logger name="org.springframework">
+  <level value="info"/> 
+  <appender-ref ref="stdout"/>
+</logger>
+
+<root>
+  	<priority value="info"></priority>
+	<appender-ref ref="stdout"/>
+	<!-- 
+	<appender-ref ref="syslog"/>
+	 -->
+</root>
+
+</log4j:configuration>

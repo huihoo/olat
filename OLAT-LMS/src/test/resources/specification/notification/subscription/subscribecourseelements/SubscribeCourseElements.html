@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+    <head>
+        <title>Kursbausteine abonnieren</title>
+        <link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h1>Kursbausteine abonnieren</h1>
+        <div class="userstory">
+            <h2>User Story</h2>
+            <p>
+                Als Dozent/Tutor kann ich einzelne Kursbausteine abonnieren, damit ich über die für mich wichtigen Informationen benachrichtigt werde. <br/> 
+            </p>
+        </div> 
+        
+          
+        
+        <h2>Akzeptanzkriterien</h2>
+        <ul><li>Neu ist die Abonnier-Funktion per Button nicht mehr per Link definiert</li>
+            <li>Neu hat die Abonnier- Funktion eine neue Beschriftung: Benachrichtigungen bestellen bzw. Benachrichtigungen abbestellen</li>
+            <li>Wenn man über den Benachrichtigungs-Button fährt sollte es ein Hover/Mouse-Over geben: Benachrichtigungen für Forum bestellen 
+                bzw. Benachrichtigungen für Forum abbestellen; Benachrichtigungen für Blog bestellen etc.</li>
+            <li>Neu soll es einen Gruppierungsrahmen geben, damit der Benutzer erkennt, welche Funktionalitäten zusammengehören</li>
+        </ul>
+        
+        <p><a href="Abo-Button.pdf">Spezifikation Abonnierbutton als PDF</a></p>
+        <div class="attention"> Das Forum innerhalb des Wikis wird in einer späteren Iteration abonnierbar gemacht.</div>
+       
+            <h3>Formatvorlage E-Mail, Zustellung: t&auml;glich, bei mehreren Änderungen</h3>
+            
+            <pre>
+From: noreply@olat.uzh.ch
+To: Alf@uzh.ch
+Subject:[OLAT-Benachrichtigung]: T&auml;gliche Zusammenfassung
+</pre>
+            <pre>
+Folgende &Auml;nderungen k&ouml;nnten Sie interessieren:
+
+Im Kurs "<a href="LINK ZUM KURS">Biologie I</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Pr&uuml;fungsfragen</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Multiple Choice</a>" am 30.11.11 um 22:59 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Single Choice</a>" am 30.11.11 um 22:15 Uhr geändert.
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Re: Single Choice</a>" am 30.11.11 um 21:59 Uhr erstellt.
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Säugetiere</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Mäuse</a>" am 30.11.11 um 21:50 Uhr erstellt.
+
+Im Kurs "<a href="LINK ZUM KURS">Biologie II</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Pflanzen</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Biodiversität</a>" am 30.11.11 um 21:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Evolution</a>" am 30.11.11 um 21:00 Uhr geändert.
+ 
+Im Kurs "<a href="LINK ZUM KURS">Biochemie I</a>"
+Im <strong>Wiki</strong> &quot;<a href="LINK ZU WIKI">Biochemie Themen</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Membrantransport</a>" am 30.11.11 um 21:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Enzymkinetik</a>" am 30.11.11 um 21:05 Uhr geändert. 
+            
+Im Kurs "<a href="LINK ZUM KURS">Biochemie II</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Pr&uuml;fungsfragen</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Multiple Choice</a>" am 30.11.11 um 20:59 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Single Choice</a>" am 30.11.11 um 20:15 Uhr geändert.
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Re: Single Choice</a>" am 30.11.11 um 19:30 Uhr erstellt.
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Photosynthese</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Merkmale</a>" am 30.11.11 um 18:50 Uhr erstellt.
+            
+Im Kurs "<a href="LINK ZUM KURS">Organische Chemie für die Biologie</a>"
+Im <strong>Ordner</strong> &quot;<a href="LINK ZU ORDNER">Organische Moleküle</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Alkane.pdf</a>" am 30.11.11 um 18:59 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Halogenalkane.pdf</a>" am 30.11.11 um 18:15 Uhr geändert.
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Alkohole.pdf</a>" am 30.11.11 um 17:59 Uhr erstellt.
+Im <strong>Blog</strong> &quot;<a href="LINK ZU BLOG">Biomoleküle</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Kohlenhydrate</a>" am 30.11.11 um 10:50 Uhr erstellt.
+            
+Im Kurs "<a href="LINK ZUM KURS">Biodiversität</a>"
+In der <strong>Dateidiskussion</strong> &quot;<a href="LINK ZUR DATEIDISKUSSION">Wirbeltiere</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Phylogenetische Aspekte</a>" am 30.11.11 um 17:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Ökomorphologische Aspekte</a>" am 30.11.11 um 12:10 Uhr geändert.
+            
+Im Kurs "<a href="LINK ZUM KURS">Biodiversität Praktikum</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Praktikumsforum</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Wirbeltiere</a>" am 30.11.11 um 14:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Pilze</a>" am 30.11.11 um 12:10 Uhr geändert.
+            
+Im Kurs "<a href="LINK ZUM KURS">Verhalten und Hormonphysiologie</a>"
+Im <strong>Podcast</strong> &quot;<a href="LINK ZUM PODCAST">Verhalten</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Verhalten als Anpassung</a>" am 30.11.11 um 11:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Auslösende und regulierende Faktoren des Verhaltens</a>" am 30.11.11 um 10:10 Uhr geändert.
+            
+Im Kurs "<a href="LINK ZUM KURS">Verhalten und Hormonphysiologie Praktikum</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Praktikumsforum</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Nahrungsaufnahme</a>" am 30.11.11 um 11:00 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Feindvermeidung</a>" am 30.11.11 um 9:10 Uhr geändert.
+            
+Im Kurs "<a href="LINK ZUM KURS">Stochastik für die Naturwissenschaften</a>"
+Im <strong>Ordner</strong> &quot;<a href="LINK ZU ORDNER">Wahrscheinlichkeitsrechnung</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Begriffe.pdf</a>" am 30.11.11 um 9:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Konzepte.pdf</a>" am 30.11.11 um 8:10 Uhr geändert.
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+Falls Sie nicht mehr über Änderungen benachrichtigt werden wollen, 
+deaktivieren Sie die tägliche E-Mail Benachrichtigung oder 
+entfernen Sie die gewünschten Benachrichtigungen in Ihrem OLAT-Home unter <a href="LINK ZUM TAB BENACHRICHTIGUNGSEINSTELLUNGEN/BENACHRICHTIGUNGEN">"Benachrichtigungen"</a>.
+            
+</pre> 
+            
+            <div class="attention"><ul>
+                <li>Neu ist der Link im Footer zum Tab Benachrichtigungseinstellungen im Home / Benachrichtigungen</li>
+            </ul>
+            
+                  
+                        
+            </div>
+ <h3>Sortierung im E-Mail</h3>
+ <ol>
+ <li>Nach Kursname, alphabetisch</li>
+ <li>Nach Bausteinname, alphabetisch</li>
+ <li>Nach Eintrag, aktuellster Eintrag zuerst</li>
+ </ol>
+
+
+    </body>
+   
+</html>

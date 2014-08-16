@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+<title>Mitteilungen</title>
+<link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1>Mitteilungen erhalten</h1>
+<div class="userstory">
+    <h2>User Story</h2>
+    <p>
+        Als Dozent/Tutor will ich für die Studierenden eine Mitteilung verfassen, welche sofort per E-Mail verschickt wird, so dass die Studierenden immer möglichst schnell die wichtigen Informationen erhalten. <br/> 
+     </p>
+    </div> 
+ <h1>Mitteilungsbaustein</h1>  
+   
+   <h2>BPM Mitteilung</h2>
+        
+        <p><a href="./img/BPMMessagesNotification.jpg"><img width="300" alt="BPM Mitteilung" title="BPM Mitteilung" src="./img/BPMMessagesNotification.jpg" /></a></p>
+<br></br>    
+    
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="2">Dozent</td><td rowspan="2">Erstellt neue Mitteilung im Mitteilungsbaustein</td><td>E-Mail Benachrichtigung mit Inhalt der Mitteilung an Kursteilnehmer, Betreuer, Besitzer</td></tr>
+          <tr><td>E-Mail Benachrichtigung mit Inhalt der Mitteilung an Ersteller</td></tr>
+         
+ </table>
+ <div class="attention">
+        <ul>
+            <li>Empfänger der Mitteilung: Kursteilnehmer, Betreuer, Besitzer</li>
+         </ul></div>         
+       
+           
+
+
+<h2>Definierung der Empfänger für die E-Mail Benachrichtigung der Mitteilung</h2>
+       <ul>
+            <li>1. Definierte Lerngruppe unter Sichtbarkeit</li>
+            <li>2. Definierte Lerngruppe unter Zugang</li>
+            <li>3. Definierte Lerngruppe unter Sichtbarkeit des betroffenen Kurses</li> 
+            <li>4. Definierte Lerngruppe unter Zugang des betroffenen Kurses</li>
+            <li>Kann nach all den Prüfungen keine Lerngruppe ermittelt werden, wird bei "Speichern und versenden" der Mitteilung eine Infomeldung ausgegeben und der Benutzer darauf hingewiesen.</li>
+       </ul>
+
+
+<h2>GUI Vorlage für Mitteilungsbaustein</h2>
+    
+    <p><a href="GUIMessageNotification.pdf">Spezifikation Mitteilungsbaustein als PDF</a></p>    
+    	<ul>
+    		<li>GUI Vorlage für die Erstellung einer Mitteilung inklusive Workflow</li>
+            <li>GUI Vorlage für den Mitteilungsbaustein im Kursrun</li>
+            <li>GUI Vorlage für den Mitteilungsbaustein im Kurseditor</li>
+        </ul>
+
+
+<h2>Formatvorlagen für Mitteilungs-E-Mails</h2>
+    <p>Student: Alf <br/>
+        Dozent: Dora Dennler<br/>
+   
+    </p>
+   
+    <h3>Formatvorlage E-Mail Mitteilung aus Mitteilungsbaustein</h3> 
+    <pre>
+From: noreply@olat.uzh.ch
+To: Alf@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Mitteilung aus dem Kurs "Biologie I"
+
+Am 30.04.12 um 10:15 Uhr wurde folgende <a href="LINK ZUR MITTEILUNG IM KURS">Mitteilung</a> im Kurs "<a href="LINK ZUM KURS">Biologie I </a>" erstellt:
+
+Die Dozentin ist am 05.06.2012 an einem Kongress und die Vorlesung fällt daher aus.
+Die Dozentin wird aber eine E-Lecture vorbereiten, die am 05.06.2012 auf OLAT zur Verfügung stehen wird.
+Fragen zu dieser E-Lecture können der Dozentin in der Vorlesung vom 12.12.2012 gestellt werden.
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+
+</pre>
+<div class="attention">
+        <ul>
+            <li>Mitteilung --> LINK ZUR MITTEILUNG IM KURS</li>
+          
+            
+        </ul></div>    
+
+    <h3>Formatvorlage E-Mail Mitteilung aus Mitteilungsbaustein Kopie an Ersteller</h3>
+    <pre>
+From: noreply@olat.uzh.ch
+To: Empfänger
+CC: Dora@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Mitteilung aus dem Kurs "Biologie I"
+
+Am 30.04.12 um 10:15 Uhr wurde folgende <a href="LINK ZUR MITTEILUNG IM KURS">Mitteilung</a> im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" erstellt:
+
+Die Dozentin ist am 05.06.2012 an einem Kongress und die Vorlesung fällt daher aus.
+Die Dozentin wird aber eine E-Lecture vorbereiten, die am 05.06.2012 auf OLAT zur Verfügung stehen wird.
+Fragen zu dieser E-Lecture können der Dozentin in der Vorlesung vom 12.12.2012 gestellt werden.
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+
+</pre>
+<div class="attention">
+        <ul>
+             <li>Mitteilung --> LINK ZUR MITTEILUNG IM KURS</li>
+          
+            
+        </ul></div>    
+<div class="openquestions">
+     <h2>Offene Fragen</h2>
+        <p>[DESCRIPTION: PARAGRAPH, LIST OR TABLE]</p> 
+      
+</div>
+  
+  <h2>Akzeptanzkriterien</h2>
+
+    <h3>Automatische Tests</h3>
+    <ul>
+        <li><a href="">[ACCEPTANCETEST 1]</a></li>  
+        <li><a href="">[ACCEPTANCETEST 2]</a></li>  
+    </ul>
+    
+     
+<h4>Bemerkungen zu den automat. Tests</h4>
+<p>[DESCRITPION: PARAGRAPH, LIST OR TABLE]</p>
+
+    <h3>Manuelle Tests</h3>
+    <ul><li>[MANUEL TEST]</li></ul>
+  
+    <h2>Out-of-Scope</h2>
+    <ul><li>[DESCRIPTION]</li>
+    </ul>  
+  
+  
+    
+</body>
+</html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Bestätigungen</title>
+        
+        <link href="../../concordion.css" rel="stylesheet" type="text/css" />
+    </head>
+    
+    <body>
+        <h1>Bestätigungen</h1>
+        
+        <p>Eine Bestätigung in OLAT ist eine vom System definierter Text, welcher über eine Aktion, von der man betroffen ist oder die man ausgelöst hat, 
+            per E-Mail informiert.</p>
+        <p>In folgenden Fällen erhält man als Student eine Bestätigung:</p>
+        <ul>
+            <li>Wenn der Student seine Aufgabe in den Abgabeordner des Aufgabebausteins lädt</li>
+            <li>Wenn der Dozent die Korrektur in den Rückgabeordner des Aufgabebausteins lädt</li>
+            <li>Wenn der Dozent eine Musterlösung in den Musterlösungsordner lädt</li>
+            <li class="notyet">Wenn der Dozent eine Bewertung im Bewertungsteilbaustein einträgt</li>
+            <li class="notyet">Wenn der Dozent eine Bewertung in den Bewertungsbaustein einträgt</li>
+            <li class="notyet">Wenn der Dozent den Studenten in eine Lerngruppe ein- oder austrägt</li>
+        </ul>
+        <p>In folgenden Fällen erhält der Dozent eine Bestätigung:</p>
+        <ul>
+             <li class="notyet">Falls er seine Logfiles archivieren will, sobald die Archivierung der Logfiles abgeschlossen ist</li>
+        </ul>
+        <p>In folgenden Fällen kann der Dozent wählen, ob er eine Bestätigung erhalten will:</p>
+        <ul>
+            <li>Wenn der Student eine Aufgabe in den Abgabeordners des Aufgabebausteins lädt</li>
+            <li>Wenn der Student einen Test absolviert hat</li>
+             <li class="notyet">Wenn ein Student ein Thema in der Themenvergabe aus- oder abwählt</li>
+        </ul>
+        
+        <h2>User Stories</h2>
+        <ul>
+            <li><a href="./receiveconfirmations/ReceiveConfirmations.html">Bestätigungen erhalten</a></li>
+            
+        </ul>
+        
+        <h2>BPM</h2>
+        
+        <p><a href="BPMConfirmations2.mdzip">BPMConfirmation.mdzip</a></p>
+        
+        
+        
+        <h2>Zu entfernende Bestätigungen</h2>
+        <p>Folgende Bestätigung sind aus dem Code zu entfernen.</p>
+        <table>
+            <tr><th>Ort</th><th>IST-Zustand</th><th>SOLL-Zustand</th><th>Begründung</th></tr>
+            <tr><td>Einschreiben</td>
+                <td>Der Benutzer, der sich eingeschrieben hat, erhält eine Bestätigung.</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.</td></tr>
+            <tr><td></td>
+                <td>Der Benutzer, der sich ausgetragen hat, erhält eine Bestätigung</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.
+                Zudem erhält man momentan beim Verlassen einer Arbeitsgruppe keine Bestätigung. 
+                Dies soll weiterhin so bleiben und wäre somit konsistent.</td></tr>
+            <tr><td>Test</td>
+                <td>Die Testteilnehmer werden bei Änderungen im Test informiert.</td>
+                <td>Keine Bestätigung</td>
+                <td>Mail in der heutigen Art ist nicht sehr verständlich, zudem kann das Changelog gelöscht werden.
+                    Changelog kann weiterhin im GUI angeschaut werden.</td></tr>
+            <tr><td>Arbeitsgruppe</td>
+                <td>Besitzer und Mitbesitzer erhalten eine Bestätigung, wenn eine Arbeitsgruppe gelöscht wird.</td>
+                <td>Keine Bestätigung</td>
+                <td>Da die Teilnehmer nicht informiert werden und die Mitbesitzer in der Regel untereinander
+                Aktion absprechen sollten, liegt die Verantwortung der Kommunikation beim Löscher. Über das Löschen 
+                der Lerngruppen und Rechtegruppen wird momentan auch nicht benachrichtigt.</td></tr>
+            <tr><td>Themenvergabe</td>
+                <td>Wenn ein Thema gelöscht wird, erhält der Themenverantwortliche eine Bestätigung.</td>
+                <td>Keine Bestätigung</td>
+                <td>Man kann das Thema nicht wiederherstellen, sondern muss das Thema neu erstellen. 
+                    Zudem wäre die Bestätigung über das Löschen des Themas v.a. für die Studenten interessant und 
+                    die erhalten keine Bestätigung.</td></tr>
+            <tr><td></td>
+                <td>Der Benutzer erhält über die Wahl eines Themas eine Bestätigung.</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.</td></tr>
+            <tr><td></td>
+                <td>Der Benutzer erhält über die Abwahl eines Themas eine Bestätigung.</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.</td></tr>
+            <tr><td>Kurswizard</td>
+                <td>Der Kursersteller erhält ein Bestätigungs/Informations-E-Mail nach der Erstellung eines Kurse mit dem Kurswizard.</td>
+                <td>Keine Bestätigung</td>
+                <td>Kurs im GUI ersichtlich. Der Kurswizard und der Kurseditor sollte so einfach sein, dass es keine lange Erklärungsmail braucht. 
+                Ev. wird der Kurswizard mit dem CampusCourse Projekt und Refactoring obsolet.</td></tr>
+            <tr><td>Kurs beenden</td>
+                <td>Sobald ein Kurs beendet wird, werden die Kursbesitzer informiert.</td>
+                <td>Keine Bestätigung</td>
+                <td>Studenten werden momentan nicht darüber informiert. Kommunkation über Beendung liegt beim Beender. Mit der SAP-Anbindung sollte klar werden,
+                welche Kurse aktuell sind.</td></tr>
+            <tr><td>Home/ Zentraldruckauftrags-Portlet</td>
+                <td>Eine Auftrag kann an die Zentraldruckstelle versendet werden, damit ausgewählte Skripts ausgedruckt werden.</td>
+                <td>Portlet entfernen</td>
+                <td>Braucht es diese Funktion überhaupt noch? Druckereileiter informieren, falls sie gestrichen wird.</td></tr>
+            <tr><td>Kurs/ Aufgabebaustein</td>
+                <td>Beim Hochladen einer Datei in den Abgabeordner wird der Benutzer über das Hochladen der eigenen Datei informiert, 
+                    sofern dies im Kurseditor aktiviert wurde.</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat. Jedoch soll das GUI so angepasst werden, 
+                    dass der Benutzer die Dateien sieht, die er hochgeladen hat.</td></tr>
+        </table>
+        
+        <h2>Entscheidungen</h2>
+        <table>
+            <tr><th>Wann</th><th>Was</th><th>Warum</th></tr>
+            <tr><td>AM, SB, Mai 2012 </td><td>Die Auslösung einer E-Mail-Benachrichtigung bei der Abgabe einer Bewertung durch den Dozenten wird zur Zeit nicht gemacht. 
+            </td><td>Dies ist eine neue Funktionalität. Zuerst müssen wir alle alten "Abonniermöglichkeiten" ersetzen.</td></tr>
+        </table>
+        
+        
+        <div class="metrics">  
+            <h2>Metriken</h2>
+            <p>[METRICS]</p>
+        </div>
+        
+        
+        <div class="openquestions">
+            <h2>Offene Fragen</h2>
+            <p>[DESCRIPTION: PARAGRAPH, LIST OR TABLE]</p> 
+            
+        </div>
+        
+    </body>
+</html>

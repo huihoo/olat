@@ -1,0 +1,19 @@
+Junit testing
+-----------------------------------
+
+o INTEGRATION testing: Write your test code extending from OlatTestCase and a whole OLAT will be started for you.
+	The database will be an hsqldb in memory only database which will not be persisted and will only last for the duration of a test.
+	This kind of tests take some time to run as they start the whole framework. This is considered a bad practice and will no longer be possible
+	in Future.
+
+o TRUE UNIT TESTING: write your testcode extended by AbstractJUnit4SpringContextTests and only 
+	add the spring context you need
+	- see test/java/org/olat/test/SpringTest.java for an example
+	
+o Right Click a Test and say: Run as Unit test to run a Test.
+
+
+-----------
+
+pitfalls: If you get an exception that some files are not found make sure your classpath does include all types of files
+for src/test/java and not only java files. Right click->Properties->Java Build Path.

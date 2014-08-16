@@ -1,0 +1,180 @@
+* {
+  font-family: Arial;
+}
+body {
+  font-size:16px;
+  padding: 32px;  
+}
+pre {
+  padding: 6px 28px 6px 28px;
+  background-color: #E8EEF7;
+}
+pre.notyet, pre.notyet * {
+  color: #BBBBBB;
+}
+
+pre, pre *, code, code *, kbd {
+  font-family: "Courier New", Courier;
+  font-size: 10pt;
+}
+
+#addtoc * {
+  padding-top:1px;
+  padding-bottom:1px;
+  margin-top:1px;
+  margin-bottom:1px;
+}
+#addtoc h1, #addtoc h1 * {
+ font-size:1.250em;
+}
+#addtoc h2, #addtoc h2 * {
+  font-size:1.125em;
+}
+#addtoc h3, #addtoc h3 * {
+  font-size:1.000em;
+}
+#addtoc h4, #addtoc h4 * {
+  font-size:0.875em;
+}
+#addtoc h5, #addtoc h5 * {
+  font-size:0.750em;
+}
+#addtoc h6, #addtoc h6 * {
+  font-size:0.525em;
+}
+
+h1, h1 * {
+  font-size: 24pt;	
+}
+
+h2, h2 * {
+  font-size: 16pt;	
+  padding-top: 10px;
+}
+
+h3, h3 * {
+  font-size: 14pt;
+  padding-top: 10px;
+}
+
+h1.notyet, h2.notyet, h3.notyet, h4.notyet {
+  color: #BBBBBB;
+}
+
+a.notyet {
+  color: #BBBBBB;
+}
+
+p, td, th, li, .breadcrumbs {
+  font-size: 10pt;
+}
+p, li {
+  line-height: 140%;
+}
+
+table.notyet, table.notyet * {
+  color: #BBBBBB;
+}
+
+
+
+table {
+  border-collapse: collapse;
+  empty-cells: show;
+  margin: 8px 0px 8px 0px;
+}
+th, td {
+  border: 1px solid black;
+  padding: 3px;
+}
+td {
+  background-color: white;
+  vertical-align: top;
+}
+th {
+  background-color: #C3D9FF;
+}
+li {
+  margin-top: 6px;
+  margin-bottom: 6px; 
+}
+
+li.notyet {
+  color: #BBBBBB; 
+}
+
+.notyet {
+  color: #BBBBBB; 
+}
+
+.example {
+  padding: 2px 12px 6px 12px;
+  border: 1px solid #C3D9FF;
+  margin: 6px 0px 28px 0px;
+  background-color: #F5F9FD;
+}
+.example h3 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 12pt;
+}
+
+.example li.notyet {
+  color: #BBBBBB;
+}
+
+.openquestions {
+  padding: 2px 12px 6px 12px;
+  border: 1px solid #ffff33;
+  margin: 6px 0px 28px 0px;
+  background-color: #FFFFCC;
+}
+
+.metrics {
+  padding: 2px 12px 6px 12px;
+  border: 1px solid #ff9900;
+  margin: 6px 0px 28px 0px;
+  background-color: #fbe2b2;
+}
+
+.userstory {
+  padding: 2px 12px 6px 12px;
+  border: 1px solid #336699;
+  margin: 6px 0px 28px 0px;
+  background-color: #cce3fa;
+}
+
+.attention {
+  font-family: Arial;
+  font-size: 10pt;
+  background-image: url(icons/warning.png);
+  background-repeat:no-repeat;
+  padding-left: 45px ;
+  padding-bottom: 40px ;
+ 
+}
+
+.special {
+  font-style: italic;
+}
+
+.idea {
+  font-size: 9pt;
+  color: #888;
+  font-style: italic;	
+}
+.tight li {
+  margin-top: 1px;
+  margin-bottom: 1px; 
+}
+.commentary {
+  float: right;
+  width: 200px;
+  background-color: #ffffd0;
+  padding:8px;
+  border: 3px solid #eeeeb0;	 
+  margin: 10px 0px 10px 10px;	 
+}
+.commentary, .commentary * {
+  font-size: 8pt;
+}

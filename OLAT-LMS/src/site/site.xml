@@ -1,0 +1,17 @@
+<project name="OLAT">
+  <bannerLeft>
+	<name>OLAT Generated Documentation</name>
+	<src>images/olat_logo2_72.png</src>
+	<href>http://www.olat.org/</href>
+</bannerLeft>
+  <body>
+    <menu name="The OLAT LMS">
+        <item name="Code Fragments" href="/olat-code_fragments.html" />
+        <item name="Spring Code Fragments" href="/spring_olat-code_fragments.html" />
+        <item name="Javadoc" href="apidocs/index.html"/>
+	<item name="Specification" href="specification/Specification.html" />
+	<item name="Testing" href="/olat-testing.html" />
+	<item name="Overview of pom.xml" href="olat-pom-documentation.html" />
+    </menu>
+</body>
+</project>

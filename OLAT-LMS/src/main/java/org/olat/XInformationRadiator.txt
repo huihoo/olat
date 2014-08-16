@@ -1,0 +1,115 @@
+Layering Checklist :
+====================
+ o Package-Namen in xxxContext.xml File und anderen Spring Files angepasst ?
+ o Help File anpasst ?
+ o i18n File anpasst ?
+ o HTML File (Translator-Packages) anpasst ?
+ o Manager queries angepasst? Enthalten oft pfade in HQL queries...
+ o Test Klassen auch entsprechend der neuen Struektur verschoben ?
+ o XStream Klassen nicht verschieben !
+ o Wenn möglich auf leere package strukturen verzichten
+ 	-> kein org.olat.data.*modulename*.model sondern direkt org.olat.data.*modulename*
+ 	-> kein org.olat.presenation.*modulename*.controller
+ 	-> kein org.olat.presention.*modulename*.ui
+ 	-> ABER: Wenn zuviele Klasse, so sinnvolle Einheiten bilden
+ o HQL queries wie: Select * from org.olat.common.coordinate.cluster.lockImpl where ... refactor save schreiben als
+ 	"select * from LockImpl where
+ o At the end always search in all files also with the moved path with slashes: e.g. org/olat/resource/... and replace
+ o search for setBasePackage() calls in controllers, and check if the _i18n files still resides in this package 
+ o Abends : Refactor.olat.uzh.ch frisch gebaut und läuft ?
+ 
+ 
+ Final checks wenn alles geschoben
+ ====================================
+ o überall wo package translators gemacht werden schauen ob es auf dieser ebene überhaupt ein translator package (_i18n) hat
+ 		-> Util.createPackageTranslator(QTIResultDetailsController.class, locale);
+ o Alle context help files überprüfen ob es die pfade noch gibt
+ o Package Namen sollten singular sein
+ o SingleVM Implemenation weglassen ?
+ o Install ucdetector (eclipe plugin) and find unused classes and move them to the legacy package
+ 
+ 
+ Layering dritte Runde: Tasks
+ ================================
+ o wohin mit org.olat.presentation.framework.core.media.fileresource.type. 
+ 
+ o splitting managers in data into: Data persistence stuff and rename to DAO and move rest up to lms level and rename to Service  
+ 
+ o org.olat.system sollte alleine compilieren
+ 		o logging
+		|   |-- activity (LMS?)
+ 		
+ o org.olat.data sollte zusammen mit org.olat.system compilieren
+ o presentation.commons.filechoose and presentation.framework.filechooser consolidate
+ o org/olat/presentation/framework/core/translator/Translator.java
+ 
+ 
+Alte Pfade finden auf dem ganzen source tree
+---------------------------------------------------
+
+
+find . -name '*.java' | xargs cat |grep 'org\.olat\.' | grep -v 'org\.olat\.presentation' | grep -v 'org\.olat\.data' | grep -v 'org\.olat\.system' | grep -v 'org\.olat\.lms' | grep -v 'org\.olat\.connectors' | wc -l
+
+
+Grenzverletzungen in org.olat.system
+-------------------
+find . -name *.java | xargs grep 'import org.olat.presentation' | wc -l
+-> 35
+-------------------
+find . -name *.java | xargs grep 'import org.olat.lms' | wc -l
+-> 20
+-------------------
+find . -name *.java | xargs grep 'import org.olat.data' | wc -l
+-> 95
+-------------------
+
+
+Grenzverletzungen in org.olat.data
+-------------------
+find . -name *.java | xargs grep 'import org.olat.presentation' | wc -l
+-> 107
+-------------------
+find . -name *.java | xargs grep 'import org.olat.lms' | wc -l
+-> 137
+-------------------
+
+
+
+
+Package Architektur Entscheide
+Data-Layer
+Sub-Packages nicht nach Typen wie 'manager', 'model' bilden, sondern logisch unterteilen :
+
+Bsp :
+
+group.area
+group.context
+
+
+und nicht wie ehemaliges Portfolio-Package :
+portfolio.manager
+portfolio.model
+
+Lms-Layer
+Einzelne Implementation von Interfaces bei den jeweiligen Domain Packages und nicht alle Typen an einem Package zusammenfassen.
+
+
+Bsp
+
+forum.notification
+infomessage.notification
+user.notification
+
+
+und nicht so :
+notifications.forum
+notifications.infomessage
+notifications.user 
+
+
+
+Tasks:
+
+o Annotation config for all basic spring types
+o Test: data layer should compile on its own
+o bookmark event back to bookmark package

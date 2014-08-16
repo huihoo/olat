@@ -1,0 +1,98 @@
+Setting up latest OLAT version on Eclipse
+-------------------------------------------------------------------------
+
+o As the latest development is often ahead of the current documentation you will always find an up to date install guide here.
+o There a two different aproaches to install a development environment for OLAT. Choose the one you prefer.
+
+*******************************************************************************************
+Setting up OLAT in Eclipse with Mercurial and Maven from the command line
+
+*******************************************************************************************
+
+
+1. Check that you have Mercurial (hg) installed
+2. perform fresh clone from: http://hg.olat.org/repos/OLAT
+3. In Terminal: make sure that you are using maven 2.2 or higher (mvn -V)
+4. In Terminal: create eclipse project settings and create .classpath file by running
+mvn eclipse:clean eclipse:eclipse
+
+5. In Eclipse: import the project with the eclipse wizzard "Import->General->Existing project into workspace"
+
+
+6. In Eclipse: setup tomcat server by clicking on olat->Run As->"Run on Server". 
+  6.1 The Run on Server wizzard will pop up and check: manually define a new server
+  6.2 look for Apache->Tomcat v6.0 Server
+  6.3 Click finish (This step often fails as the default timeout for starting is 45 seconds only). Double click the newly created server and 
+  increase the timeout
+  6.4 The "Run on server" task created a folder in the Package Explorer. Open the explorer and edit the following lines in the server.xml file.
+
+    <Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443" URIEncoding="UTF-8"/>
+	--> add parameter URIEncoding="UTF-8"
+
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" URIEncoding="UTF-8"/>
+	--> add parameter URIEncoding="UTF-8"
+
+    <Context docBase="OLAT-LMS" path="/olat" reloadable="false" source="org.eclipse.jst.jee.server:OLAT-LMS"/></Host>
+    --> reloadable must be false
+
+
+*************************************************************************************************
+Setting up OLAT in Eclipse with "Mercurial Eclipse Plugin" and "Maven Eclipse Plugin" installed
+
+*************************************************************************************************
+Preconditions:
+	o Check that you have maven 2.2.x installed/referenced in eclipse. Eclipse Helios comes already with maven 3.x which will not work!!!
+	o Check that you have the mercurial plugin installed
+	o Check that you have the maven m2 eclipse plugin installed
+
+
+1. Create an Mercurial repo location (http://hg.olat.org/repos/OLAT) and clone the repo.
+  1.1 Do not add a password and make sure you uncheck the init Mercurial repo checkbox at the end. Right click to clone repo into your workspace.
+2. Run the "m2: create eclipse project settings" launch configuration from the green play button in eclipse.
+  You have to select the project by clicking on it with otherwise the variable "project_loc" will be empty.
+    2.1 If you do not see the launch configuration close the project and reopen it. This will reload the config and fix this issue.
+3. continue with step 6 from above "Run As"-> "Run on Server"...
+
+
+
+*******************************
+Appendix
+*******************************
+
+A. (optional) In Eclipse: setup VM arguments by clicking on olat-lms->Run Configurations->Arguments->VM Arguments and pasting:
+-Djava.io.tmpdir="/yourhome/olatdata"
+-Xmx512m -Xms512m
+
+B. (optional) Create an empty olat.local.properties and save it to /yourTomcatDir/lib (OLAT searches for this file on the classpath and /tomcat/lib is part of it). 
+  But OLAT should start with just the default config!
+
+D. (optional) Usually you will get a timeout exception when you start a new OLAT. After double clicking on the server entry you can increase the timeout for the startup.
+
+E. (optional). If your tomcat starts very quickly but you cannnot access OLAT it might be that tomcat did not find the OLAT context.
+  Right click the server entry and click publish to inform eclipse about a new or updated context.
+
+F. If you run into problems with classes or resources not found e.g. "ClassNotFoundException" right click your server config and run the "Clean..." Task to republish 
+  all resources. Problems comes mostly when switching from eclipse to console and back with command like mvn clean, or eclipse clean and such. You will always get a clean and working environment when you do the following: Eclipse clean, create eclipse settings with launch, Server publish resources and restart OLAT.
+
+G. (optional). To have a log file configurate log4j.xml for your setup (Comment-in '<appender-ref ref="syslog"/>' ; comment-in 'syslog-appender' ; set file path for your setup). 
+
+Background (optional for further interest)
+------------------------------------------------------------------
+
+o There is only one spring context for the whole OLAT which you can access via CoreSpringFactory (only needed in rare special cases!). The context is configured with
+  the files olat.properies and can be overwritten with olat.local.properties. 
+  changes in olat.local.properties are reflected upon each restart of Tomcat.
+  Developers can use the embedded Hsqldb and do not need to create a database manually (Default installation of data and database points to java.io.tmpdir which you can overwrite with  
+  -Djava.io.tmpdir=/yourdir if you like or adjust the olat.local.properties file as before)
+
+
+***************************************************
+Running OLAT directly from Maven with embedded Jetty
+***************************************************
+
+You can also start OLAT with the embedded Jetty like this:
+
+mvn MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=128m" org.mortbay.jetty:jetty-maven-plugin:run
+
+o The -X options are necessary otherwise you will run out of java memory when running OLAT.
+o If you get "to many open files" you can increase the file handles with "ulimit -n 8192" (linux system) which should be enough.

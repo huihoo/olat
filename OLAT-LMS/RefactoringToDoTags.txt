@@ -1,0 +1,13 @@
+
+# list of all common 'TODO:' tags used for OLAT-Refactoring. CG
+
+'TODO: ORID-1003,JumpIn-URL to REST migration'
+ 
+'TODO: ORID-1007' allgemeines gemeinsames Tag fuer ORID-1007
+'TODO: ORID-1007,Code Duplication 
+
+# Presentation Cleanup 
+'TODO: ORID-1007,BaseSecurity Bad Smell'
+'TODO: ORID-1007,PropertyManager Bad Smell'
+'TODO: ORID-1007,DB Bad Smell'
+'TODO: ORID-1007 'File'

@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="SmokeTesting" verbose="1" >
+  <test name="smoketest" junit="true">
+    <classes>
+      <class name="org.olat.test.functional.course.run.EditInfoMessageTest" />
+    </classes>
+  </test>
+</suite>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+<bean id="qtiModule" class="org.olat.lms.ims.qti.QTIModule" depends-on="database" init-method="init" destroy-method="destroy">
+	<property name="qtiRepositoryHandlers">
+		<list>
+			<ref bean="QTITestHandler${assessmentplugin.activate}" />
+			<ref bean="QTISurveyHandler${assessmentplugin.activate}" /> 
+		</list>
+	</property>
+	<property name="repositoryHandlerFactory" ref="repositoryHandlerFactory" />
+	
+	<property name="defaultProperties">
+        <value>
+        <!-- Whether to validate QTI XML files or not. -->
+		validating=false
+    	</value>
+    </property>
+</bean>
+<!-- The Handlers which are registered by the QTIMOdule at the repository -->
+<bean id="QTITestHandlerOlat" class="org.olat.lms.repository.handlers.QTITestRepositoryHandler"></bean>
+<bean id="QTISurveyHandlerOlat" class="org.olat.lms.repository.handlers.QTISurveyRepositoryHandler"></bean>
+
+<!--  The validators for detecting qti conformant files -->
+<bean class="org.olat.lms.commons.fileresource.SurveyFileResource" scope="prototype">
+	<property name="validator" ref="SurveyValidator${assessmentplugin.activate}" />
+</bean>
+<bean id="SurveyValidatorOlat" class="org.olat.lms.commons.fileresource.SurveyFileResourceValidator" />
+
+<bean class="org.olat.lms.commons.fileresource.TestFileResource" scope="prototype">
+	<property name="validator" ref="TestValidator${assessmentplugin.activate}" />
+</bean>
+<bean id="TestValidatorOlat" class="org.olat.lms.commons.fileresource.TestFileResourceValidator" />
+
+</beans>

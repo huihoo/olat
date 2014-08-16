@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Akzeptanztest neuer Forumsbeitrag</title>
+
+    <link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+<h1>Akzeptanztest neuer Forumsbeitrag</h1>
+<p>Vorbedingung und Aktion gelten f&uuml;r alle Erwartungen.</p>
+    <div class="example">
+			
+		<h2>Vorbedingung</h2>
+    		<table>
+    			<th>Kontext Typ</th><th>Kontext Name</th><th>Quelle Typ</th><th>Quelle Name</th>
+    			<tr concordion:execute="setPublisher(#id,#contextType,#contextId,#contextTitle,#sourceType,#sourceId,#sourceTitle,#subcontextId)">
+    				<td style="display:none" concordion:set="#id">1</td>
+    				<td concordion:set="#contextType">COURSE</td>
+    				<td concordion:set="#contextTitle">Test course</td>
+    				<td style="display:none" concordion:set="#contextId">1</td>
+    				<td concordion:set="#sourceType">FORUM</td>
+    				<td style="display:none" concordion:set="#sourceId">1</td>
+    				<td concordion:set="#sourceTitle">Pr&uuml;fungsfragen</td>
+    				<td style="display:none" concordion:set="#subcontextId">1</td>
+    			</tr>	
+    		</table>
+    		<br/>
+       		<table><tr><th>Benutzer</th><th>E-Mail-Benachrichtigung</th></tr>
+	       		<tr concordion:execute="setSubscriber(#id,#name,#isSubscription,#notificationInterval)">
+	       			<td style="display:none" concordion:set="#id">1</td>
+	       			<td concordion:set="#name">Alf</td>
+	       			<td style="display:none" concordion:set="#isSubscription">true</td>
+	       			<td style="display:none" concordion:set="#notificationInterval">DAILY</td>
+	       			<td>t&auml;glich</td></tr>
+	       		<tr concordion:execute="setSubscriber(#id,#name,#isSubscription,#notificationInterval)">
+	       			<td style="display:none" concordion:set="#id">2</td>
+	       			<td concordion:set="#name">Clara</td>
+	       			<td style="display:none" concordion:set="#isSubscription">true</td>
+	       			<td style="display:none" concordion:set="#notificationInterval">DAILY</td>
+	       			<td>t&auml;glich</td>
+	       		</tr>
+       			<tr concordion:execute="setSubscriber(#id,#name,#isSubscription,#notificationInterval)">
+       				<td style="display:none" concordion:set="#id">3</td>
+       				<td concordion:set="#name">Dora</td>
+       				<td style="display:none" concordion:set="#isSubscription">true</td>
+       				<td style="display:none" concordion:set="#notificationInterval">NEVER</td>
+       				<td>ausgeschaltet</td>
+       			</tr>
+       		</table>
+       		<br/>
+       	<h2>Abbonements</h2>
+       		<table><tr><th>Benutzer</th><th>Baustein</th></tr>
+       			<tr concordion:execute="setSubscription(#subscriberId,#publisherId)">
+       				<td style="display:none" concordion:set="#subscriberId">1</td>
+       				<td>Alf</td>
+       				<td style="display:none" concordion:set="#publisherId">1</td>
+       				<td>im Forum  &quot;Pr&uuml;fungsfragen&quot;</td>
+       			</tr>
+       			<tr concordion:execute="setSubscription(#subscriberId,#publisherId)">
+       				<td style="display:none" concordion:set="#subscriberId">2</td>
+       				<td>Clara</td>
+       				<td style="display:none" concordion:set="#publisherId">1</td>
+       				<td>im Forum  &quot;Pr&uuml;fungsfragen&quot;</td>
+       			</tr>
+       			<tr concordion:execute="setSubscription(#subscriberId,#publisherId)">
+       				<td style="display:none" concordion:set="#subscriberId">3</td>
+       				<td>Dora</td>
+       				<td style="display:none" concordion:set="#publisherId">1</td>
+       				<td>im Forum  &quot;Pr&uuml;fungsfragen&quot;</td>
+       			</tr>
+       		</table>
+       		<br/>
+       	<h2>Aktion</h2>
+       		<table><tr><th>Benutzer</th><th>Aktion</th><th>Titel</th><th>Wo?</th><th>Wann?</th></tr>
+       			<tr concordion:execute="setAction(#subscriberId,#publisherId,#eventType,#title,#messageId,#eventDate)">
+       				<td style="display:none" concordion:set="#subscriberId">2</td>
+       				<td style="display:none" concordion:set="#publisherId">1</td>
+       				<td style="display:none" concordion:set="#messageId">1</td>
+       				<td>Clara</td>
+       				<td style="display:none" concordion:set="#eventType">NEW</td>
+       				<td>erstellt neuen Beitrag</td>
+       				<td concordion:set="#title">Multiple Choice</td>
+       				<td>im Forum  &quot;Pr&uuml;fungsfragen&quot;</td>
+       				<td concordion:set="#eventDate">21.06.2010 13:35</td>
+       			</tr>
+       		</table>
+       		
+       		 <div class="attention">Zum Teil gleiche Vorbedingungen auch beim Test "Forumsbeitrag ändern".</div> 
+       		 
+      <h2 concordion:execute="executeTest()">Erwartung Kanal E-Mail</h2> 		
+	 
+       	   <table><tr><th>Benutzer</th><th>Ergebnis</th><th>Bemerkung</th></tr>
+       		<tr><td concordion:set="#userName">Alf</td><td concordion:assertEquals="getMailResult(#userName)">erh&auml;lt E-Mail</td><td>z.B. um 00:10 Uhr</td></tr>
+       		<tr><td concordion:set="#userName">Clara</td><td concordion:assertEquals="getMailResult(#userName)"> erh&auml;lt keine E-Mail</td><td>da sie den Beitrag selbst erstellt hat</td></tr>
+       		<tr><td concordion:set="#userName">Dora</td><td concordion:assertEquals="getMailResult(#userName)">erh&auml;lt keine E-Mail</td><td>da sie E-Mail-Benachrichtigung ausgeschaltet hat</td></tr>
+       		</table>
+
+
+
+<a name="allgFormatvorlage"></a> 
+ <h3>Formatvorlage E-Mail, Zustellung: t&auml;glich, bei mehreren Änderungen</h3>
+
+<pre>
+From: noreply@olat.uzh.ch
+To: Alf@uzh.ch
+Subject:[OLAT-Benachrichtigung]: T&auml;gliche Zusammenfassung
+
+Folgende &Auml;nderungen k&ouml;nnten Sie interessieren:
+
+Im Kurs "<a href="LINK ZUM KURS">Biologie I</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Pr&uuml;fungsfragen</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Multiple Choice</a>" am 30.11.11 um 09:59 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Single Choice</a>" am 30.11.11 um 10:15 Uhr geÃ¤ndert.
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Re: Single Choice</a>" am 30.11.11 um 22:59 Uhr erstellt.
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">SÃ¤ugetiere</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">MÃ¤use</a>" am 30.11.11 um 08:50 Uhr erstellt.
+
+Im Kurs "<a href="LINK ZUM KURS">Biologie II</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Pflanzen</a>&quot;  
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">BiodiversitÃ¤t</a>" am 30.11.11 um 11:09 Uhr erstellt.
+- hat Dora Dennler den Beitrag "<a href="LINK ZUM BEITRAG">Evolution</a>" am 30.11.11 um 12:10 Uhr geÃ¤ndert
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+Falls Sie nicht mehr über Änderungen benachrichtigt werden wollen, 
+deaktivieren Sie die tägliche E-Mail Benachrichtigung oder 
+entfernen Sie die gewünschten Benachrichtigungen in Ihrem OLAT-Home unter <a href="LINK ZUM TAB BENACHRICHTIGUNGSEINSTELLUNGEN/BENACHRICHTIGUNGEN">"Benachrichtigungen"</a>.  
+
+</pre>
+    
+<pre>
+<table>
+<tr><td style="display:none" concordion:set="#userName">Alf</td><td>From:</td><td concordion:assertEquals="getMailFromAddress(#userName)">noreply@olat.uzh.ch</td></tr>
+<tr><td style="display:none" concordion:set="#userName">Alf</td><td>To:</td><td concordion:assertEquals="getMailToAddress(#userName)">Alf@TEST.tst</td></tr> 
+<tr><td style="display:none" concordion:set="#userName">Alf</td><td>Subject:</td><td concordion:assertEquals="getMailSubject(#userName)">[OLAT-Neuigkeiten]: T&auml;gliche Zusammenfassung</td></tr>
+</table>
+</pre>
+ 
+<pre class="html" concordion:assertEquals="getMailBody(#userName)">
+Folgende Änderungen könnten Sie interessieren:
+&lt;br/&gt;
+Im Kurs &lt;a href="/test/url/RepositoryEntry/1"&gt;"Test course"&lt;/a&gt;&lt;br/&gt;	
+
+Im Forum &lt;a href="/test/url/RepositoryEntry/1/CourseNode/1"&gt;"Prüfungsfragen"&lt;/a&gt;&lt;br/&gt;
+- hat Clara Seseman den Beitrag &lt;a href="/test/url/RepositoryEntry/1/CourseNode/1/Message/1"&gt;"Multiple Choice"&lt;/a&gt; am 21.01.1970 um 13:35 Uhr erstellt. &lt;br/&gt;		
+&lt;br/&gt;	
+Freundliche Grüsse 
+
+&lt;br/&gt;
+Ihr OLAT-Team
+&lt;br/&gt;
+---
+&lt;br/&gt;
+Diese Nachricht wurde automatisch von der Lernplattform &lt;a href="http://www.olat.org"&gt;OLAT&lt;/a&gt; versandt.
+</pre>
+ 
+      <div class="attention">Es werden nicht zwei verschiedene E-Mails verschickt für neue und geänderte Forumseinträge, 
+      sondern in einem täglichen E-Mail werden sowohl neue wie auch geänderte Forumsbeiträge aufgelistet.</div> 
+      
+ <h3>Sortierung im E-Mail</h3>
+ <ol>
+ <li>Nach Kursname, alphabetisch</li>
+ <li>Nach Forumsname, alphabetisch</li>
+ <li>Nach Eintrag, aktuellster Eintrag zuerst</li>
+ </ol>
+
+    </div>
+
+
+</body>
+</html>

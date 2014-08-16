@@ -1,0 +1,30 @@
+<div class="component_toolbar">
+	#if ($r.available("subscription"))
+		<div class="b_float_left">
+			$r.render("subscription")
+		</div>
+	#end
+	#if ($security.mayOpenNewThread())
+		<div class="o_feed_edit b_float_right">
+			$r.render("dialog.upload.file")
+		</div>
+	#end
+</div>
+
+<div class="component_body">
+	<div>
+		$r.render("dialogElementsTable") 
+	</div>
+	
+	#if($hasSelectedElement && $hasInlineForum)
+		#if($hasInlineForum)
+			<font style="font-size: 9pt;font-weight: normal;">
+				$r.translate("header.discussion"): $selectedElement.getFilename()
+			</font>
+			     
+			$r.render("forum")
+		#end
+	#end
+</div>
+
+	

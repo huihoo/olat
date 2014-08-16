@@ -1,0 +1,13 @@
+Usage of CoreSpringFactory
+
+
+o Try not to use the CoreSpringFactory (use autowiring) at all but in the meantime there are cases where you have to.
+
+o Do not use CoreSpingFactory in Spring-managed classes ! 
+  (you will have an assert-exception)
+
+o Whenever possible use CoreSpringFactory.getBean(ServiceInterface.class) and not just pass a string name (refactor save...) 
+  Needs no casting to requested type (since 15.6.2011).
+  
+o New method  'CoreSpringFactory.getService(ServiceInterface.class)' : Check if requested type is with '@Service' annoteted
+  Decision 16.6.2011 (LD,GS,CG) : We will not use this method in layer-refactoring (until service-orientation)

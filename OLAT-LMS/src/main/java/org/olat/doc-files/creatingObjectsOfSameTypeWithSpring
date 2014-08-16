@@ -1,0 +1,17 @@
+Spring offers ways to create objects and access them without the need of any xml and also non lists where you have to register/list the classes
+
+
+@Component
+class MyType implements MyDemoType...
+
+
+
+List<MyDemoType> list = springContext.getBeansByType(MyDemoType.class)
+
+or you can also let spring inject all Objects of a certain type with @Autowire
+
+@Autowire
+List<MyDemoType> list 
+
+
+The benefit of this approach is that you do not have to edit any lists when programmers implement new objects of your interface

@@ -1,0 +1,32 @@
+What should you check if you created a new spring managed bean
+--------------------------------------------------------------------------
+
+o no public constructor
+	
+	Spring can create even objects with private constr. so to have package access (unit test) you should use default or protected modifiers.
+	The problem with public access it that people will create your objects and your spring annotations or init stuff will not be done at all.
+
+o try to avoid an xml context file
+	
+	Most stuff can be done without xml, see the basicAnnotations.txt file
+
+o try to avoid setters
+	
+	Setters are often just boilerplate code and can be replaced with package visible fields with the @Autowired annotation.
+	Those fields can be access directly while doing testing and setting mocks
+
+o try to avoid lists of beans in xml
+	see the docu file creatingObjectsOfSameTypeWithSpring.
+	As you can access all spring beans of a certain type and even inject them into a property there is no need for xml file and analyze those list
+
+o  If possible do not access your beans over the CoreSpringFactory
+
+	see corespringfactoryUsage.txt
+	
+o do only work in the constructor which does not depend on any other spring stuff as it will be injected after construction time
+
+o  
+
+o 
+
+o 

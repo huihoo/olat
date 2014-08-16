@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Abonnemente</title>
+    <link href="../../concordion.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+  <div id="addtoc"></div>
+    <h2>Abonnements</h2>
+
+<p>Eine Art von Benachrichtigungen sind Abonnements. Bei Abonnements handelt es sich um Benachrichtigungen, die der Benutzer explizit bestellt, also abonniert.
+Folgende Bausteine k&ouml;nnen abonniert werden:</p>
+    <ul><li>Forum</li>
+        <li>Dateidiskussion</li>
+        <li>Wiki</li>
+        <li>Ordner</li>
+        <li>Blog</li>
+        <li>Podcast</li>
+</ul>
+      <p>(Der Mitteilungs- und der Kalenderbaustein sind nicht mehr abonnierbar.)</p>
+<p>Der Inhalt der Benachrichtung ist abh&auml;ngig vom Kanal. Man wird nur über Änderungen anderer Benutzer informiert, über die eigenen Änderungen wird
+man nicht informiert.</p>
+      
+     
+
+<h2>User Stories</h2>
+   <ul>
+       <li><a  href="./subscribecourseelements/SubscribeCourseElements.html">Kursbausteine abonnieren (E-Mail-Vorlage)</a></li>
+       <li><a  href="./viewnews/ViewNews.html">Neuigkeiten anschauen (GUI Home/Benachrichtigungen Tab Benachrichtigungen)</a></li>
+       <li><a  href="./searchsubscriptions/SearchSubscriptions.html">Abonnements suchen (GUI Home/Benachrichtigungen Tab Benachrichtigungseinstellungen)</a></li>
+       <li><a concordion:run="concordion"  href="./forum/Forum.html">Forum abonnieren</a></li>
+   </ul>
+   
+<h2>BPM Abonnements</h2>
+
+<p><a href="BPMSubscriptions.mdzip">BPMSubscriptions.mdzip</a></p>
+
+<h2>Hinweise zum Subscriptions-Prozess</h2>
+      <p>Falls eine E-Mail-Transaktion pro Benutzer fehlschlägt, probiert OLAT weitere drei Male die E-Mail-Transaktion pro Benutzer durchzuführen, 
+      bevor der Status "failed" gelogt wird.</p>
+      <p class="notyet">Hat eine E-Mail-Transaktion den Status "failed" im Logfile, soll der betroffene Benutzer beim nächsten Login online mit einer Meldung darauf hingewiesen werden.</p>
+      <p>Der momentan vorhandene Button "Benachrichtigungen auslösen" im Tab Administration/Benachrichtigungen
+      bleibt bestehen und kann weiterhin dazu verwendet werden, die hängigen Benachrichtigungen sofort auszulösen.</p>
+      <p>Die Fehleranalyse des Betriebs geschieht via Logfile, es wird dafür kein spezielles GUI implementiert.</p>
+     
+
+      <h2>Aktionen und ihre Auswirkung auf Benachrichtigungen</h2>
+      <table><tr><th>Baustein</th><th>Aktion</th><th>Benachrichtigung</th><th>Text</th></tr>
+          <tr><td rowspan="9">Forum</td><td>Diskussionsthema eröffnen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Antworten</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Diskussionsthema editieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Antwort editieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Diskussionsthema löschen</td><td>nein</td><td></td></tr>
+          <tr><td>Antwort löschen</td><td>nein</td><td></td></tr>
+          <tr><td>Diskussion beenden</td><td>nein</td><td></td></tr>
+          <tr><td>Diskussion verbergen</td><td>nein</td><td></td></tr>
+          <tr><td>Diskussion archivieren</td><td>nein</td><td></td></tr>        
+          <tr><td rowspan="6">Wiki</td><td>Artikel erstellen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Seite bearbeiten</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Wiki-Menu ändern</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Diskussionsthema eröffnen</td><td>nein</td><td></td></tr>
+          <tr><td>Antworten</td><td>nein</td><td></td></tr>
+          <tr><td>Seite löschen</td><td>nein</td><td></td></tr>
+          <tr><td rowspan="11">Dateidiskussion</td><td>Datei hochladen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Diskussionsthema eröffnen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Antworten</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Diskussionsthema editieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Antwort editieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Datei löschen</td><td>nein</td><td></td></tr>
+          <tr><td>Antwort löschen</td><td>nein</td><td></td></tr>
+          <tr><td>Antwort verschieben</td><td>nein</td><td></td></tr>
+          <tr><td>Diskussion beenden</td><td>nein</td><td></td></tr>
+          <tr><td>Diskussion verbergen</td><td>nein</td><td></td></tr>
+          <tr><td>Diskussion archivieren</td><td>nein</td><td></td></tr>
+          <tr><td rowspan="15">Ordner</td><td>Dokument erstellen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Datei hochladen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Datei verschieben</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Datei kopieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Ordner erstellen</td><td>nein</td><td></td></tr> 
+          <tr><td>Ordner kopieren</td><td>nein</td><td></td></tr>
+          <tr><td>Ordnername editieren</td><td>nein</td><td></td></tr>
+          <tr><td>Ordnertitel editieren</td><td>nein</td><td></td></tr>
+          <tr><td>Ordnerbeschreibung editieren</td><td>nein</td><td></td></tr>
+          <tr><td>Ordner verschieben</td><td>nein</td><td></td></tr>
+          <tr><td>Dateiname editieren</td><td>ja</td><td>geändert</td></tr>    
+          <tr><td>Dateititel editieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Dateibeschreibung editieren</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Datei löschen</td><td>nein</td><td></td></tr>
+          <tr><td>Ordner löschen</td><td>nein</td><td></td></tr>
+          <tr><td rowspan="6">Blog</td><td>Neuer Eintrag erstellen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Eintrag bearbeiten</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Eintrag löschen</td><td>nein</td><td></td></tr>
+          <tr><td>Kommentar</td><td>nein</td><td></td></tr>
+          <tr><td>Kommentar löschen</td><td>nein</td><td></td></tr> 
+          <tr><td>Blog bearbeiten</td><td>nein</td><td></td></tr>
+          <tr><td rowspan="6">Podcast</td><td>Episode hinzufügen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Episode erstellen</td><td>ja</td><td>erstellt</td></tr>
+          <tr><td>Episode bearbeiten</td><td>ja</td><td>geändert</td></tr>
+          <tr><td>Kommentar</td><td>nein</td><td></td></tr>
+          <tr><td>Kommentar löschen</td><td>nein</td><td></td></tr> 
+          <tr><td>Podcast bearbeiten</td><td>nein</td><td></td></tr>
+       </table>     
+ 
+ 	 <div class="attention">
+         <ul>
+                    <li>Dateidiskussion: Ist der Baustein Dateidiskussion abonniert, muss bei dem Eröffnen des 1. Diskussionsthema dies erneut abonniert werden.</li>
+                    <li>Löschen: Wird am gleichen Tag die Aktion "Erstellen" und danach "Löschen" durchgeführt, wird die zuerst erstellte Benachrichtigung wieder gelöscht.</li>
+                    <li>Editieren: Wird am gleichen Tag die Aktion "Erstellen" und danach "Editieren" durchgeführt, wird nur eine Benachrichtigung (letzter Stand) angezeigt/verschickt.</li> 
+                    <li>Wiki: Das Forum innerhalb des Wikis kann nicht abonniert werden (siehe Entscheide).</li>  
+                    
+                  </ul></div> 
+                
+                
+      <h2>Aktionen und ihre Auswirkungen auf Abonnements</h2>
+      <p>Folgende Aktionen bewirken, dass die Abonnements gelöscht werden:</p>
+      <ul><li>Kurs löschen.</li>
+          <li>Kurs beenden.</li>
+          <li>Kurszugriff auf "B" (nur Besitzer der Lernressource) setzen.</li>
+          <li>Löschen des Bausteins.</li>
+          <li>Entfernen der Sichtbarkeit/den Zugriff auf ein Baustein für einen Benutzer.</li>
+      </ul>
+      <div class="attention">Bei der Änderung der Zugriffsbeschränkung via Shibboleth-Attribute nehmen wir in Kauf, dass wenn die Zugriffsbeschränkung erst 
+          nach dem Abonnieren eingeführt wurde, das Abo nicht gelöscht werden kann. Die Shiboleth-Attribute werden beim Login abgefragt und nicht im System festgehalten,
+      deshalb ist eine Überprüfung nicht möglich.</div>
+      <p>Conditionprüfung: Der Abgleich, ob ein Benutzer keine Zugriffsrechte für einen abonnierten Baustein mehr hat und somit sein Abo gelöscht werden muss,
+      findet einmal täglich vor dem E-Mail-Versand statt.</p>
+      <p>Benachrichtigungen, die "raus" sind, als man noch Zugriffsrechte hatte, werden nicht aufgeräumt, jedoch erhält man, 
+      wenn man auf den JumpIn-Link klickt, in OLAT die Mitteilung, dass man keine Zugriffsrechte mehr hat.</p>
+      <p>Benachrichtigungen werden gelöscht, sobald das Abonnement gelöscht wird. Das heisst spätestens 
+          im automatischen Kurs-Löschworkflow, also nach 24 Monate Inaktivität wird der 
+          Kurs gelöscht, damit auch die Abonnements und damit alle zugehörigen Benachrichtigungen.</p>
+      
+      <h2>Aufbewahrungsfrist der Benachrichtigungen</h2>
+      <ul><li>Die Benachrichtigungen werden über einen Zeitraum von einem Monat aufbewahrt und nachher gelöscht.</li></ul>
+<h2>Abonnement-Einstellungen</h2>     
+
+<table><tr><td>Periodizit&auml;t</td><td>Der Benutzer kann ausw&auml;hlen ob er t&auml;glich (= Default) via E-Mail &uuml;ber neue und 
+ge&auml;nderte Beitr&auml;ge benachrichtigt werden will. 
+Der Benutzer nimmt diese Einstellungen im Home/Benachrichtigungen, Tab Einstellungen vor und nicht mehr unter Home/Einstellungen, Tab System.
+</td></tr>
+<tr><td>E-Mail</td><td>Der Benutzer erh&auml;lt per Default ein E-Mail, kann es aber abbestellen. 
+Der Benutzer kann die Einstellung im Home/Benachrichtigungen, Tab Einstellungen vornehmen. 
+Die Einstellung ist global und nicht f&uuml;r einen einzelnen Kurs oder ein einzelnes Forum.</td></tr>
+<tr><td>Home</td><td>Der Benutzer kann sich im Home/Benachrichtigungen, Tab Benachrichtigungen seine Benachrichtigungen sofort nach einer &Auml;nderung anschauen.
+Die Benachrichtigungen sind nach dem aktuellsten Eintrag sortiert. 
+Durch Anklicken des Pfeilsymbols beim Spaltentitel kann die Sortierung pro Spalte geändert werden. 
+(Direkter Link zum Beitrag, zum Baustein und zum Kurs vorhanden). Mittels Tabellensuche kann der Benutzer in der Tabelle suchen. 
+Der Benutzer kann die Ansicht der Tabelle konfigurieren und die Tabelle runterladen. </td></tr>
+   
+</table>
+      
+
+
+<b>Bemerkungen</b>
+<ul><li>Die Einstellungen k&ouml;nnen nicht von einem Kursadministrator &uuml;bersteuert werden. 
+    Der OLAT-Administrator hingegen kann die Einstellungen &uuml;bersteuern, falls notwendig.</li>
+<li>Erwartete Abos: 10 Abos pro Person und Semester laut M.P. (Fokusgruppe); 10-15 Abos pro Person und Semester laut ASA und HF (OLAT-Betrieb). 
+    Abfragen von AS haben ergeben:
+    21671 verschiedene Benutzer haben 156757 Bausteine abonniert, macht im Durchschnitt 7.233 Bausteine pro Benutzer.
+    Vom 20.2.-20.3.2012: 7262 verschiedene Benutzer haben 23379 Bausteine abonniert, macht im Durchschnitt 3.21 Bausteine pro Benutzer.
+
+</li>      
+
+<li>Gemäss Abfrage von 12.12.2011 ergeben sich folgende Periodizitätseinstellungen:
+<table><tr><th>Notification_interval</th><th>Anzahl</th></tr>
+<tr><td>monthly</td><td>6</td></tr>
+<tr><td>never</td><td>40</td></tr>
+<tr><td>weekly</td><td>82</td></tr>
+<tr><td>half-daily</td><td>107</td></tr>
+<tr><td>NULL</td><td>44565</td></tr>
+<tr><td>daily</td><td>56415</td></tr>
+</table>
+</li>
+<li>RE-Vorschlag monthly und weekly abschaffen. Begründung: monthly wird fast nicht verwendet, weekly: Benutzer kann die E-Mail 
+abstellen und einmal in der Woche im Home nachschauen. Half-daily behalten, da momentan sofort nicht als Einstellung implementiert
+werden wird und dies sofort am nächsten kommt.</li>
+</ul>
+
+<h2>Abonnier-Button im Administrations-Tab</h2>
+<p>In OLAT gibt es im Tab "Admistration" und dem Link "Benachrichtigungen" den Button "Benachrichtigungen auslösen" mit einem Erklärungstext.
+Nachforschungen haben ergeben, dass dieser Button einerseits zu Testzwecken und andererseits in Fehlerfällen verwendet wurde, um Benachrichtigungen manuell auszulösen. 
+Wir haben uns entschieden, den Button im Administrations-Tab zu behalten. </p>
+<p> Klickt ein Administrator den Button "Benachrichtigungen auslösen" an, wird der Benachrichtigungsprozess sofort gestartet 
+und die noch nicht versendeten Benachrichtigungen werden verschickt.</p>
+<p> Der Erklärungstext zu dem Button "Benachrichtigungen auslösen" muss wie folgt angepasst werden:</p>
+
+ <pre>
+<STRONG>Email-Benachrichtigungen auslösen</STRONG>
+Jeder Benutzer kann sich über Änderungen in den Bausteinen Forum, Dateidiskussion, Wiki, Ordner, Blog und
+Podcast informieren lassen. Klickt der Benutzer in einem Baustein auf "Benachrichtigungen bestellen" 
+erhält er eine tägliche Zusammenfassung der Ereignisse per Email.
+            
+Klicken Sie auf "Benachrichtigungen auslösen", wenn Sie das Versenden der Benachrichtigungen 
+sofort auslösen möchten.
+           
+Die Benachrichtigungsoption ist auf dieser OLAT-Instanz eingeschaltet
+und der automatische Versandstart erfolgt täglich um 02:00 Uhr.
+</pre>
+
+
+<h2>Entscheidungen</h2>
+      <table>
+          <tr><th>Wann</th><th>Was</th><th>Warum</th></tr>
+          <tr><td>REs vom Dezember 2011</td><td>Wir verzichten auf die Kanäle Chat und SMS.</td><td>Weil der Informationsgehalt in einem SMS sehr klein ist 
+              und heute mit den Smartphones via Natel E-Mails empfangen werden können.</td></tr>
+          <tr><td>AM vom 19.12.2011</td><td>monthly, weekly und half-daily 
+              stehen den Benutzern Ende des WS-Semester 2011/2012 nicht mehr zur Verfügung. 
+              Benutzer werden in der Woche 51 2011 per Email informiert. Sie müssen selbst keine Einstellungsänderungen vornehmen.</td>
+              <td>Wird praktisch nie verwendet vgl. Abfrage oben.</td></tr>
+          <tr><td>REs vom 14.2.2012</td><td>Abgleich 
+              (also Überprüfung, ob Abo noch gültig oder gelöscht werden muss aufgrund geänderter Zugangs- oder Sichtbarkeitsregeln) 
+              1 Mal täglich vor E-Mail-Versand, sowie dass dies für die Benutzer transparent gemacht werden soll (z.B. in CS-Help).</td><td> 
+                  Einmal täglich ist eine klare einfache Regel und somit einfach zu kommunizieren und einfach für die Benutzer zu verstehen. Bis anhin 
+                  wurden gar keine Abos aufgrund geänderter Bedingungen gelöscht, 
+                  d.h. einmal abonniert war = immer abonniert auch wenn man gar keinen Zugriff mehr auf den abonnierten Baustein mehr hatte.
+                  Diese Situation wurde bis anhin nie bemängelt, es kann deshalb davon ausgegangen werden, dass kein Sicherheitsrisiko besteht. 
+                  Zumal der Zugriff ja sofort nicht mehr funktioniert, es wird allerhöchstens noch eine Mitteilung versendet oder im GUI gezeigt, 
+                  die nicht mehr versendet oder gezeigt werden sollte. Da wir nicht kontrollieren können, wann das E-Mail angeschaut wird, 
+                  müssen wir sowieso damit rechnen, dass sich zwischen dem Versenden der Mitteilung und dem Anschauen der E-Mail Zugriffsrechte geändert haben.</td></tr>
+          <tr><td>REs vom 14.2.2012</td><td>Das Szenario "Kurs abonnieren" wird nicht umgesetzt.
+              Ein Default Abo wird nicht umgesetzt.</td><td>Nach Diskussion mit der Fokusgruppe
+                  wurde klar, dass das Szenario für die Studierenden eine gute Lösung wäre, aber nicht für die Dozierende, da eine selektive Abonnierung für sie notwendig ist. 
+                  Mit dem jetzigen Kurs- und Gruppenmodell in 
+                  OLAT lässt sich aber keine für Studenten einheitliche Lösung anbieten, da es Kurse mit (einem oder mehreren) Einschreibebausteinen, 
+                  solche ohne Einschreibebausteine, solche mit Gruppen, andere ohne Gruppen etc. gibt. Mit einem Abo über Einschreibung würden Studierende 
+                  teilweise automatisch benachrichtigt, teilweise nicht, was Verwirrung stiften könnte.</td></tr>
+          <tr><td>REs vom 15.2.2012</td><td>Kalender- und Mitteilungsbaustein sind nicht mehr abonnierbar.</td><td>Kalenderbaustein ist kein kollaboratives Werkzeug.
+              Der Mitteilungsbaustein war bis anhin eine Mischlösung. Die Fokusgruppe hat bestätigt, dass die 
+              Hauptfunktion des Mitteilungsbausteins, das Versenden einer Mitteilung ist.</td></tr>
+          <tr><td>AM + REs vom 21.2.2012</td><td>RSS wird als Kanal in diesem Projekt 1011 nicht umgesetzt, 
+          kann aber später als Kanal entwickelt und angeboten werden.</td><td>RSS wird praktisch nie verwendet. Auch nicht von der Fokusgruppe.
+          Das jetztige RSS-Format ist nicht wirklich benutzerfreundlich. Aus diesen Gründen wird in diesem Projekt auf den Kanal E-Mail fokusiert und RSS nicht umgesetzt.</td></tr>
+          <tr><td>AM + REs vom 22.2.2012</td><td>Gruppenabos werden nicht umgesetzt.</td><td>Das Gesamtkonzept von OLAT sieht eine Entkoppelung 
+              der Gruppen von den Werkzeugen vor. Gruppen sollen nur noch Container für Personen sein. Deshalb macht es keinen Sinn in diesem Projekt 
+              zu entwickeln, wenn die Gruppen nachher umgebaut werden.</td></tr>
+          <tr><td>AM +REs vom 5.3.2012</td><td>Portlet wird entfernt</td><td>Portlet wird entfernt, da praktisch nicht verwendet. 
+              Es wird nicht verwendet, weil man es nicht findet und nicht versteht. Somit wird die Entfernung des Portlets für die meisten Benutzer auch 
+              keinen Verlust beinhalten. Einen Informationsverlust wird es sowieso nicht mit sich ziehen, da die Information im Menu unter 
+              Benachrichtigungen bestehen bleibt.
+              Zukünftig werden vermutlich in irgendeiner Art auf der Startseite die Neuigkeiten angezeigt werden, dies soll jedoch dann in einem 
+              Startseitengesamtkonzept in einem eigenen Projekt realisiert werden. Nur eine Minimallösung Link auf der Startseite oder ein Icon 
+              beim Menueintrag als Anzeige wird in diesem Projekt umgesetzt. Stattdessen Abo-Übersicht im Home verbessern.</td></tr>
+          <tr><td>REs vom 12.3.2012</td><td>Bei nachträglicher Zugriffseinschränkung mittels Shibboleth-Attribute wird das Abo nicht gelöscht.</td>
+              <td>Die Überprüfung der Shibboleth-Attribute geschieht beim Einlogen und wird nicht geschpeichert. Ist eine Einschränkung von Anfang an vorhanden,
+                  sieht der Benutzer  bzw. hat der Benutzer keinen Zugriff auf den Baustein und kann somit nicht abonnieren. Hatte er jedoch Zugriff und hat abonniert, 
+                  dieser Zugrif wird dann danach entfernt, dann gibt es momentan keine Möglichkeit dies zu überprüfen. Es kann davon ausgegangen werden, dass in den meisten
+              Fällen der Kurs vor der freischaltung fertigkonfiguriert wird. Zudem hat sich in der Vergangenheit gezeig, das diesbezüglich kein Sicherheitsissue
+              vorhanden ist, zumal die Abos bei Zugriffsänderungen nicht gelöscht wurden. Deshalb nehmen wir in Kauf, dass in diesem Fall des Abo nicht gelöscht wird.</td></tr>
+          <tr><td>REs vom 12.3.2012</td><td>Forum im Wiki soll abonnierbar sein</td><td>Innerhalb des Bausteines Wiki ist es möglich ein Diskussionsthema zu eröffnen.
+          Dieses Diskussionsthema soll abonnierbar sein. Die Benachrichtigung muss gleich wie beim Baustein Forum funktionieren. Eine Abfrage hat ergeben, dass Stand 07.03.12 in OLAT 1874 Wikis existieren mit 18035 Seiten, davon haben 4099 ein Forum. D.h. dass die Möglichkeit einer Diskussion (Forum) innerhalb des Wikis genutzt wird.</td></tr>
+          <tr><td>REs vom 12.3.2012</td><td>bestehende Abonnements werden nicht migriert, jedoch muss der Release in den Semesterferien eingespielt werden.</td>
+              <td>Feedback der Fokusgruppe hat ergeben, dass eine Migration nicht notwendig ist, sofern vorgängig informiert wird. 
+                  Zudem wird meistens in den Semesterferien die Kurserstellung gemacht und bei Semesterstart müssen die neuen Kurse bzw. darin enthaltene 
+              Bausteine sowieso zuerst abonniert werden.</td></tr>
+          <tr><td>REs vom 12.3.2012</td><td>Änderungen an einem Ordner im Baustein Ordner wie Erstellen, Kopieren und Verschieben, lösen keine Benachrichtigung aus.</td>
+              <td>Der Abonnierer ist interessiert an dem Inhalt des Bausteines Ordners und möchte somit darüber informiert werden, wenn ein Dokument erstellt oder eine Datei hochgeladen wird. Die Ordnerstruktur innerhalb des Bausteines Ordner ist für den Abonnierer nicht von Interesse.</td></tr>       
+          <tr><td>REs vom 20.3.2012</td><td>Im GUI "Benachrichtigungen" gibt es keine Differenzierung zwischen ungelesenen und gelesenen Benachrichtigungen</td><td>Die Umsetzung ist zu teuer im Vergleich zum Gewinn. Bis anhin wurde dies auch
+          nicht angezeigt, wenn wir dies also nicht umsetzen, verlieren wir immerhin nicht an Funktionalität.</td></tr>
+          <tr><td>REs + AM vom 21.3.2012</td><td>Die Forumsfunktionalität im Wiki bleibt bestehen, so wie sie jetzt ist ohne die Möglichkeit des Abonnierens</td>
+              <td>Etwa 11% aller Wikis benutzen die Forumsfunktion, deshalb wird diese nicht entfernt. 
+              Die Nachfrage bei der Fokusgruppe und einem ELK hat keine eindeutige Ergenisse geliefert, die einen brauchen das Forum, andere nicht.</td></tr>
+          <tr><td>REs + SR am 26.3.2012</td><td>Im Tab Home/ Benachrichtigungen/ Tab Benachrichtigungen wird nur die Tabellensuche implementiert, 
+          sowie alle Benachrichtigungen des letzten Monat in der Tabelle angezeigt, die aktuellsten zuoberst. Aufbewahrungsfrist der Benachrichtigungen ist ein Monat.</td>
+              <td>Nachfragen bei der Fokusgruppe haben ergeben, dass in den Benachrichtigungen gar nicht gesucht werden zudem ist eine Aufbewahrungsfrist von einem Monat ausreichend. 
+                  Datumssuche ist mittels Tabellensuche immer noch machbar. Benachrichtigungen sind nur aktuell von Interesse, deshalb braucht es keine längere
+              Aufbewahrung.</td></tr>
+          <tr><td>REs + CG am 26.3.2012</td><td>Benachrichtigungen im Home: Portlet wird ersetzt durch Link auf Benachrichtigungen im Portletstyle, aber nicht konfigurierbar</td>
+              <td>Da zu wenig Platz im Portlet für eine sinnvolle Information zur Benachrichtigung vorhanden ist, wird nur ein Link zu Benachrichtigungen gesetzt, 
+              damit die Benutzer die Benachrichtigung einfacher finden. Eine Konfigurationsmöglichkeit dieses Portlets ist deshalb auch nicht mehr notwendig.
+              Dies ist nur eine Übergangslösung, sobald das Home überarbeitet wird, wird hier eine bessere Lösung innerhalb des Homegesamtkonzepts angestrebt.</td></tr>
+          <tr><td>REs + AM am 26.3.2012</td><td>Folgende Portlets werden aus dem Home entfernt: Systemausfälle, Comic, Schnellstartlinks, Wussten Sie...?, Skripte bei Druckerei...,Notizen. 
+          (Notizen bleibt in der Navigation und als Funktion noch bestehen. Zudem wird die Defaultreihenfolge der Portlets angepasst.</td><td>Vor lauter Portlets
+          finden die Benutzer, die für sie wichtigen Informationen nicht.</td></tr>
+          <tr><td>REs am 27.3.2012</td><td>Dateidiskussion muss abonniert werden können, so wie jetzt alle Foren einzeln und kann nicht entfernt werden</td>
+              <td>Die Dateidiskussion wird verwendet (1067 Mal) und damit wäre es einen Verlust für die Benutzer, die mit den jetzigen Forumsmöglichkeiten 
+                  nicht ausgeglichen werden könnte.
+              </td></tr>
+          <tr><td>AM am 28.3.2012</td><td>Notification Code im Webdav disablen. Bei Upload/Anpassungen via WebDav werden somit keine Benachrichtigungen versendet.</td>
+              <td>WebDav wird bald ersetzt, deshalb lohnt es sich nicht hier Aufwand zu investieren.</td></tr>
+          <tr><td>AM gemäss E-Mail vom 10.4.2012</td><td>Das Druckerei Portlet kann entfernt werden.</td><td>Ist für uns nicht wichtig.</td></tr>
+          <tr><td>REs + CG am 16.04.2012</td><td>GUI für die Benachrichtigungseinstellungen wird noch nicht vollständig realisiert wegen Aufwand. Folgendes wird noch nicht gemacht und bleibt pendent: Alle auswählen als Check Box im Header, die Änderungen bezüglich Seitenwechsel, Platzierung Button "Benachrichtigungen abbestellen".</td><td></td></tr>
+          <tr><td>KI + CG am 15.4.2012</td><td>Bei der Dateidiskussion bleiben die Jumpinlinks gleich, wie momentan im OLATlive, d.h. Link führt zur Dateidiskussion, aber nicht direkt zum neuen oder geänderten Forumsbeitrag</td>
+              <td>Aus zeitlichen Gründen können diese direkten Links momentan nicht umgesetzt werden. Da keine direkten Links momentan vorhanden ist, bedeutet dies aber auch keinen
+              Verlust für den Benutzer.</td></tr>  
+          <tr><td>KI + BB 15.4.2012, KI + SB, 30.04.2012</td><td>Beim Podcast gibt es keine direkten JumpinLinks zur einzelnen Episode</td><td>ev. wird später eine Implementierung mit Anker angestrebt. 
+              Da es keine eigentliche eigene Seite für eine Podcast Episode gibt, kann auch nicht darauf verlinkt werden.  
+          </td></tr>
+          <tr><td>KI,SEV,CG am 29.05.2012</td><td>Das Home bzw. die Portlets werden nicht in diesem Projekt wie ursprünglich geplant geändert. Z.Z. wird nur das Benachrichtigungs-Portlet mit dem Link zu den Benachrichtigungen angepasst.</td><td>
+              Im Projekt "Campus-Kurs" wird das gesamte Home neu gestaltet. 
+          </td></tr>    
+          <tr><td>SEV + BB, CG 30.5.2012</td><td>Button "Benachrichtigungen auslösen" bleibt im Tab "Administration".</td><td> 
+          So hat das Betriebsteam die Möglichkeit Benachrichtigungen manuell auslösen.
+          </td></tr>
+          <tr>
+          <td>SEV + BB + SB, 11.06.2012</td>
+          <td> Sortierung im Email mit den Benachrichtigungen bleibt wie sie implementiert ist.</td>
+          <td>Sortierung: Nach Kursname, alphabetisch / Nach Bausteinname, alphabetisch / Nach Eintrag, aktuellster Eintrag zuerst
+          </td>
+          </tr>
+          
+         
+          
+                  
+          
+                   
+      </table>
+
+<div class="metrics">
+  
+<h2>Metriken</h2>
+<ol><li><b>Zustellverlässlichkeit während der Laufzeit</b><br/>
+Die Zustellverlässlichkeit ist der Anteil der erfolgreich versendeten Emails bezüglich aller 
+versendeten Emails während der Laufzeit des OLAT Service.<br/>
+<b>emailSuccessRate </b> = 1 - ( #nichtErfolgreichVersendet / #alleVersendete )<br/>
+<div class="example">
+Gegeben während der Laufzeit des OLAT Service, werden 3x Benachrichtigungen berechnet
+<table>
+   <tr><th>#nichtErfolgreichVersendet</th><th>#alleVersendete</th></tr>
+   <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">5</td><td concordion:set="#numberOfSentEmails">100</td></tr>
+   <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">23</td><td concordion:set="#numberOfSentEmails">200</td></tr>
+   <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">2</td><td concordion:set="#numberOfSentEmails">300</td></tr>
+</table>
+Dann erwarten wir eine emailSuccessRate von <span concordion:assertEquals="getEmailSuccessRate()">0.95</span>.
+</div>
+<div class="example">
+Gegeben während der Laufzeit des OLAT Service, wird 1x die Benachrichtigung berechnet und es gibt keine Emails zu versenden
+<table>
+   <tr><th>#nichtErfolgreichVersendet</th><th>#alleVersendete</th></tr>
+   <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">0</td><td concordion:set="#numberOfSentEmails">0</td></tr>
+</table>
+Dann erwarten wir eine emailSuccessRate von <span concordion:assertEquals="getEmailSuccessRate()">1.0</span>, und keine Fehlermeldung wegen einer Division by Zero.
+</div>
+
+
+</li>
+<li class="notyet">
+Test, ob Datum im Mail älter als Versandintervall. 
+</li>
+    <li class="notyet">
+Wieviele Benachrichtigungen der Benutzer, die Benachrichtigungen abonniert haben, sind, w&auml;hrend einer Woche,
+ pro Benutzer nicht angekommen, im Vergleich zu allen versandten Benachrichtigungen pro Benutzer pro Monat im Durchschnitt? 
+ Red: über 20%, Amber: bis 20%, Green: bis 10%.
+ <ul><li>X= Anzahl zu versendender E-Mail-Benachrichtigungen pro Tag geteilt durch Anzahl Forumsabonnierer</li>
+<li>Y= Anzahl zu versendender E-Mail-Benachrichtigungen minus Anzahl nicht versendeter E-Mail-Benachrichtigungen pro Tag geteilt durch Anzahl Forumsabonnierer</li>
+<li>Z= 100% geteilt durch X mal Y</li>
+<li>Jeder Tag erhält eine Bewertung in Punkten. Wenn Z kleiner gleich 80% dann erhält der Tag die Bewertung 1 Punkt; wenn Z grösser als 80% und kleiner gleich 90% dann erhält der Tag die Bewertung 2 Punkte; wenn Z grösser als 90% dann erhält der Tag die Bewertung 3 Punkte </li>
+<li>Aus diesen Punkten wird über die Dauer einer Woche jeweils der "Moving Average" berechnet. </li>
+<li>Daraus lässt sich dann folgende Kategorisierung ableiten: Red ist kleiner gleich 16 geteilt durch 7; Amber ist grösser als 16 geteilt durch 7 und kleiner gleich 18 geteilt durch 7; Green ist grösser als 18 geteilt durch 7</li>
+</ul></li>
+
+<li class="notyet">Wieviele Benutzer haben innerhalb eines Monates eine Zustellverlässlichkeit von weniger als 80%? Red: ab 100 Personen, Amber: bis 50 Personen, Green: bis 20 Personen.</li>
+<li class="notyet">Wieviele Benachrichtigungen kommen erst beim zweiten Versenden, also verspätet, pro Benutzer, pro Monat an?</li>
+<li class="notyet">Wieviele Benutzer erhalten 80% der Meldungen verspätet?</li>
+</ol>
+</div>
+    
+    <div class="openquestions">
+     <h3>Offene Fragen</h3>
+
+      <p class="notyet">Problem im Betrieb: Z.T. kommen die Benachrichtigungen nicht an, weil eine falsche E-Mail-Adresse im System hinterlegt ist. 
+        Ev. wäre für den Betrieb sinnvoll, dass der Benutzer bei seinen Einstellungen ein Button "Test E-Mail versenden" zur Verfügung hat. 
+        Der Support kann den Benutzer mittels diesen Button zu überprüfen, ob die E-Mail ankommt und die E-Mail-Adresse stimmt. </p> 
+      
+    </div>
+      
+      
+      
+   
+</body>
+</html>

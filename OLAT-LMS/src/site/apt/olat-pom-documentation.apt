@@ -1,0 +1,735 @@
+ -----
+ The OLAT Guide for the pom.xml
+ -----
+ The OLAT Team
+ -----
+ February 2012
+
+Introduction
+
+ The following chapter outlines the concepts and profiles used to implement 
+ the convention over configuration philosophy of maven for the olat processes.
+
+ The pom.xml is part of the project source tree and must be applicable for 
+ testing environments and deployment at UZH, developing at UZH, and also testing, 
+ deployment and developing in the community.
+
+ The guiding idea behind the design and testing of the pom.xml is the goal of simplicity for
+
+    * clone and run on localhost with MySQL
+
+    * clone and import into Eclipse
+
+    * clone and execute tests (all kind of tests)
+
+ The price of execution simplicity is the complexity of the pom.xml and a bunch of
+ default values.
+
+ The goal is achieved with the means of maven properties and maven profiles.
+
+ Last but not least, the pom.xml contains all the documentation and details. If the 
+ documentation and the pom.xml show conflicting information, the pom.xml holds the 
+ working truth.
+
+
+
+The Concepts
+  
+ The building blocks are the maven properties, the usage of profiles, and the possibility to 
+ hook maven plugins into any phase/lifecylce. The maven concepts are combined with the 
+ olat.local.properties mechanism, where appropriate.
+
+ The profiles are used to:
+
+    * add stuff before AND after something
+
+    * add stuff just before or after
+
+    * change only values of properties.
+
+* Disabled by default
+
+ The existing AOP architecture rules, and the non-unit-testing (a.k.a integrationtests, 
+ acceptancetests) are not activated. There activation is controlled with profiles and 
+ properties on the command line.
+
+* Fine grained profiles controlled with properties
+
+ The profiles can be activated either by specifying them with <<<-P prof1,prof2,prof3>>>,.. or 
+ with <<<-D aProperty>>>, where the <<<aProperty>>> is used in an Activation specification of a 
+ profile definition.
+
+* Configure olat.local.properties values with maven properties
+
+ The OLAT webapplication is configured with the means of spring beans. The spring beans get 
+ environment specific values injected with the help of the <PropertyPlaceHolder> mechanism.
+ The <<<src/main/resources/serviceconfig/olat.properties>>> contains the convention configuration
+ for most beans.
+
+ The client (developer, operations, automated testing) needs to place an olat.local.properties on 
+ the classpath (olat default is the <<<../tomcat/lib/..>>> directory) with the specific 
+ configuration values.
+
+ The automation testing client relies on the preconfigured olat.local.properties as source files, to
+ copy them to the destination for execution. There exists five olat.local.properties for testing purpose.
+ The configuration values in these olat.local.properties must be configurable themselves from a test 
+ environment perspective (e.g. running multiple project integration tests on the same machine in parallel.).
+ 
+ This is implemented with the maven properties and the copy-and-filter mechanism from maven. During the 
+ compilation of the source code, the resources are copied to the target folder, which allows to replace
+ <<<${aPlaceHolder}>>> in the copied files.
+
+ The maven properties are defined in the pom.xml section
+
++-----
+   <properties>
+      ..
+      ..
+      <test.env.db.name>olattest</test.env.db.name>
+      ..
+      ..
+   </properties>
++-----
+
+ such a property may be overridden on the command line as follows
+
++-----
+   mvn .... -D test.env.db.name=1011olattest
++-----
+
+ and they can be distributed to the copy & filtered resources (maven-resources-plugin)
+ with the following settings:
+
++-----
+..
+   <configuration>
+      ...
+        <filtering>true</filtering>
+      ...
+   </configuration>
+..
++----- 
+
+ This cascading of configuration properties allows the flexibility needed for adapting the configuration files
+ also for different environments, then the <localhost first cloner>. It has the disadvantage, that 
+ olat.configuration.properties key-value pairs are duplicated into the pom.xml.
+
+** A word to the olat.local.properties for testing
+
+ As mentioned before, the olat.properties values are overridden by values in the preconfigured olat.local.properties, which in 
+ turn may come from the properties section within the pom.xml (or from the command line). This sounds more confusing then 
+ it is, but one has to be aware of
+
+    * the software engineer's responsability to check and edit <<all>> places of <<<olat*properties>>>, once changes are needed.
+
+    * not only the olat*properties have to be synchronized, but also maven properties in the pom.xml (<<<\<properties\>>>> section)
+ 
+ See also the {{{./olat-testing.html}testing chaptre}} for the different testing related profiles and properties. 
+
+
+*** src/test/profile/mysql/olat.local.properties
+
+ This is the configuration activated with the <<<-Dwith-mysql>>> property. It defines the database to be mysql
+ and no hibernate automagically db schema generation is used. It mainly reconfigures the database in use to 
+ <<<olattest>>> with user <<<olat>>> and password <<<olat>>>.
+
+ This is the configuration used to run integration tests.
+
+*** src/test/profile/hsql/olat.local.properties
+
+ Changes the database to hypersonic (HSQL), which support will be discontinued in the near future (2012).
+
+ This was also used to run integration tests in a faster fashion (hsql in memory) then with mysql.
+
+*** src/test/profile/cluster/tomcat-one/lib/olat.local.properties
+
+ Configure the tomcat node one with nodeid, tomcat and jms ports, and uses the same mysql database as the 
+ integration tests.
+
+*** src/test/profile/cluster/tomcat-two/lib/olat.local.properties
+
+ The same as above, but for tomcat node two. 
+
+*** src/test/resources/olat.local.properties
+
+ The default olat.local.properties which is taken, when running integration tests from the IDE. Be aware that
+ this olat.local.properties dos not support copy & replacement by maven, as it is under control of the IDE. 
+
+*** src/main/resources/serviceconfig/olat.properties
+
+ The origin of all properties which can be overridden.
+
+
+
+
+The profiles
+
+  The following list of profiles is defined in the pom.xml. The title of the profile corresponds 
+  with the name in the <<<\<id\>>>> xml tag. The description is the intended goal and how it is 
+  achieved. It contains also a summary of the used plugins and how it is activated. The mentioned 
+  properties define local used properties or the overriding of global properties.
+
+* aop
+
+  The aop architecture rule checks are not enabled by default. We have encountered problems 
+  with aop enabled for the development in eclipse.
+
+    * usage
+
+      if you want to check the aop before pushing only:
+
++----
+ mvn clean compile -Paop
++----
+
+      if you need to check the unittests and aop before pushing:
+
++----
+ mvn clean test -Paop
++----
+
+    * activation
+
+        * <<<-Paop>>>
+
+    * important properties
+    
+    * maven plugins
+
+        * aspectj-maven-plugin
+    
+    * important phase:goal
+ 
+        * <<<compile>>>
+
+        * <<<test-compile>>> outcommented because of a clean up TODO for tests.
+
+    []
+
+* linux
+
+  this serves as an example of how to run something whenever the os familiy matches unix (includes linux as well)
+
+* windows
+
+  this serves as an example of how to run something whenever the os familiy matches windows
+
+* hsqlunittests
+
+  The hsql unittest are not executed by default. This profile filtercopies the profile/hsql/olat.local.properties.
+
+    * usage
+
++----
+ mvn clean test -Dwith-hsql
+ mvn clean test -Phsqlunittests
++----
+
+    * activation
+
+        * <<<-Phsqlunittests>>> for this profile only
+
+        * <<<-Dwith-hsql>>> to activate any hsql specific thing in the desired phase and/or goal.
+
+    * important properties changes
+
+        * skipITs -\> false
+
+        * testFailureIgnore -\> false  
+    
+    * maven plugins
+
+        * maven-surefire-plugin
+
+          Configured with more JVM RAM, and which tests to match.
+
+        * maven-resources-plugin
+
+          Copy and replace properties in olat.local.properties from mysql or hsql environment
+    
+    * important phase:goal
+ 
+        * <<<test:test>>>
+
+        * <<<generate-test-resources:copy-resources>>>
+
+    []
+
+* mysqlunittests
+
+  The mysql unittest are not executed by default. This profile filtercopies the profile/mysql/olat.local.properties.
+  It is worth to note, that the sql-maven-plugin needs an existing schema to connect to the database for further commands. And also that the user must have create and drop rights.
+
+    * usage
+
++----
+ mvn clean test -Dwith-mysql
+ mvn clean test -Pmysqlunittests
++----
+
+    * activation
+
+        * <<<-Pmysqlunittests>>> for this profile only (does not setup databse etc.!)
+
+        * <<<-Dwith-mysql>>> to activate any mysql specific thing in the desired phase and/or goal. For example this triggers the clean setup of a database.
+
+    * important properties changes
+
+        * skipITs -\> false
+
+        * testFailureIgnore -\> false
+
+        * test.env.db.hibernate.ddl.auto -\> EMPTY Value
+    
+    * maven plugins
+
+        * maven-surefire-plugin
+
+          Configured with more JVM RAM, and which tests to match.
+
+        * maven-resources-plugin
+
+          Copy and replace properties in olat.local.properties from mysql, and also the setupDatabase.sql to the <<<target/test-classes>>> folder.
+    
+    * important phase:goal
+ 
+        * <<<test:test>>>
+
+        * <<<generate-test-resources:copy-resources>>>
+
+    []
+
+
+
+* clean-mysql-dbsetup
+
+  The clean mysql dbsetup profile, uses the setupDatabase.sql with the sql-maven-plugin to drop and recreate the olattest (default) database for the mysql integration tests (process-test-resources phase). And it drops the database after the test execution (prepare-package phase).
+
+  The profil is part of the <<<-Dwith-mysql>>> activated profiles. Nevertheless it can be used stand-alone to recreate a MySQL Database with the <<<setupDatabase.sql>>>
+
+    * usage as helper
+
++----
+ mvn process-test-resources -Pclean-mysql-dbsetup -Dtest.env.db.name=<your-db-name-here>
++----
+
+    * activation
+
+        * <<<-Pclean-mysql-dbsetup>>> as a helper
+
+        * <<<-Dwith-mysql>>> activeated for integration testing.
+
+    * important properties
+
+        * test.env.db.host
+
+        * test.env.db.host.port
+
+        * test.env.db.name
+
+        * test.env.db.user
+
+        * test.env.db.pass
+
+        * maven.test.skip
+
+        * test.env.db.4mvnplugin
+
+    
+    * maven plugins
+
+        * maven-resources-plugin
+
+          Copy the setupDatabase.sql to the <<<target/test-classes>>> folder. This is needed here if the profile is run independent of the "mysqlunittests" profile.
+
+        * sql-maven-plugin
+
+          Copy the setupDatabase.sql to the <<<target/test-classes>>> folder. This is needed here if the profile is run independent of the "mysqlunittests" profile.
+          Drops, recreates the schema test.env.db.name with the setupDatabase.sql.
+
+
+    
+    * important phase:goal
+
+        * <<<generate-test-resources:copy-resources>>>
+
+        * <<<process-test-resources:execute>>>
+
+        * <<<prepare-package:execute>>>
+
+
+    []
+
+
+
+
+* install-tomcats
+
+  activate this profile to unzip two tomcats instances for cluster setup, which are the configured and used with profile seleniumtests. <<Changing zipped-tomcat6x>> versions requires updates to the referenced version here!
+
+
+    * usage typically together with selenium and framebuffer
+
++----
+ mvn clean verify -Dwith-selenium -Pxvfb,install-tomcats ....
++----
+
+    * activation
+
+        * <<<-Pinstall-tomcats>>>
+
+    * important properties
+
+        * container.tomcat.xxx.install.dir
+
+    
+    * maven plugins
+
+        * maven-dependency-plugin
+
+          Reference org.olat.testutils.zipped-tomcat6x.zip, and unpack it to container.xxx.install.dir.
+
+
+    
+    * important phase:goal
+
+        * <<<validate:unpack>>>
+
+
+    []
+
+
+* debug
+
+  activate this profile together with <<<-Dwith-selenium>>> to get a started two node tomcat cluster which accepts java debugging connections from Eclipse. This is the easy way to debug with breakpoints a clustered version.
+
+    * usage typically together with selenium
+
++----
+ mvn clean verify -Dwith-selenium -Pdebug,install-tomcats ....
++----
+
+    * activation
+
+        * <<<-Pdebug>>>
+
+    * important properties
+
+        * skipTests -\> true
+
+        * skipITs -\> true
+
+        * cargo.container.wait -\> true
+        
+        * container.tomcat.one.jvmargs -\>"-Xdebug" "-Xrunjdwp:transport=dt_socket,address=4646,server=y,suspend=n"</container.tomcat.one.jvmargs>
+
+        * container.tomcat.two.jvmargs -\> "-Xdebug" "-Xrunjdwp:transport=dt_socket,address=5656,server=y,suspend=n"</container.tomcat.two.jvmargs>
+
+    
+    * maven plugins
+
+    
+    * important phase:goal
+
+
+    []
+
+
+* xvfb
+
+  This is very helpful, though works only on linux with framebuffer (xvfb) enabled. It allows to run the selenium firefox browser window offscreen. (e.g. you can run selenium tests without beeing interrupted while working)
+
+    * usage together with selenium
+
++----
+ mvn clean verify -Dwith-selenium -Pxvfb,install-tomcats ....
++----
+
+    * activation
+
+        * <<<-Pxvfb>>>
+
+    * important properties
+    
+    []
+
+    * maven plugins
+
+        * selenium-maven-plugin
+
+          Additionally configures starting the xvfb
+
+    
+    * important phase:goal
+
+        * <<<pre-integration-test:xvfb>>>
+
+
+    []
+
+* stop-selenium
+
+  stop the selenium server which was started during mvn verify -Dwith-selenium -Pdebug. This is only needed the first time. Afterwards the start-selenium shell can be killed (Ctrl-C).
+
+    * usage in another command window!
+
++----
+ mvn process-test-resources -Pstop-selenium
++----
+
+    * activation
+
+        * <<<-Pstop-selenium>>>
+
+    * important properties
+    
+    []
+
+    * maven plugins
+
+        * selenium-maven-plugin
+
+          stops the selenium server
+
+    
+    * important phase:goal
+
+        * <<<process-test-resources:stop-server>>>
+
+
+    []
+
+
+* restartselenium
+
+  reconfigure and start selenium server
+
+    * usage in another command window!
+
++----
+ mvn process-test-resources -Pstart-selenium
++----
+
+    * activation
+
+        * <<<-Pstop-selenium>>>
+
+    * important properties
+    
+    []
+
+    * maven plugins
+
+        * maven-clean-plugin
+
+          clean specific files from target folder (generate....olat-ui-map.xml, etc)
+
+        * maven-clean-antrun-plugin
+
+          recreate the beforehand cleared resources with ant.
+
+        * selenium-maven-plugin
+
+          starts the selenium server in the background
+
+        * exec-maven-plugin
+
+          uses unix shell command to wait for an hour after restarting selenium in a separate shell!
+
+    
+    * important phase:goal
+
+        * <<<initialize:clean>>>
+
+        * <<<generate-test-resources:run>>>
+
+        * <<<process-test-resources:start-server>>>
+
+        * <<<test-compile:exec>>>
+
+
+    []
+
+
+
+* seleniumtests
+
+  activate this profile to run Selenium based Integration Tests against a cluster running locally. This is the biggest profile, take time for reading the xml. It is not DRY for usage simplicity reason - maybe a better way can be found. Its usage is simply "-Dwith-selenium"... 
+
+    * usage in another command window!
+
++----
+ mvn clean verify -Dwith-selenium -Dfirefoxpathproperty...
++----
+
+    * activation
+
+        * <<<-Dwith-selenium>>>
+
+    * important properties
+    
+    []
+
+    * maven plugins
+
+        * maven-clean-antrun-plugin
+
+          recreate the beforehand cleared resources with ant.
+
+        * maven-resources-plugin
+
+          Filter-Copy tomcat configuration resources (olat.local.properties, server.xml, treecache.xml, additionalUserContext.xml, activemq.xml) and selenium config files.
+
+        * sql-maven-plugin
+
+          drop, recreaet database.
+
+        * exec-maven-plugin
+
+          uses unix shell command to wait for an hour after restarting selenium in a separate shell!
+
+        * maven-activemq-plugin
+
+          start the jms activeqm server.
+
+        * selenium-maven-plugin
+
+          start the selenium server
+
+        * maven-failsafe-plugin
+
+          configure testng suite xml file (smoke, fragile, testng)
+
+        * cargo-maven-plugin
+
+          start tomcats.
+
+        * maven-clean-plugin
+
+          clean tomcat directory from certain files (webapp, olat.war, etc.)
+
+    
+    * important phase:goal
+
+        * <<<initialize:clean>>>
+
+        * <<<initialize:copy-resources>>>
+
+        * <<<process-test-resources:copy-resources>>>
+
+        * <<<pre-integration-test:execute>>>
+
+        * <<<pre-integration-test:run>>>
+
+        * <<<pre-integration-test:start-server>>>
+
+        * <<<pre-integration-test:start>>>
+
+        * <<<post-integration-test:stop>>>
+
+        * <<<integration-test:integration-test>>>
+
+        * <<<integration-test:integration-test>>>
+
+
+    []
+
+
+Misc.
+
+* Surefire and Failsafe
+
+  Both plugins are for testexecution. surefire for unittests and failsafe for integration tests. Olat has all tests in one src/test/java tree. There are also ways to have the tests in different sub-modules/projects.
+
+
+* Integration of Concordion
+
+  Concordion takes the specifications from src/test/resources and compiles them to target/site. The concordion runner does not copy jpgs and thelike, this is accomplished with maven.
+
+
+* Sync Maven and Eclipse
+
+  Eclipse refreshes from time to time the workspace and cleans the target folder. This action may remove important files from the target folder which were filter-copied with a mvn command. This leads to confusion or a feeling, that the build/development process is not stable. Most of the time the correct mvn command <<without>> clean is helpful.
+
+  This is only changeable with using a tighter integration of maven and the ide, such as m2eclipse. This would allow to specify some mvn commands to be issued while cleaning and recompile the workspace.
+
+* APT Development
+
+  Little but handy is the usage of
+
++----
+ mvn clean site:site site:run
++----
+
+  This allows to change xxxx.apt files while seeing the changes immediate on localhost:8080.
+
+
+
+Appendix
+
+* Typical output of a selenium run
+
++----
+mvn clean verify -Dwith-selenium -Dtest.env.firefox-bin=/home/patrick/Documents/milliPay/development/software/firefox3.6.25/firefox-bin | tee /tmp/mvn.log | grep execution
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] [resources:copy-resources {execution: tomcat-one-server_xml}]
+[INFO] [resources:copy-resources {execution: tomcat-two-server_xml}]
+[INFO] [resources:copy-resources {execution: seleniumtests-config-tomcat-one}]
+[INFO] [resources:copy-resources {execution: seleniumtests-config-activemq}]
+[INFO] [resources:copy-resources {execution: seleniumtests-config-tomcat-two}]
+[INFO] [clean:clean {execution: clean-tomcat-directories}]
+[INFO] [resources:copy-resources {execution: copy-resources}]
+[INFO] [resources:copy-resources {execution: copy-eclipse-settings}]
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] [antrun:run {execution: default}]
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] [resources:copy-resources {execution: seleniumtests-config-misc}]
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] [surefire:test {execution: default-test}]
+INFO: Rolled back transaction after test execution for test context [[TestContext@1da77f5 testClass = ForumSubscriptionScenariosNewEntryTest, locations = array<String>['classpath:org/olat/data/notification/_spring/notificationContextTest.xml', 'classpath:org/olat/data/notification/_spring/notificationDatabaseContextTest.xml', 'classpath:org/olat/system/support/mail/impl/_spring/mailContext.xml'], testInstance = org.olat.lms.core.notification.impl.ForumSubscriptionScenariosNewEntryTest@1f97ae0, testMethod = run@ForumSubscriptionScenariosNewEntryTest, testException = [null]]]
+[INFO] [war:war {execution: default-war}]
+[INFO] [sql:execute {execution: drop-db-before-test}]
+[INFO] [sql:execute {execution: create-db}]
+[INFO] [sql:execute {execution: create-schema}]
+[INFO] [activemq:run {execution: default}]
+Feb 29, 2012 12:19:48 AM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.apache.xbean.spring.context.ResourceXmlApplicationContext@1949a6b: display name [org.apache.xbean.spring.context.ResourceXmlApplicationContext@1949a6b]; startup date [Wed Feb 29 00:19:48 CET 2012]; root of context hierarchy
+Feb 29, 2012 12:19:48 AM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from URL [file:/home/patrick/Documents/personal/uzh/Notifications1011/cargo/activemq.xml]
+Feb 29, 2012 12:19:48 AM org.springframework.context.support.AbstractApplicationContext obtainFreshBeanFactory
+INFO: Bean factory for application context [org.apache.xbean.spring.context.ResourceXmlApplicationContext@1949a6b]: org.springframework.beans.factory.support.DefaultListableBeanFactory@f686a3
+Feb 29, 2012 12:19:48 AM org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons
+INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@f686a3: defining beans [org.apache.activemq.xbean.XBeanBrokerService#0]; root of factory hierarchy
+Feb 29, 2012 12:19:48 AM org.apache.activemq.broker.BrokerService start
+INFO: Using Persistence Adapter: AMQPersistenceAdapter(./target/activemq/data/localhost)
+Feb 29, 2012 12:19:48 AM org.apache.activemq.store.amq.AMQPersistenceAdapter start
+INFO: AMQStore starting using directory: ./target/activemq/data/localhost
+Feb 29, 2012 12:19:49 AM org.apache.activemq.kaha.impl.KahaStore initialize
+INFO: Kaha Store using data directory ./target/activemq/data/localhost/kr-store/state
+Feb 29, 2012 12:19:49 AM org.apache.activemq.store.amq.AMQPersistenceAdapter start
+INFO: Active data files: []
+Feb 29, 2012 12:19:49 AM org.apache.activemq.broker.BrokerService getBroker
+INFO: ActiveMQ 5.3.0 JMS Message Broker (localhost) is starting
+Feb 29, 2012 12:19:49 AM org.apache.activemq.broker.BrokerService getBroker
+INFO: For help or more information please see: http://activemq.apache.org/
+Feb 29, 2012 12:19:49 AM org.apache.activemq.kaha.impl.KahaStore initialize
+INFO: Kaha Store using data directory ./target/activemq/data/localhost/kr-store/data
+Feb 29, 2012 12:19:50 AM org.apache.activemq.broker.jmx.ManagementContext$1 run
+INFO: JMX consoles can connect to service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi
+Feb 29, 2012 12:19:50 AM org.apache.activemq.transport.TransportServerThreadSupport doStart
+INFO: Listening for connections at: tcp://millipay-notebook:61616
+Feb 29, 2012 12:19:50 AM org.apache.activemq.broker.TransportConnector start
+INFO: Connector openwire Started
+Feb 29, 2012 12:19:50 AM org.apache.activemq.broker.BrokerService start
+INFO: ActiveMQ JMS Message Broker (localhost, ID:millipay-notebook-59422-1330471189874-0:0) started
+[INFO] [selenium:start-server {execution: default}]
+[INFO] [cargo:start {execution: tomcat-one-start}]
+[INFO] [cargo:start {execution: tomcat-two-start}]
+[INFO] [failsafe:integration-test {execution: integration-test}]
+                                   
++----
+
+
+
+ 

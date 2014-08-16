@@ -1,0 +1,34 @@
+
+// die 4 basic spring annotations um ein objekt zu instanzieren. Sind alle nur marker interfaces. 
+//Die namen sollten für sich selbst sprechen.
+@Service("myCustomName") // nur notwendig wenn mehrere impl. von einem Service
+@Component
+@Repository
+@Controller
+
+public class Test implements Initializable, Destroyable {
+
+	/**
+	* Initializable, Destroyable realisieren in einer klasse, init(), bzw. destory() methoden
+	* damit die init, destroy methoden aufgerufen wird braucht es xml spring config oder eine der beiden annotations
+	* @PostConstruct or. @PreDestory
+	**/
+	
+
+	@Value("${property.name}") //injected ein property direkt via spring
+	private String test
+	
+	@Autowired
+	@Qualifier("main")  // you can use a qualifier to search for a specific instance of a bean (the bean itself needs the qualifier as well)
+	MySuperService service
+	
+	//yes, spring can call private constructors
+	private Test(){ }
+	
+	@PostConstruct
+	public init(){...
+	
+	@PreDestroy
+	public destroy() {...
+
+}

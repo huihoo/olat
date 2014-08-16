@@ -1,0 +1,27 @@
+Naming
+====== 
+ - XxxService XxxServiceImpl
+ - XxxDao XxxDaoImpl
+ 
+Service Design-Decisions
+======================== 
+- Event-handling should be in lms-layer 
+
+- for testing and mocking use a package-visible constructor or just default visibility of the instance variables where you assign the services directly
+e.g.   /**
+   	 	* [testing]
+	 	*/
+		CalendarServiceImpl(CalendarManager calendarManager, CoordinatorManager coordinatorManager) {
+			this.calendarManager = calendarManager;
+			this.coordinatorManager = coordinatorManager;
+		}
+
+Inject dao-object
+-----------------
+	@Autowired
+	QTIResultDao qtiResultDao;
+	
+	WARNING: DO NOT AUTOWIRE A STATIC FIELD - ERROR: "Autowired annotation is not supported on static fields"
+	
+-----------------
+legacy code: Replace *all* getInstance with autowired code inkl. database

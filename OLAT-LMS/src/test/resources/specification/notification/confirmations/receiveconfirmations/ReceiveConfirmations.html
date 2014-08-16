@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>Bestätigungen erhalten</title>
+<link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1>Bestätigungen erhalten</h1>
+<div class="userstory">
+    <h1>User Story</h1>
+    <p>
+        Als Student/Dozent will ich über Aktionen, die mich betreffen oder die ich ausgelöst habe, informiert sein, so dass ich reagieren kann. <br/> 
+    </p>
+    </div>  
+<br></br>    
+  
+<h1>Aufgabe</h1>  
+  
+  <h2>BPM Aufgabe</h2>
+        
+        <p><a href="./img/BPMConfirmationsTask.jpg"><img width="300" alt="BPM Bestätigung Aufgabe" title="BPM Bestätigung Aufgabe" src="./img/BPMConfirmationsTask.jpg" /></a></p>
+<br></br>    
+  
+  
+ 
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="2">Student</td><td rowspan="2">Hochladen einer Datei in den Abgabeordner (Anzeige des erfolgreichen Hochladens über Informations Pop-up)</td><td>Bestätigung an Student</td></tr>
+          <tr><td>Bestätigung an Kursbesitzer und Betreuer der entsprechenden Aufgabe (Vorbedingung: Benachrichtigung im Kurseditor ist aktiviert)</td></tr>
+          <tr><td>Dozent</td><td>Hochladen einer Datei in den Rückgabeordner (über Bewertungswerkzeug)</td><td>Bestätigung an Student</td></tr>
+          <tr><td>Dozent</td><td>Hochladen einer Datei im Musterlösungsordner (über Kurseditor)</td><td>Bestätigung an alle Studenten, welche Mitglieder der Lerngruppe der entsprechenden Aufgabe sind</td></tr>
+         
+ </table>   
+<br></br>
+
+
+<h2>GUI Vorlage für Aktivierung der Abgabebestätigung für den Dozenten</h2>
+    
+    <a href="./img/GUITaskTabDuedate.png"><img width="300" alt="GUI für Tab Abgabe in der Aufgabe" title="GUI für Tab Abgabe in der Aufgabe" src="./img/GUITaskTabDuedate.png" /></a>    
+  <div class="attention">
+                <ul>
+                    <li>Der Dozent kann im Kurseditor wählen, ob er eine Bestätigung über die Abgabe der Aufgabe durch einen Studenten, erhalten möchte.</li>
+                    <li>Wird die E-Mail Benachrichtigung aktiviert, ist diese für Besitzer des Kurses wie auch für Betreuer dieser Aufgabe gültig.</li>
+                    <li>Default: E-Mail Benachrichtigung ist nicht aktiviert.</li>
+                                                           
+                </ul></div>   
+                      
+<h2>GUI Vorlage für Aufgabenbaustein im Kursrun</h2>
+    
+    <a href="./img/GUITaskCourseRun.jpg"><img width="300" alt="GUI für Aufgabenbaustein" title="GUI für Aufgabenbaustein" src="./img/GUITaskCourseRun.jpg" /></a>    
+  <div class="attention">
+                <ul>
+                    <li>Abonnierbutton für Abgabeordner, Rückgabeordner und Musterlösung entfernen.</li>
+                                                                               
+                </ul></div>         
+
+<h2>Formatvorlagen für Bestätigungs-Emails</h2>
+    <p>Student: Sabrina Sutter <br/>
+        Dozent: Daniel Diener <br/>
+        Tutor: Thomas Tanner
+    </p>
+    <h3>Formatvorlage E-Mail an Dozent, dass Student Aufgabe abgegeben hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Daniel.Diener@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Abgabebestätigung von Sabrina Sutter
+
+Hiermit wird bestätigt, dass Sabrina Sutter die Datei "<a href="LINK ZUM BEWERTUNGSWERKZEUG NACH BENUTZER DETAILANSICHT DER BEWERTUNG">Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+am 30.04.12 um 10:15 Uhr im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" abgegeben hat.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+
+</pre>
+
+  <div class="attention">
+                <ul>
+                    <li>Kein Link direkt zum Aufgabenbaustein, ansonsten wird bei einer automatischen Zuweisung eine Aufgabe gezogen.</li>
+                    <li>Zukunft: Link zum Bewertungswerkzeug mit einer Übersicht über alle abgegebenen Aufgaben.</li>
+                                                           
+                </ul></div>         
+  
+
+    <h3>Formatvorlage E-Mail an Student, dass er Aufgabe abgegeben hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Sabrina.Sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Abgabebestätigung für Sabrina Sutter
+
+Hiermit wird bestätigt, dass Sie, Sabrina Sutter, die Datei "<a href="LINK ZUM ABGABEORDNER DES AUFGABENBAUSTEIN IM KURS">Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+am 30.04.12 um 10:15 Uhr im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" abgegeben haben.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+
+    </pre>
+    <div class="attention">
+        <ul>
+            <li>Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM ABGABEORDNER DES AUFGABENBAUSTEIN IM KURS</li>
+          
+            
+        </ul></div>    
+   
+    <h3>Formatvorlage E-Mail an Student, dass Dozent/Tutor etw. in den Rückgabeordner gelegt hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Sabrina.Sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Rückgabebestätigung 
+
+Thomas Tanner hat Ihnen am 30.05.12 um 10:00 Uhr die Datei "<a href="LINK ZUM RÜCKGABEORDNER DES AUFGABENBAUSTEINS IM KURS">Korrektur_Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+in den Rückgabeordner des Kurses "<a href="LINK ZUM KURS">Biologie I</a>" gelegt.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+
+</pre>
+
+    <div class="attention">
+        <ul>
+            <li>Korrektur_Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM RÜCKGABEORDNER DES AUFGABENBAUSTEINS IM KURS</li>
+            
+            
+        </ul></div> 
+    <h3>Formatvorlage E-Mail an Student, dass Dozent/Tutor Musterlösung hochgeladen hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Sabrina.Sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Abgabebestätigung der Musterlösung
+
+Thomas Tanner hat am 30.05.12 um 10:00 Uhr die Datei "<a href="LINK ZUM MUSTERLöSUNGSORDNER DES AUFGABENBAUSTEINS IM KURS">Musterlösung_Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" als Musterlösung zur Verfügung gestellt.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+
+</pre>      
+    <div class="attention">
+        <ul>
+            <li>Musterlösung_Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM MUSTERLÖSUNGSORDNER DES AUFGABENBAUSTEINS IM KURS</li>
+            
+            
+        </ul></div>     
+    
+</body>
+</html>

@@ -1,0 +1,15 @@
+@Value("#{olatPropLocator.getProperty('testkey')}")
+String testProperty;
+
+@Value("${node.id}")
+
+
+# via service interface, if you call set the value gets propagated in the cluster
+@Autowire
+SytemPropertyService propertyService
+
+propertyService.setProperty("key", "value");
+
+propertyService.getProperty(PropertyLocator.GUI_THEME);
+
+

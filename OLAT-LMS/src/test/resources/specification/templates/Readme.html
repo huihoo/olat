@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+<title>Readme</title>
+<link href="../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>README</h1>
+<p>Dieses Readme-File soll beschreiben, wie die verschiedenen Elemente bzw. Stile und die Templates für die 
+Spezifikation im Concordion verwendet werden können.</p>
+    
+<h2>Hinweise</h2>
+    <ul>
+        <li>Die Dateien müssen UTF-8 codierts sein (Rechtsklick auf Datei, Properties klicken und unter File decoding sicherstellen, 
+    dass UTF-8 ausgewählt ist). </li>
+        <li>Die Dateinamen (Html-Files und Bilder) sind immer auf Englisch, möglichst kurz und aussagekräftig 
+            und ohne Unterstrich oder Bindestrich.</li> 
+         <li> Bilder immer mittels CamelCase beschriften.</li>
+           <li> Die Akzeptanztests mittels CamelCase beschriften.</li>
+        <li>Damit die Krümmelpfade funktionieren, müssen die Ordner klein geschrieben sein, das erste Dokument 
+        muss gleich heissen wie der Ordner und der erste Buchstabe des Dokuments muss gross geschrieben sein.</li>
+        <li>Folgende Struktur einhalten </li>
+        <li>   <img alt="Ordnerstruktur und Templates" title="Ordnerstruktur und Templates" src="Templates.gif" /> </li>
+        <li>Im Overview.html findet man eine Übersicht.
+       Im Context.html sind der Systemkontext und die Metriken enthalten.
+       Die User Stories und zugehörigen Akzeptanztests sind eine Ebene tiefer.
+       Es können mehrere User Stories Dateien vorhanden sein innerhalb eines userstory Ordners, aber auch mehrere userstory Ordner 
+       mit einzelnen User Stories Dateien. Ebenfalls kann ein userstory Ordner mehrere UserstoryScenarios enthalten. 
+        </li>
+        <li>Solange diese Ordnerhierarchie eingehalten wird, muss der Pfad zum Stylesheet (CSS-File) nicht angepasst werden.</li>
+        <li>Das Inhaltsverzeichnis entspricht der Ordner- und Dateienhierarchie. Der Title-Tag innerhalb des head-Tags wird als Eintrag für das Inhaltsverzeichnis genommen.</li>
+        <li>Beim Mouseover auf die Inhaltsverzeichniseintrage erscheint ein Hover mit den Einträgen der H-Tags innerhalb des jeweiligen Dokuments.</li>
+        <li>Einträge, die geändert bzw. gemacht werden müssen, sind in den Templates mit Grossbuchstaben und eckigen Klammern gekennzeichnet. 
+        Um diese "Platzhalter" noch mehr hervorzuheben, sind sie auf englisch notiert.</li>
+        <li>Im Commit-Text, jeweils ORID-#: angeben und die Changes möglichst treffend beschreiben.</li>
+    </ul>
+  
+<p>Folgende Templates entsprechen folgenden Dateien im Notification-Beispiel:</p>
+    <table><tr><th>Templates</th><th>Notification</th></tr>
+        <tr><td>overview</td><td>notification</td></tr>
+        <tr><td>Overview.html</td><td>Notification.html</td></tr>
+        <tr><td>context</td><td>subscription</td></tr>
+        <tr><td>Context.html</td><td>subscription.html</td></tr>
+        <tr><td>userstory</td><td>forum</td></tr>
+        <tr><td>Userstory.html</td><td>Forum.html</td></tr>
+        <tr><td>UserstoryScenarios.html</td><td>ForumSubsriptionScenariosNewEntry.html</td></tr>
+    </table>
+
+    <ul>
+        <li>Will man eine neue Seite erstellen, kopiert man die gewünschte Template-Seite samt Ordner an die richtige Stelle 
+            und gibt ihr (und dem Ordner) einen neuen Namen. Um ein ganz neues Thema zu spezifizieren, kopiert man den Ordner
+            "overview" samt Inhalt auf die gleiche Ebene wie der "notification" Ordner, also direkt unterhalb des "specification" Ordners,
+            und passt die Namen aller Dateien und Subordner an.
+            Will man nur eine neue Userstory innerhalb von notification spezifizieren, z.B. wiki, dann kopiert man den Ordner "userstory"
+            plus Inhalt auf die gleiche Ebene wie "forum" und benennt den Ordner "wiki" und die Datei "Wiki.html".
+        </li>
+    </ul>
+    
+<h2>Elemente</h2>    
+    <p>Folgende Elemente stehen für die Gestaltung der Seiten zur Verfügung:</p>
+<div class="openquestions">
+     <h2>Offene Fragen</h2>
+        <p>Innerhalb eines Abschnitts oder in Form einer Liste oder Tabelle können offene Fragen beschrieben werden.
+        Diese Klasse dient u.a. als Diskussionsgrundlage zwischen SE und RE.
+        Am Ende eines Projekts sollten keine offen Fragen mehr vorhanden sein.</p>       
+</div>
+
+    <div class="metrics">  
+        <h2>Metriken</h2>
+        <p>Diese Klasse hebt die Metriken hervor, damit sie schnell gefunden werden.</p>
+    </div>
+    
+    <div class="userstory">
+        <h2>User Story</h2>
+        <p>
+            Mittels Formel: [ALS [BENUTZERROLLE] WILL ICH [DAS ZIEL], so dass [GRUND FÜR DAS ZIEL].] wird die User Story formuliert. 
+        </p>
+    </div> 
+    
+    <div class="example">
+        <p>Die Akzeptanztests werden in tabellarischer Form mittels "Vorbedingung",
+            "Aktion" und "Erwartung" definiert.
+        </p>
+        <h2>Vorbedingung</h2>
+        
+        <table><tr><th>Benutzer</th><th>[WHAT?]</th><th>[WHEN OR REMARK]</th></tr>
+            <tr><td>Alf</td><td>[WHAT?]</td><td>[WHEN OR REMARK]</td></tr>
+        </table>
+        <h2>Aktion</h2>
+        <table><tr><th>Benutzer</th><th>Aktion</th><th>Wo?</th></tr>
+            <tr><td>Clara</td><td>[CREATES ]</td><td>[FORUM]</td></tr>
+        </table>
+        
+        
+        
+        <h2>Erwartung [1]</h2> 		
+        
+        <table><tr><th>Benutzer</th><th>Ergebnis</th><th>Bemerkung</th></tr>
+            <tr><td>Alf</td><td>[RESULT]</td><td>[REMARK]</td></tr>
+            <tr><td>Berta</td><td>[RESULT]</td><td>[REMARK]</td></tr>
+        </table>
+     
+        
+        <h3>Formatvorlage</h3>
+        
+        <pre>
+ Eine Formatvorlage kann eine E-Mail-Vorlage sein oder auch ein GUI-Screenshot etc. 
+ Die Vorlage kann innerhalb eines pre-Tags stehen, muss aber nicht.
+ Die Formatvorlage ist möglichst allumfassend und enthält oft mehr Information
+ als im Akzeptanztest definiert.
+        </pre> 
+    </div>
+       
+    
+    <div class="attention">Mittels der Klasse attention können wichtige Hinweise an die SE gekennzeichnet werden.</div> 
+        
+        
+        <div class="notyet"> 
+            <p>Die Klasse notyet bewirkt, dass die Schrift grau wird. Diese Klasse wird verwendet um Spezifikationen zu kennzeichnen, 
+                die in dieser Iteration noch nicht vorkommen, aber in einer zukünftigen Iteration angegangen werden.</p>
+            <h2>Erwartung [2]</h2>
+            
+            <table><tr><th>Benutzer</th><th>Ergebnis</th></tr>
+                <tr><td>Alf</td><td>[RESULT]</td></tr>
+            </table>
+            
+            <h3> Formatvorlage [2]</h3>      
+            <pre>  TBD  </pre>
+        </div>
+   
+    
+</body>
+</html>

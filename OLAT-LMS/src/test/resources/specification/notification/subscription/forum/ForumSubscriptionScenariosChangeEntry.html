@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Akzeptanztests Forumsbeitrag ändern</title>
+
+    <link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <h1>Akzeptanztest Forumsbeitrag &auml;ndern</h1>
+    
+<p>Vorbedingungen gelten für die Erwartungen der verschiedenen Kanälen. Vorbedingungen zum Teil die gleichen wie bei Akzeptanztest neuer Forumsbeitrag </p>
+<div class="example">
+
+
+<h2>Vorbedingung</h2>    	   
+ <table>
+   <tr><th>Benutzer</th><th>Forum abonniert?</th><th>E-Mail-Benachrichtigung</th><th>Moderatorenrechte im Forum?</th></tr>
+   <tr><td>Alf</td><td>Ja</td><td>t&auml;glich</td><td>Nein</td>	</tr>
+   <tr><td>Berta</td><td>Ja</td><td>t&auml;glich</td><td>Nein</td>	</tr>
+   <tr><td>Clara</td><td>Ja</td><td>t&auml;glich</td><td>Nein</td>	</tr>
+   <tr><td>Dora</td><td>Ja</td><td></td><td>Ja</td>	</tr>
+   <tr><td>Emil</td><td>Ja</td><td></td><td>Ja</td>	</tr>
+ </table>
+
+
+<h2>Aktionen</h2>
+  <table><tr><th>Benutzer</th><th>Aktion</th></tr>
+    <tr><td>Clara</td><td>erstellt einen Beitrag "Single Choice" im Forum &quot;Pr&uuml;fungsfragen&quot;</td></tr>
+    <tr><td>Clara</td><td>erstellt einen Beitrag "Multiple Choice" im Forum &quot;Pr&uuml;fungsfragen&quot;</td></tr>
+    <tr><td>Clara</td><td> &auml;ndert ihren Beitrag "Multiple Choice" im Forum &quot;Pr&uuml;fungsfragen&quot;</td></tr>
+    <tr><td>Dora</td><td>&auml;ndert Claras Beitrag "Multiple Choice" im Forum &quot;Pr&uuml;fungsfragen&quot;</td></tr>
+    <tr><td>Emil</td><td>h&auml;ngt Claras Beitrag "Multiple Choice" im Forum &quot;Pr&uuml;fungsfragen&quot; eine Datei an</td></tr>
+    <tr><td>Emil</td><td>antwortet auf Claras Beitrag "Single Choice" im Forum &quot;Pr&uuml;fungsfragen&quot;</td></tr>
+  </table>
+ 
+  <h2>Erwartung E-Mail</h2>
+  <table><tr><th>Benutzer</th><th>Ergebnis</th><th>Bemerkung</th></tr>
+    <tr><td>Alf</td><td>erh&auml;lt vom System  eine Benachrichtung via E-Mail mit den &Auml;nderungen von Clara, Dora und Emil als Inhalt</td><td>z.B. um 00:10 Uhr </td></tr>
+    <tr><td>Clara</td><td> erh&auml;lt eine Benachrichtung via E-Mail mit dem Subject "[OLAT-Benachrichtigungen]: T&auml;gliche Zusammenfassung" und den &Auml;nderungen von Dora und Emil als Inhalt. &Uuml;ber ihre eigenen &Auml;nderungen wird sie nicht informiert</td><td>z.B. um 00:10 Uhr </td></tr>
+  </table>
+  
+ 
+  
+ 
+  <h3>Formatvorlage E-Mail, Zustellung: t&auml;glich</h3>   
+  
+  <pre>
+From: noreply@olat.uzh.ch
+To: Alf@uzh.ch
+Subject:[OLAT-Benachrichtigung]: T&auml;gliche Zusammenfassung
+
+
+Folgende &Auml;nderungen k&ouml;nnten Sie interessieren:
+
+Im Kurs "<a href="LINK ZUM KURS">Biologie I</a>"
+Im <strong>Forum</strong> &quot;<a href="LINK ZU FORUM">Pr&uuml;fungsfragen</a>&quot;  
+- hat Clara Crivelli den Beitrag "<a href="LINK ZUM BEITRAG">Single Choice</a>" am 30.11.11 um 09:59 Uhr erstellt.
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Multiple Choice</a>" am 30.11.11 um 21:59 Uhr ge&auml;ndert.
+- hat Emil Eberhard den Beitrag "<a href="LINK ZUM BEITRAG">Re: Single Choice</a>" am 30.11.11 um 22:59 Uhr erstellt.
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+Diese Nachricht wurde automatisch von der Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versendet.
+Falls Sie nicht mehr &uuml;ber &Auml;nderungen benachrichtigt werden wollen, 
+deaktivieren Sie die t&auml;gliche E-Mail Benachrichtigung oder 
+entfernen Sie die gew&uuml;nschten Benachrichtigungen in Ihrem OLAT-Home unter <a href="LINK ZUM TAB BENACHRICHTIGUNGSEINSTELLUNGEN/BENACHRICHTIGUNGEN">"Benachrichtigungen"</a>.
+
+  </pre>
+  
+  <h3>Bemerkung Formatvorlage</h3>
+  <p>Bei mehreren Änderungen (von verschiedenen Personen) an demselben Beitrag, wird nur  die zuletzt getätigte Aktion im E-Mail aufgelistet.  
+    Konkret: Da Clara, Dora und Emil alle den gleichen Beitrag "Multiple Choice" ändern, wird nur die letzte Änderung von Emil im E-Mail bekanntgegeben. 
+    Dies um zu verhindern, dass jede irrelevante Änderung, wie die Korrektur eines Tippfehlers oder jedes Zwischenspeichern je als eigener Eintrag aufgelistet wird.</p>
+  <p>Eine Antwort auf einen Beitrag wird gleich behandelt wie eine Neu-Erstellung eines Beitrags. </p>
+  <p> <strong>Allgemeine Formatvorlage bei mehreren Änderungen</strong> 
+  <a href="ForumSubscriptionScenariosNewEntry.html#allgFormatvorlage">siehe Akzeptanztest zu neuem Forumsbeitrag</a></p>
+
+       
+    </div>
+
+
+</body>
+</html>

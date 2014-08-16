@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Anhang</title>
+
+    <link href="../concordion.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div id="addtoc"></div>
+
+    <h1>Anhang</h1>
+
+    <h2>Anforderungen an Dokumentationssystem</h2>
+
+    <ul>
+      <li>Automatisches Inhaltsverzeichnis<p>Table of Content Extension in
+      Entwicklung bei OLAT Softwareengineers (BB)</p></li>
+
+      <li>Uebersichtsdokument<p>Die Übersicht bezieht sich auf die
+      Specification by Example Technik. Dieser Anhang entspricht dieser
+      Übersicht.</p></li>
+
+      <li>Suchbarkeit<p>Die Suche wird via Eclipse Search und Mercurial
+      Webinterface Suche umgesetzt. Suche über mehrere Projekt ist auch
+      mögich. Die Suche mit diesen Tools muss noch geübt werden.</p></li>
+
+      <li>Verlinkbarkeit<p>Die Verlinkbarkeit ist mittels HTML Spezifikation
+      besonders hoch. Es können alle Dokumente verlinkt und eingebunden
+      werden.</p><p>HTML Spezifikationen die von aussen sichtbar sind, können
+      via eMail einfach verlinkt werden</p><p>Die Verlinkung ist u.U. in der
+      Rohform (Spezifikations) nicht gleich wie in der Endform (Spezifikation
+      durch Concordion verarbeitet und mit Testresultaten verbunden).</p></li>
+
+      <li>Traceability<p>Die Verfolgbarkeit ist besonders hoch, weil das
+      Spezifikationsdokument und der Source Code nebeneinander in der
+      Versionsverwaltung abgelegt sind.</p></li>
+    </ul>
+
+    <h2>Offene Punkte / Bedenken</h2>
+
+    <ul>
+      <li>Wie steigt der Aufwand, wenn das Gesamtsystem dokumentiert ist?</li>
+
+      <li>Wo kommen Non-Functional Requirements hin?</li>
+
+      <li>Sprache Deutsch, wird so an Community ausgeliefert?</li>
+
+      <li>Wo kommen interne Entscheide und Bemerkungen hin? (Anforderungs
+      Metadata)</li>
+
+      <li>... in progress...</li>
+    </ul>
+
+    <h2>OLAT Dokumentation und Specification by Example mit Concordion</h2>
+
+    <p>Specification by Example mit Concordion fuer OLAT bedeutet, dass die
+    Beschreibung der Anforderungen mit ihren Akzeptanzkriterien im HTML Format
+    abgelegt und organisiert werden.</p>
+
+    <p>Die <b>Requirement Engineers</b> erstellen die Anforderungen als
+    Stories und die zugehoerigen Akzeptanzkriterien werden in Form von
+    konkreten Beispielen definiert.<br /> Die <b>Software Engineers</b>
+    verbinden die Beispiele mit dem Java Akzeptanztestcode, so dass die im
+    HTML definierte Vorbedingungen, Aktionen und Erwarteten Werte im Java
+    Testcode verwendet werden.</p>
+
+    <p>Diese <b>Stories-Akzeptanztest Dokumentation</b> ist parallel zum
+    Source.- und Testcode und wird in der <b>Continuous Integration
+    Umgebung</b> (analog zu den Unit Tests) bei jeder Aenderung
+    <b>validiert</b>.</p>
+
+    <p>Die Requirements Engineers koennen die Software Engineers bei der
+    Testdatenerstellung <b>unterstuetzen</b>. Dazu fuegen sie neue Werte ein,
+    diese werden dann (bei geschickter Organisation der Stories und Tests)
+    ohne weiteres Zutun ausgefuehrt.</p>
+
+    <p>Der aktuelle Austausch betreffend offener Fragen kann gerade bei der
+    Story oder dem Beispiel selbst erfolgen. Fuer den Austausch kann z.B. per
+    Instant Messaging oder Email ein Link zur Frage geschickt werden.</p>
+
+    <p>Der Concordion Ersteller (David Peterson) stellt sich den <a
+    href="http://www.concordion.org/Questions.html#storyDrivenProcess">story-driven
+    Process (grosse Version vom Bild)</a> folgendermassen vor: <img
+    alt="Story delivery lifecycle" height="330"
+    src="http://www.concordion.org/image/faq/StoryDeliveryLifecycle.png"
+    width="310" /></p>
+
+    <h2>Notification Service Spezifikation in Concordion</h2>
+
+    <p style="font-style: italic">Links sind farblich hinterlegt. <span
+    class="success">Grün</span> alle automatischen Akzeptanzkriterien sind
+    erfolgreich geprüft, <span class="failure">Rot</span> mindestens ein
+    Akzeptanzkriterium hat fehlgeschlagen, keine Hinterlegung == keine
+    Verbindung zu Akzeptanzkriterien. Durch verfolgen des rot hinterlegten
+    Links kann man bis zum fehlschlagenden Detail navigieren.</p>
+
+    <table border="1">
+      <tr>
+        <td>Software Engineer</td>
+
+        <td>Requirements Engineer</td>
+
+        <td>Resultat</td>
+      </tr>
+
+      <tr valign="top">
+        <td><pre>src/test/java/specification/
+├── notification
+│   ├── NotificationTest.java
+│   └── subscription
+│       ├── forum
+│       │   ├── ForumSubscriptionScenariosTest.java
+│       │   └── ForumTest.java
+│       └── SubscriptionTest.java
+├── partiallyimplemented
+│   └── BlocksatzTest.java
+└── SpecificationFixture.java</pre></td>
+
+        <td valign="top"><pre>src/test/resources/specification/
+├── concordion.css
+├── notification
+│   ├── channels
+│   │   ├── Channels.html
+│   │   └── UserStoryManageChannels.html
+│   ├── confirmations
+│   │   └── Confirmations.html
+│   ├── Notification.html
+│   └── subscription
+│       ├── AbonnementeSettings.jpg
+│       ├── course
+│       │   ├── Course.html
+│       │   └── UserStorySubscribeCourse.html
+│       ├── forum
+│       │   ├── BPMNNotificationsSubscribe.jpg
+│       │   ├── BPMNSubscriptionErstellen.jpg
+│       │   ├── BPMNViewSubscriptions.jpg
+│       │   ├── Forum.html
+│       │   ├── ForumSubscriptionScenarios.html
+│       ├── NotificationAbonnemente.mdzip
+│       ├── Subscription.html
+│       └── SystemkontextAbonnemente.jpg
+├── notyetimplmented
+│   └── Notyetimplemented.html
+├── partiallyimplemented
+│   └── Blocksatz.html
+└── Specification.html</pre></td>
+
+        <td><ul>
+            <li>Tests ausgeführt mit vorgegebenen Werten, die im HTML
+            definiert sind</li>
+
+            <li>Tests geprüft gegen Werte die im HTML definiert sind.</li>
+
+            <li>Spezifikation inklusive der Testresultate. Die Testresultate
+            führen geradewegs zu den fehlgeschlagenen
+            Spezifkationsteilen.</li>
+
+            <li>HTML Seiten mit Namenskonvention führt zu automatisch
+            generiertem Krümelpfad.</li>
+          </ul></td>
+      </tr>
+    </table>
+  </body>
+</html>
