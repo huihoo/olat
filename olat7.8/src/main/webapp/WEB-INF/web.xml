@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+	PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	"http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   -->
+	<!-- IMPORTANT : DO NOT CHANGE SEQUENCE OF XML TYPES BECAUSE VALIDATION MAY FAIL  -->
+	<!-- Please check before checkin http://www.xmlvalidation.com/index.php           -->
+	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
+
+	<display-name>OLAT Online Learning and Training</display-name>
+	<description>
+     Online Learning and Training Application (OLAT) is a Learning Management Platform.
+	</description>
+
+
+	<!-- 1. Context-Param -->
+	<!-- add all spring config files here -->
+    <context-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>
+                    <!-- Note: Place threadlogCorecontext.xml as high as possible in this list to make it being loaded as early as possible. 
+                    			This is due to the fact that it can only control Loggers that have been created after it (ThreadLocalLogLevelManager) has been installed. -->
+					<!-- classpath:/org/olat/system/logging/threadlog/_spring/threadlogCorecontext.xml-->
+                   
+                   	<!-- OLAT spring config can be loaded with wildcards as it is not packed as jar. This means you do not have to 
+                   	add your spring file here manually if it ends with *Context.xml (first letter uppercase!) -->
+                   	classpath*:**/_spring/*Context.xml
+                    classpath*:*Context.xml
+                    
+                    
+            </param-value>
+    </context-param>
+	
+	<!-- TODO:gs test this out -->
+	<!-- 
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>300000</param-value>
+	</context-param>
+	 -->
+
+	
+	<!-- 2. Filters -->
+	<filter>
+		<filter-name>OLATSessionTrackingFilter</filter-name>
+		<filter-class>org.olat.connectors.httpclient.OLATSessionTrackingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>OLATSessionTrackingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>RESTApiLoginFilter</filter-name>
+		<filter-class>org.olat.connectors.rest.security.RestApiLoginFilter</filter-class>
+	</filter>
+	
+	<!-- The mapping to the Login filter REST API -->
+	<filter-mapping>
+		<filter-name>RESTApiLoginFilter</filter-name>
+		<url-pattern>/restapibeta/*</url-pattern>
+	</filter-mapping>
+
+	
+	<!-- 3. Listeners -->
+    <!-- triggers the above spring files to be processed by the spring framework  -->
+    <listener>
+            <listener-class>
+                    org.springframework.web.context.ContextLoaderListener
+            </listener-class>
+    </listener>
+
+    <listener>
+            <listener-class>
+                    org.springframework.web.context.request.RequestContextListener
+            </listener-class>
+    </listener>
+    
+    <listener>
+            <listener-class>
+                    org.olat.connectors.httpclient.OLATHttpSessionListener
+            </listener-class>
+    </listener>
+    
+	
+	
+	<!-- this only works in an expanded war file: Comment on spring website:  
+	If you want to keep your WAR unexpanded or don't need application-specific log files within the WAR directory, 
+	don't use log4j setup within the application (thus, don't use Log4jConfigListener or Log4jConfigServlet). 
+	Instead, use a global, VM-wide log4j setup (for example, in JBoss) or JDK 1.4's java.util.logging (which is global too). -->
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+    
+    <!-- 4. Servlets -->
+    <servlet>
+    <servlet-name>log4j-init</servlet-name>
+    <servlet-class>org.olat.presentation.framework.servlet.Log4JInitServlet</servlet-class>
+
+    <init-param>
+      <param-name>log4j-init-file</param-name>
+      <param-value>log4j.xml</param-value>
+      
+      <!-- this is the default for lazy developers to have output on eclipse console.
+		Overwrite it with -Dlog4j.configuration="file:/tmp/mylog4j.xml" (java system property) and specifie a path for your logging config.
+		See olat3/conf for an example file  -->
+      
+    </init-param>
+
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+    
+    
+	<!-- OLAT servlet -->
+	<servlet>
+		<servlet-name>olatservlet</servlet-name>
+		<servlet-class>org.olat.presentation.framework.servlet.OLATServlet</servlet-class>
+		
+		<!-- Set the load order -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- WebDAV servlet -->
+	<servlet>
+		<servlet-name>webdav</servlet-name>
+		<servlet-class>org.olat.connectors.webdav.SecureWebdavServlet</servlet-class>
+
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>0</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>input</param-name>
+			<param-value>32768</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>output</param-name>
+			<param-value>32768</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>listings</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<!-- Uncomment this to enable read and write access -->
+		<init-param>
+			<param-name>readonly</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+	
+	<!-- Jersey REST Servlet -->
+	<servlet>
+		<servlet-name>RESTServletAdaptor</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.feature.Redirect</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>org.olat.connectors.rest.support.OlatRestApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	
+	<!-- ICAL feed requests -->
+	<servlet>
+		<servlet-name>ical</servlet-name>
+		<servlet-class>org.olat.connectors.ical.ICalServlet</servlet-class>
+
+		<init-param>
+			<param-name>input</param-name>
+			<param-value>32768</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>output</param-name>
+			<param-value>32768</param-value>
+		</init-param>
+
+		<load-on-startup>3</load-on-startup>
+  </servlet>	
+
+	<!-- 5.Servlet-Mapping -->
+	<!-- The mapping for the OLAT servlet -->
+	<servlet-mapping>
+		<servlet-name>olatservlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+		
+	<servlet-mapping>
+		<servlet-name>olatservlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- The mapping for the webdav servlet -->
+	<servlet-mapping>
+		<servlet-name>webdav</servlet-name>
+		<url-pattern>/webdav/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- The mapping to the REST API -->
+	<servlet-mapping>
+		<servlet-name>RESTServletAdaptor</servlet-name>
+		<url-pattern>/restapibeta/*</url-pattern>
+	</servlet-mapping>
+		
+	
+	<!-- The mapping for the ICal servlet -->
+	<servlet-mapping>
+		<servlet-name>ical</servlet-name>
+		<url-pattern>/ical/*</url-pattern>
+  	</servlet-mapping><!-- Spring loading -->
+
+
+	<!-- 6. Session-Config -->
+	<!-- default session timeout -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+    </session-config>
+    
+  
+	<!-- Additional MIME mappings -->
+	<mime-mapping>
+		<extension>ppt</extension>
+		<mime-type>application/vnd.ms-powerpoint</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pps</extension>
+		<mime-type>application/vnd.ms-powerpoint</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xls</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xlt</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xla</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>flv</extension>
+		<mime-type>video/x-flv</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>f4v</extension>
+		<mime-type>video/x-flv</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>aac</extension>
+		<mime-type>audio/x-aac</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>m4a</extension>
+		<mime-type>audio/x-aac</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>m4v</extension>
+		<mime-type>video/mp4</mime-type>
+	</mime-mapping>
+
+</web-app>

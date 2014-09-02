@@ -1,0 +1,11 @@
+<div class="o_home_main">
+	<h4>$r.translate("welcome.header")</h4>
+	#set ($intro = $r.translate("welcome.intro"))
+	#if ($intro != "")
+		$intro <br><br>
+	#end
+</div>
+
+$r.render("myPortal")
+
+

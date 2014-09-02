@@ -1,0 +1,137 @@
+#set ($colorTest = "#FFFF66")
+#set ($colorSuccess = "#00CC00")
+#set ($colorProblem = "#FF6600")
+#set ($colorFailure = "#FF0000")
+<h4>$r.translate("search.admin.title")</h4>
+<fieldset>
+	<legend>$r.translate("fullindexer.status.title")</legend>
+	#if ($searchstatus.fullIndexerStatus.isTestMode() == true)
+	<div style="background-color:${colorTest}">
+		<div style="font-size:2.0em">Indexierung Testlauf: Index wird nur erzeugt aber nicht ersetzt.</div>
+	#else
+	<div>
+	#end
+		<br/>
+		<table>
+			<tr>
+				<td>$r.translate("fullindexer.label.status") : $searchstatus.fullIndexerStatus.status</td>
+				<td width="50">&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="white-space:nowrap">$r.translate("fullindexer.label.started") : $searchstatus.fullIndexerStatus.fullIndexStartedAt</td>
+				<td>&nbsp;</td>
+				<td>$r.translate("fullindexer.label.counter") : $searchstatus.fullIndexerStatus.DocumentCount</td>
+			</tr>
+			<tr>
+				<td style="white-space:nowrap">$r.translate("fullindexer.label.finished") : $searchstatus.fullIndexerStatus.lastFullIndexTime</td>
+				<td>&nbsp;</td>
+				<td>$r.translate("fullindexer.label.queue.size") : $searchstatus.fullIndexerStatus.DocumentQueueSize</td>
+			</tr>
+			<tr>
+				<td>$r.translate("fullindexer.label.time") : $searchstatus.fullIndexerStatus.getIndexingTimeAsString()</td>
+				<td>&nbsp;</td>
+				<td>$r.translate("fullindexer.label.part.counter") : $searchstatus.fullIndexerStatus.PartDocumentCounters</td>
+			</tr>
+			<tr>
+				<td>$r.translate("fullindexer.label.size") : $searchstatus.fullIndexerStatus.IndexSize</td>
+				<td>&nbsp;</td>
+				<td>$r.translate("fullindexer.label.index.per.minute") : $searchstatus.fullIndexerStatus.IndexPerMinute</td>
+			</tr>
+		</table>
+		<br />
+		<br />
+		<table border="1" cellspacing="0" cellpadding="4">
+			<tr>
+				<td><b>Indexer</b></td>
+				<td><b>Status</b></td>
+				<td><b>Items</b></td>
+				<td><b>indexing</b></td>
+				<td><b>indexed</b></td>
+				<td><b>timeout</b></td>
+				<td><b>failed</b></td>
+				<td width="100"><b>Progress</b></td>
+				<td><b>Time elapsed</b></td>
+				<td><b>Average (ms)</b></td>
+				<td><b>Max</b></td>
+				<td width="100"><b>Time remaining</b></td>
+				<td><b>Threads</b></td>
+			</tr>
+			#set ($map = $searchstatus.fullIndexerStatus.indexerStatus)
+			#foreach ($mapEntry in $map.entrySet())
+			<tr>
+				<td>$mapEntry.key</td>
+				<td align="center">$mapEntry.value.status</td>
+				<td align="center">$mapEntry.value.numberOfItems</td>
+				<td align="center">$mapEntry.value.indexingItems</td>
+				<td align="center">$mapEntry.value.indexedItems</td>
+				<td align="center">$mapEntry.value.timedOutItems</td>
+				<td align="center">$mapEntry.value.failedItems</td>
+				#if ($mapEntry.value.status == "TIMEOUT")
+					#set ($colorProgressBar = ${colorFailure})
+				#elseif ($mapEntry.value.failedItems > $mapEntry.value.numberOfItems/100)
+					#set ($colorProgressBar = ${colorFailure})
+				#elseif ($mapEntry.value.failedItems > 0)
+					#set ($colorProgressBar = ${colorProblem})
+				#else
+					#set ($colorProgressBar = ${colorSuccess})
+				#end
+				<td>
+					<div style="border:1px solid #000000; width:150px; height:15px;">
+						<div style="background-color:${colorProgressBar}; width:${mapEntry.value.progress}%; height:15px;">
+							<div style="line-height:15px; text-align:center">
+								<font size="-2" color="#000000" face="Arial">${mapEntry.value.progress}%</font>
+							</div>
+						</div>
+					</div>
+				</td>
+				
+				<td align="center">$searchstatus.fullIndexerStatus.getTimeElapsed($mapEntry.key)</td>
+				<td align="center">$mapEntry.value.averageProcessingTime</td>
+				<!-- td align="center">$mapEntry.value.maxProcessingTime</td-->
+				<td align="center">$searchstatus.fullIndexerStatus.getMaxProcessingTime($mapEntry.key)</td>
+				<td>
+					#set( $timeRemainingPercentage = $searchstatus.fullIndexerStatus.getTimeRemainingPercentage($mapEntry.key) )
+					<div style="border:1px solid #000000; width:150px; height:15px;">
+						<div style="background-color:#00FFFF; width:${searchstatus.fullIndexerStatus.getTimeRemainingPercentage($mapEntry.key)}%; height:15px;">
+							<div style="line-height:15px; text-align:center">
+								<font size="-2" color="#000000" face="Arial">$searchstatus.fullIndexerStatus.getTimeRemaining($mapEntry.key)</font>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td align="center">$mapEntry.value.numberOfThreads</td>
+			</tr>
+			#end
+		</table>
+		<br />
+		<br />
+		#if (($searchstatus.fullIndexerStatus.status == "running") || ($searchstatus.fullIndexerStatus.status == "sleeping"))
+			$r.render("button.stopindexing")
+		#else
+		  <table><tr><td>$r.render("button.startindexing")</td><td>$r.render("button.testindexing")</td></tr></table>
+		#end
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>$r.translate("index.status.title")</legend>
+	$r.translate("index.label.exist") : $searchstatus.IndexExists<br />
+	#if ($searchstatus.IndexExists == true)
+	  $r.translate("search.label.index.creation.date") : $searchstatus.indexCreationDate<br />
+	#end
+</fieldset>
+
+<fieldset>
+	<legend>$r.translate("search.status.title")</legend>
+	$searchstatus.fullIndexerStatus.documentCounters
+	<br />
+	<br />
+	$r.translate("search.label.query") : $searchstatus.queryCount<br />
+</fieldset>
+
+<fieldset>
+	<legend>$r.translate("fullindexer.file.counters.title")</legend>
+	$searchstatus.fullIndexerStatus.fileTypeCounters<br />
+	$r.translate("fullindexer.doc.excluded.document.count") : $searchstatus.fullIndexerStatus.excludedDocumentCount
+</fieldset>

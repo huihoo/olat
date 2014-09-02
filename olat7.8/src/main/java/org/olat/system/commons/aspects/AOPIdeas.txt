@@ -1,0 +1,3 @@
+in data layer nur @Repository spring marker annotation
+
+in lms layer nur @component oder @service annot.

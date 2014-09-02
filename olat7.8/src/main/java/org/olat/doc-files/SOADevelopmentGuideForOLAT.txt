@@ -1,0 +1,22 @@
+Controller
+------------------
+
+o Keep business code out of the controllers!
+o Do not offer public or static methods from any controller
+o A package with several controllers should provide a PackageGUIFactory (this is also a good place to inject your services into the controllers)
+o The GUI Factory only returns Objecs of type Controller
+
+
+
+
+Service Level
+------------------
+o Services belong to the LMS package
+
+Spring
+-------------------
+o Use Spring to create your objects
+
+Database Access
+--------------------
+o The data layer only contain code that accesses the database or the filesystem. All methods that use other services or other DAO objects belong to the service layer.

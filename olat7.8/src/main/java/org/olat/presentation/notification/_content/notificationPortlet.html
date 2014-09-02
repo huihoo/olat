@@ -1,0 +1,6 @@
+#if ($notificationPortletData.hasNews())
+	<a href="$notificationPortletData.getNotificationNewsLink()">$notificationPortletData.getNotificationNewsLinkTitle()</a>
+#else
+	$notificationPortletData.getNoNewsInfo()<br>
+#end
+

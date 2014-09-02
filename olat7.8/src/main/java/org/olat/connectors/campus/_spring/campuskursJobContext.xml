@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	 http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+	http://www.springframework.org/schema/batch 
+	http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+
+	<!-- ======================================================================================= -->
+	<!-- ==============Quartz Scheduler with the configured triggers================== -->  
+	<!-- ======================================================================================= -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	   <property name="triggers">
+	  		<list>
+            	<ref bean="${cluster.singleton.services}.importProcessTrigger" />
+				<ref bean="${cluster.singleton.services}.userMappingProcessTrigger" />
+        	</list>
+		</property>
+	</bean>
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============JOB STARTER FOR IMPORT PROCESS================== -->  
+	<!-- ======================================================================================= -->
+	<bean id="enabled.importProcessTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="importProcessJobDetail" />
+		<property name="cronExpression" value="${campus.import.process.cron.expression}" />
+		<property name="startDelay" value="300" />
+	</bean>
+	
+	<bean id="disabled.importProcessTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="importProcessJobDetail" />
+		<property name="repeatCount" value="0"/>
+		<property name="repeatInterval" value="1" />
+		<property name="startDelay" value="300" />
+	</bean>
+
+	<bean id="importProcessJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="importProcess" />
+		<property name="targetMethod" value="process" />
+		 <property name="concurrent" value="false"/>
+		  <property name="arguments">
+            <list>
+                <value>${cluster.singleton.services}</value>
+                <value>IMPORT PROCESS</value>
+            </list>
+        </property>
+	</bean>
+  
+	<bean id="importProcess" class="org.olat.connectors.campus.CampusProcess">
+		<property name="job" ref="importJob" />
+		<property name="jobLauncher" ref="jobLauncher" />
+		<property name="parameters">
+			<map>
+				<entry key="exportResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/export.csv" />
+				</bean>
+			</entry>
+				<entry key="studentResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_STUD2=${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			<entry key="dozentResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_DOZ2==${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			<entry key="courseResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_ED========${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			<entry key="studentCourseResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_STUD_E${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			<entry key="dozentCourseResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_DOZ_E=${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			<entry key="textResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_E_TEXT${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			<!-- DISABLED FOR NOW -->
+			<!-- entry key="eventResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_E_TERM${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry-->
+			<entry key="orgResource">
+				<bean class="org.springframework.batch.core.JobParameter">
+					<constructor-arg value="${campus.import.process.sap.resources}/ZCM_LEHRE===ZCM_EXP_ORG===${campus.import.process.sap.files.suffix}" />
+				</bean>
+			</entry>
+			</map>
+		</property>
+	</bean>
+	
+    <!-- ======================================================================================= -->
+	<!-- ==============JOB STARTER FOR USERMAPPING PROCESS================== -->  
+	<!-- ======================================================================================= -->
+	<bean id="enabled.userMappingProcessTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="userMappingProcessJobDetail" />
+		<property name="cronExpression" value="${campus.userMapping.process.cron.expression}" />
+		<property name="startDelay" value="300" />
+	</bean>
+	
+	<bean id="disabled.userMappingProcessTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="userMappingProcessJobDetail" />
+		<property name="repeatCount" value="0"/>
+		<property name="repeatInterval" value="1" />
+		<property name="startDelay" value="300" />
+	</bean>
+
+	<bean id="userMappingProcessJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="userMappingProcess" />
+		<property name="targetMethod" value="process" />
+		 <property name="concurrent" value="false"/>
+		  <property name="arguments">
+            <list>
+                <value>${cluster.singleton.services}</value>
+                  <value>USER MAPPING PROCESS</value>
+            </list>
+        </property>
+	</bean>
+   
+    <bean id="userMappingProcess" class="org.olat.connectors.campus.CampusProcess">
+		<property name="job" ref="userMappingJob" />
+		<property name="jobLauncher" ref="jobLauncher" />
+			<property name="parameters">
+				<map/>
+			</property>
+	</bean>
+			
+	<!-- ======================================================================================= -->
+	<!-- ==============IMPORT JOB================== -->  
+	<!-- ======================================================================================= -->
+	<batch:job id="importJob" >	
+		<batch:listeners>
+			<batch:listener ref="campusJobInterceptor" />
+		</batch:listeners>
+		<batch:step id="import_controlFile" parent="campusStep" >
+			<batch:tasklet>
+				<batch:chunk reader="exportReader" processor="exportProcessor"  writer="exportWriter" skip-limit="8" retry-limit="5"/>
+			</batch:tasklet>
+		    <batch:next on="COMPLETED" to="import_orgs"/>
+		    <batch:fail on="FAILED" exit-code="EARLY TERMINATION"/>
+		</batch:step>
+		 
+		<batch:step id="import_orgs" parent="campusStep">
+			<batch:tasklet>
+				<batch:chunk reader="orgReader" processor="orgProcessor" writer="orgWriter" skip-limit="100" retry-limit="5"/>
+			</batch:tasklet>
+			 <batch:next on="COMPLETED" to="importStammDaten"/>
+		    <batch:fail on="FAILED" exit-code="EARLY TERMINATION"/>
+		</batch:step>
+		 
+		<batch:split id="importStammDaten" task-executor="importSplitTaskExecutor">
+			<batch:next on="COMPLETED" to="importBooking" />
+			<batch:fail on="FAILED" exit-code="EARLY TERMINATION"/>
+			<batch:flow>
+				<batch:step id="import_students" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="studentReader" processor="studentProcessor" writer="studentWriter" skip-limit="1000" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="import_lecturers" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="dozentReader" processor="dozentProcessor" writer="dozentWriter"  skip-limit="500" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			
+			<batch:flow>
+				<batch:step id="import_courses" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="courseReader" processor="courseProcessor" writer="courseWriter" skip-limit="100" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			
+		</batch:split>
+		<batch:split id="importBooking" task-executor="importSplitTaskExecutor">
+			<batch:flow>
+				<batch:step id="import_students_Courses" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="studentCourseReader" processor="studentCourseProcessor" writer="studentCourseWriter" skip-limit="1000" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="import_lecturers_Courses" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="dozentCourseReader" processor="dozentCourseProcessor" writer="dozentCourseWriter" skip-limit="500" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="import_texts" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="textReader" processor="textProcessor" writer="textWriter" skip-limit="1000" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<!-- DISABLED FOR NOW -->
+			<!-- 
+			<batch:flow>
+				<batch:step id="import_events" parent="campusStep">
+					<batch:tasklet>
+						<batch:chunk reader="eventReader" processor="eventProcessor" writer="eventWriter" skip-limit="1000" retry-limit="5">
+						</batch:chunk>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			 -->
+		</batch:split>
+		
+	</batch:job>
+	
+	<bean id="importSplitTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============USERMAPPING/ABGLEICH JOB================== -->  
+	<!-- ======================================================================================= -->
+	<batch:job id="userMappingJob">
+		<batch:listeners>
+			<batch:listener ref="campusJobInterceptor" />
+		</batch:listeners>
+		<batch:split id="userMapping" task-executor="userMappingSplitTaskExecutor">
+			<batch:next on="COMPLETED" to="campusSynchronisation" />
+			<batch:flow>
+				<batch:step id="studentMapping" parent="campusStep">
+		    		<batch:tasklet>
+						<batch:chunk reader="studentMappingReader"  writer="studentMappingWriter" commit-interval="100" skip-limit="10" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="lecturerMapping" parent="campusStep">
+				    <batch:tasklet>
+						<batch:chunk reader="lecturerMappingReader"  writer="lecturerMappingWriter" commit-interval="100" skip-limit="10" retry-limit="5"/>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+		</batch:split>
+		
+		<batch:step id="campusSynchronisation" parent="campusStep">
+		    <batch:tasklet>
+				<batch:chunk reader="synchronizationReader"  writer="synchronizationWriter" commit-interval="50" skip-limit="50" retry-limit="5"/>
+			</batch:tasklet>
+		</batch:step>  
+	</batch:job>
+	
+	<bean id="userMappingSplitTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============Export(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->
+	<bean id="exportReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['exportResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="fileName, exportDate" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper2">
+						<property name="prototypeBeanName" value="export" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="exportWriter" parent="campusWriter" scope="step">
+		<property name="campuskursDao" ref="exportDao" />
+	</bean>
+	
+	<bean id="exportProcessor" class="org.olat.connectors.campus.ExportProcessor" scope="step"/>
+	
+	<bean id="exportDao" class="org.olat.data.course.campus.ExportDao"/>
+	
+	<bean id='export' class ='org.olat.data.course.campus.Export' scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============STUDENT(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->
+	<bean id="studentReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['studentResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="id,registrationNr,fristName,lastName,email, objectId(NOT USED)" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="student" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="studentWriter" parent="campusWriter" scope="step">
+		<property name="campuskursDao" ref="studentDao" />
+	</bean>
+	
+	<bean id="studentProcessor" class="org.olat.connectors.campus.StudentProcessor" scope="step"/>
+
+	<bean id="studentDao" class="org.olat.data.course.campus.StudentDao"/>
+	
+	<bean id='student' class ='org.olat.data.course.campus.Student' scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============DOZENT(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="dozentReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['dozentResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="PersonalNr,firstName,lastname,privateEmail,email, additionalPersonalNrs" />
+						<property name="strict" value="false"/>
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="dozent" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="dozentWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="dozentDao" />
+	</bean>
+	
+	<bean id="dozentProcessor" class="org.olat.connectors.campus.LecturerProcessor" scope="step"/>
+
+	<bean id="dozentDao" class="org.olat.data.course.campus.LecturerDao"/>
+	
+	<bean id='dozent' class ='org.olat.data.course.campus.Lecturer' scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============LEHRVERANSTALTUNG(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="courseReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['courseResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="id,shortTitle,title,vstNr,language,category,isElearning,startDate,endDate,vzzLink, semester, isPilot, org1, org2, org3, org4, org5, ORG6(NOT_USED), ORG7(NOT_USED), ORG8(NOT_USED), ORG9(NOT_USED)" />
+						<property name="strict" value="false"/>
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="course" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="courseWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="courseDao" />
+	</bean>
+
+	<bean id="courseProcessor" class="org.olat.connectors.campus.CourseProcessor" scope="step">
+	 	<property name="semesterMap">
+        	<map>
+	           <entry key="H" value="HS"/>
+	           <entry key="F" value="FS"/>
+        	</map>
+      	</property>
+	</bean>
+	
+	<bean id="courseDao" class="org.olat.data.course.campus.CourseDao"/>
+	
+	<bean id='course' class ='org.olat.data.course.campus.Course' scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============BUCHUNG:STUDENT-KURS(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->  	
+	<bean id="studentCourseReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['studentCourseResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="OT(not used),courseId,VO(not used),studentId" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="studentCoursePK" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="studentCourseWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="studentCourseDao" />
+	</bean>
+
+	<bean id="studentCourseProcessor" class="org.olat.connectors.campus.StudentCourseProcessor" scope="step"/>
+	
+	<bean id="studentCourseDao" class="org.olat.data.course.campus.StudentCourseDao"/>
+	
+	<bean id='studentCoursePK' class ='org.olat.data.course.campus.StudentCoursePK'  scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============BUCHUNG:DOZENT-KURS(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->  	
+	<bean id="dozentCourseReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['dozentCourseResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="courseId, lecturerId" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="dozentCoursePK" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="dozentCourseWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="dozentCourseDao" />
+	</bean>
+
+	<bean id="dozentCourseProcessor" class="org.olat.connectors.campus.LecturerCourseProcessor" scope="step"/>
+	
+	<bean id="dozentCourseDao" class="org.olat.data.course.campus.LecturerCourseDao"/>
+	
+	<bean id='dozentCoursePK' class ='org.olat.data.course.campus.LecturerCoursePK'  scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============BUCHUNG:KURS-TEXTE(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="textReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['textResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="courseId,code(NOT USED),type,lineSeq,line" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="text" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="textWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="textDao" />
+	</bean>
+	
+	<bean id="textProcessor" class="org.olat.connectors.campus.TextProcessor" scope="step"/>
+
+	<bean id="textDao" class="org.olat.data.course.campus.TextDao"/>
+	
+	<bean id='text' class ='org.olat.data.course.campus.Text' scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============BUCHUNG:KURS-EVENTS(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= -->
+	<!-- DISABLED FOR NOW -->
+	<!-- 
+	<bean id="eventReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['eventResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="courseId, date,start,end" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="event" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="eventWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="eventDao" />
+	</bean>
+	
+	<bean id="eventProcessor" class="org.olat.connectors.campus.EventProcessor" scope="step"/>
+
+	<bean id="eventDao" class="org.olat.data.course.campus.EventDao"/>
+	
+	<bean id='event' class ='org.olat.data.course.campus.Event' scope="prototype" />
+	--> 
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============ORG(Reader, Writer, Processor, Entity, Dao)================== -->  
+	<!-- ======================================================================================= --> 
+	<bean id="orgReader" parent="campusReader" scope="step">
+		<property name="resource" value="#{jobParameters['orgResource']}" />
+		 <property name="lineMapper">
+			<bean parent="lineMapper">
+				<property name="lineTokenizer" >
+					<bean parent="lineTokenizer">
+						<property name="names" value="id, 2(NOT USED), 3(NOT USED), 4(NOT_USED), 5(NOT USED), 6(NOT USED), 7(NOT USED), 8(NOT USED), 9(NOT USED), 10(NOT USED), shortName, 12(NOT USED), name, 14(NOT USED), 15(NOT USED), 16(NOT USED), 17(NOT USED), 18(NOT USED), 19(NOT USED), 20(NOT USED), 21(NOT USED), 22(NOT USED)" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper" >
+					<bean parent="fieldSetMapper">
+						<property name="prototypeBeanName" value="org" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+ 
+	<bean id="orgWriter" class="org.olat.connectors.campus.CampusWriter" scope="step">
+		<property name="campuskursDao" ref="orgDao" />
+	</bean>
+	
+	<bean id="orgProcessor" class="org.olat.connectors.campus.OrgProcessor" scope="step">
+		<property name="identifiers">
+			<list>
+				<!-- Philosophische Fakultät -->
+				<value>6</value>
+				<!-- Theologische Fakultät -->
+				<value>1</value>
+				<!-- Mathematisch-naturwissenschaftliche Fakultät -->
+				<value>7</value>
+				<!-- Wirtschaftswissenschaftliche Fakultät -->
+				<value>3</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="orgDao" class="org.olat.data.course.campus.OrgDao"/>
+	
+	<bean id='org' class ='org.olat.data.course.campus.Org' scope="prototype" />
+	
+	<!-- ======================================================================================= -->
+	<!-- ============== ABGLEICH(Reader, Writer, Processor)================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="synchronizationReader" class="org.olat.lms.core.course.campus.impl.syncer.SynchronizationReader" scope="step"/>
+	<bean id="synchronizationWriter" class="org.olat.lms.core.course.campus.impl.syncer.SynchronizationWriter" scope="step">
+		<property name="synchronizeStatistic" ref="synchronizeStatistic" />
+	</bean>
+	
+	<bean id="synchronizeStatistic" class= 'org.olat.lms.core.course.campus.impl.syncer.statistic.OverallSynchronizeStatistic' scope='prototype'/>
+	
+	
+	<!-- ======================================================================================= -->
+	<!-- ============== USERMAPPING(Reader, Writer)================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="studentMappingReader" class="org.olat.lms.core.course.campus.impl.mapper.StudentMappingReader" scope="step"/>
+	<bean id="studentMappingWriter" class="org.olat.lms.core.course.campus.impl.mapper.StudentMappingWriter" scope="step">
+		<property name="mappingStatistic" ref="mappingStatistic" />
+	</bean>
+	
+	<bean id="lecturerMappingReader" class="org.olat.lms.core.course.campus.impl.mapper.LecturerMappingReader" scope="step"/>
+	<bean id="lecturerMappingWriter" class="org.olat.lms.core.course.campus.impl.mapper.LecturerMappingWriter" scope="step">
+		<property name="mappingStatistic" ref="mappingStatistic" />
+	</bean>
+	
+	<bean id="mappingStatistic" class= 'org.olat.lms.core.course.campus.impl.mapper.MappingStatistic' scope='prototype'/>
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============GENERIC STUFF: READER, WRITER, STEP, INTERCEPTOR================== -->  
+	<!-- ======================================================================================= --> 
+	
+	
+	<batch:step id="campusStep" abstract="true">
+		<batch:tasklet>
+			<batch:chunk commit-interval="500">
+				<batch:retryable-exception-classes>
+					<batch:include 
+						class="org.hibernate.StaleObjectStateException" />
+					<batch:include
+						class="org.springframework.dao.OptimisticLockingFailureException" />
+					<batch:include 
+						class="org.hibernate.NonUniqueObjectException" />
+					<batch:include 
+						class="org.hibernate.StaleStateException" />
+					<batch:include 
+						class="org.hibernate.exception.LockAcquisitionException" />
+				</batch:retryable-exception-classes>
+				<batch:skippable-exception-classes>
+					<batch:include
+						class="org.springframework.batch.item.file.FlatFileParseException" />
+					<batch:include 
+						class="org.hibernate.exception.ConstraintViolationException" />
+					<batch:include 
+						class="org.olat.connectors.campus.CampusException" />
+					<batch:include 
+						class="org.hibernate.LazyInitializationException" />
+					<batch:include 
+						class="java.lang.NullPointerException" />		
+					<batch:include 
+						class="org.olat.system.exception.AssertException" />		
+				</batch:skippable-exception-classes>		
+				
+			</batch:chunk>
+		</batch:tasklet>
+		<batch:listeners>
+			<batch:listener ref="campusInterceptor" />
+		</batch:listeners>
+	</batch:step>
+
+	<bean id="campusInterceptor" class="org.olat.connectors.campus.CampusInterceptor" scope="step">
+		<property name="fixedNumberOfFilesToBeExported" value="8" />
+	</bean>
+	
+	<bean id="campusJobInterceptor" class="org.olat.connectors.campus.CampusJobInterceptor" scope="prototype"/>	
+	
+	<bean id="statisticDao" class="org.olat.data.course.campus.ImportStatisticDao"/>
+	
+	<bean id="skipItemDao" class="org.olat.data.course.campus.SkipItemDao"/>
+	
+	<bean id="campusWriter" class="org.olat.connectors.campus.CampusWriter"  />
+	
+	<bean id="campusReader" class="org.springframework.batch.item.file.FlatFileItemReader" abstract="true" >  
+		<property name="encoding" value="UTF-8"/>
+		<property name="strict" value="false"/>
+		<property name="lineMapper" ref="lineMapper"/>
+		<property name="linesToSkip" value="1"/>
+	</bean>
+		
+	<bean id="lineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper" abstract="true" >
+		<property name="lineTokenizer" ref="lineTokenizer" />
+		<property name="fieldSetMapper" ref="fieldSetMapper" />
+	</bean>
+	
+	<bean id="lineTokenizer"
+		class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" abstract="true" >
+		<property name="delimiter" value=";" />
+		<property name="quoteCharacter" value="${campus.import.process.lineTokenizer.quoteCharacter}" />
+	</bean>
+	
+	<bean id="fieldSetMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper" abstract="true">
+		<property name="strict" value="false" />
+		<property name="customEditors">
+			<map>
+			<entry key="org.springframework.batch.item.file.transform.Range[]">
+				<bean class="org.springframework.batch.item.file.transform.RangeArrayPropertyEditor" />
+			</entry>
+			<entry key="java.util.Date">
+				<bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+					<constructor-arg>
+						<bean class="java.text.SimpleDateFormat">
+							<constructor-arg value="dd.MM.yyyy" />
+						</bean>
+					</constructor-arg>
+					<constructor-arg value="true" />
+				</bean>
+			</entry>
+		</map>
+	</property>
+	</bean>
+	
+	<bean id="fieldSetMapper2"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper" abstract="true">
+		<property name="strict" value="false" />
+		<property name="customEditors">
+			<map>
+			<entry key="org.springframework.batch.item.file.transform.Range[]">
+				<bean class="org.springframework.batch.item.file.transform.RangeArrayPropertyEditor" />
+			</entry>
+			<entry key="java.util.Date">
+				<bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+					<constructor-arg>
+						<bean class="java.text.SimpleDateFormat">
+							<constructor-arg value="yyyy-MM-dd hh:mm:ss" />
+						</bean>
+					</constructor-arg>
+					<constructor-arg value="true" />
+				</bean>
+			</entry>
+		</map>
+	</property>
+	</bean>
+		
+	<!-- ======================================================================================= -->
+	<!-- =============JobRepository=================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+	</bean>
+	
+	<!-- ======================================================================================= -->
+	<!-- ==============JobLauncher================== -->  
+	<!-- ======================================================================================= -->  
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<!-- ======================================================================================= -->
+	<!-- ==============CAMPUS DOMAIN================== -->  
+	<!-- ======================================================================================= --> 
+	<context:annotation-config />
+	<context:component-scan base-package="org.olat.data.course.campus" />
+	
+	
+</beans>

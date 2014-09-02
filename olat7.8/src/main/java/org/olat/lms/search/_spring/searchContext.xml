@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:property-placeholder
+		location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+	<!-- SEARCH SERVICE SIDE CONFIGURATION -->
+	<!-- ================================= -->
+
+	<bean id="searchServiceFactory" class="org.olat.lms.search.SearchServiceFactory">
+		<constructor-arg index="0"
+			ref="org.olat.lms.search.${search.service}" />
+	</bean>
+
+	<bean id="org.olat.lms.search.enabled" class="org.olat.lms.search.SearchServiceImpl"
+		init-method="init" destroy-method="stop" lazy-init="true">
+		<constructor-arg index="0" ref="searchModule" />
+		<constructor-arg index="1" ref="mainIndexer" />
+		<constructor-arg index="2" ref="searchProvider" />
+		<!-- When index is older than maxIndexTime in millis, an error will be 
+			logged 432000000 = 5d, 86400 = 1d -->
+		<property name="maxIndexTime" value="432000000" />
+		<property name="metadataFields" ref="SearchMetadataFieldsProvider" />
+	</bean>
+
+	<bean id="org.olat.lms.search.disabled" class="org.olat.lms.search.SearchServiceDisabled"
+		init-method="init" destroy-method="stop" lazy-init="true">
+	</bean>
+
+	<bean id="searchModule" class="org.olat.lms.search.SearchModule"
+		lazy-init="true" init-method="init" destroy-method="destroy">
+		<property name="fileBlackList">
+			<list>
+				<!-- list of files which will not be indexed -->
+				<value></value>
+			</list>
+		</property>
+		<property name="repositoryBlackList">
+			<list>
+				<!-- list of repository-entry ResourceableId which will not be indexed -->
+				<value></value>
+			</list>
+		</property>
+		<property name="fileSizeSuffixes">
+			<!-- list of file-suffixes for which will be checked the file size by 
+				'maxFileSize'-parameter -->
+			<value>ppt</value>
+
+		</property>
+		<property name="defaultProperties">
+			<value>
+				indexPath=${index.path}
+				tempIndexPath=${index.path.tmp}
+				
+				indexPrio=${index.prio}
+				
+				indexTimeout=${index.timeout}
+				indexTimeoutFolder=${index.timeout.folder}
+				indexTimeoutFile=${index.timeout.file}
+
+				<!-- Control indexer prozess -->
+				indexer.document.queue.size=10000
+				indexer.writer.number=10
+				indexer.writer.merge.factor=1000
+				indexer.writer.rambuffer.mb=128
+				
+				<!-- Enable buffering of extracted text -->
+				textBufferEnabled=true
+				textBufferCleanupEnabled=true
+				
+				excelFileEnabled=true
+				pptFileEnabled=true
+				<!-- Files bigger than maxFileSize (and on fileSizeSuffixes-list) will 
+					be excluded from index -->
+				maxFileSize=10485760
+			</value>
+		</property>
+
+
+	</bean>
+
+	<bean id="searchProvider" class="org.olat.lms.search.searcher.JmsSearchProvider"
+		init-method="springInit" destroy-method="stop" lazy-init="true">
+		<property name="connectionFactory" ref="searchConnectionFactory" />
+		<property name="searchQueue" ref="searchQueue" />
+		<property name="receiveTimeout" value="45000" />
+	</bean>
+
+	<!-- The metadata fields that are supported in the search engine -->
+	<bean id="SearchMetadataFieldsProvider"
+		class="org.olat.lms.search.SimpleDublinCoreMetadataFieldsProvider" />
+
+	<!-- Indexer factory -->
+	<bean id="mainIndexer" class="org.olat.lms.search.indexer.MainIndexer"
+		lazy-init="true">
+		<property name="indexerList">
+			<list>
+				<bean id="repositoryIndexer"
+					class="org.olat.lms.search.indexer.repository.RepositoryIndexerMultiThreaded">
+					<constructor-arg index="0" ref="repositoryManager" />
+					<constructor-arg index="1" ref="searchModule" />
+					<property name="numberOfThreads" value="30" />
+					<property name="threadPriority" value="${index.prio}" />
+					<property name="indexerList">
+						<list>
+							<bean id="courseIndexer"
+								class="org.olat.lms.search.indexer.repository.CourseIndexer">
+								<property name="courseNodeIndexerList">
+									<list>
+										<bean id="spCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.SPCourseNodeIndexer" />
+
+										<bean id="foCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.FOCourseNodeIndexer" />
+
+										<bean id="bcCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.BCCourseNodeIndexer" />
+
+										<bean id="wikiCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.WikiCourseNodeIndexer" />
+
+										<bean id="blogCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.webfeed.BlogCourseNodeIndexer" />
+
+										<bean id="podcastCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.webfeed.PodcastCourseNodeIndexer" />
+
+										<bean id="cpCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.CPCourseNodeIndexer" />
+
+										<bean id="dialogCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.DialogCourseNodeIndexer" />
+
+										<bean id="projectBrokerCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.ProjectBrokerCourseNodeIndexer" />
+
+										<bean id="scormCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.ScormCourseNodeIndexer" />
+
+										<bean id="portfolioCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.PortfolioCourseNodeIndexer">
+											<property name="structureManager" ref="epStructureManager" />
+											<property name="portfolioModule" ref="portfolioModule" />
+										</bean>
+
+										<bean id="infoCourseNodeIndexer"
+											class="org.olat.lms.search.indexer.repository.course.InfoCourseNodeIndexer" />
+										<!-- DO NOT INDEX TA COURSE NODES <bean id="taCourseNodeIndexer" 
+											class="org.olat.lms.search.indexer.repository.course.TACourseNodeIndexer" 
+											scope="prototype"/> -->
+									</list>
+								</property>
+							</bean>
+
+							<bean id="wikiRepositoryIndexer"
+								class="org.olat.lms.search.indexer.repository.WikiRepositoryIndexer" />
+
+							<bean id="blogRepositoryIndexer"
+								class="org.olat.lms.search.indexer.webfeed.BlogRepositoryIndexer" />
+
+							<bean id="podcastRepositoryIndexer"
+								class="org.olat.lms.search.indexer.webfeed.PodcastRepositoryIndexer" />
+
+							<bean id="glossaryRepositoryIndexer"
+								class="org.olat.lms.search.indexer.repository.GlossaryRepositoryIndexer" />
+
+							<bean id="imsCpRepositoryIndexer"
+								class="org.olat.lms.search.indexer.repository.ImsCPRepositoryIndexer" />
+
+							<bean id="sharedFolderRepositoryIndexer"
+								class="org.olat.lms.search.indexer.repository.SharedFolderRepositoryIndexer" />
+
+							<bean id="scormRepositoryIndexer"
+								class="org.olat.lms.search.indexer.repository.ScormRepositoryIndexer" />
+
+							<bean id="portfolioRepositoryIndexer"
+								class="org.olat.lms.search.indexer.repository.PortfolioRepositoryIndexer">
+								<property name="structureManager" ref="epStructureManager" />
+								<property name="portfolioModule" ref="portfolioModule" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean id="groupIndexer"
+					class="org.olat.lms.search.indexer.group.GroupIndexerMultiThreaded">
+					<property name="numberOfThreads" value="10" />
+					<property name="threadPriority" value="${index.prio}" />
+					<property name="indexerList">
+						<list>
+							<bean id="groupForumIndexer"
+								class="org.olat.lms.search.indexer.group.GroupForumIndexer" />
+							<bean id="groupFolderIndexer"
+								class="org.olat.lms.search.indexer.group.GroupFolderIndexer" />
+							<bean id="groupWikiIndexer"
+								class="org.olat.lms.search.indexer.group.GroupWikiIndexer" />
+							<bean id="groupPortfolioIndexer"
+								class="org.olat.lms.search.indexer.group.GroupPortfolioIndexer">
+								<property name="frontendManager" ref="epFrontendManager" />
+								<property name="portfolioModule" ref="portfolioModule" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<bean id="identityIndexer"
+					class="org.olat.lms.search.indexer.identity.IdentityIndexerMultiThreaded">
+					<constructor-arg index="0" ref="baseSecurityManager" />
+					<property name="numberOfThreads" value="5" />
+					<property name="threadPriority" value="${index.prio}" />
+					<property name="indexerList">
+						<list>
+							<bean id="profileIndexer"
+								class="org.olat.lms.search.indexer.identity.ProfileIndexer" />
+							<bean id="publicFolderIndexer"
+								class="org.olat.lms.search.indexer.identity.PublicFolderIndexer" />
+							<bean id="artefactIndexer"
+								class="org.olat.lms.search.indexer.identity.PortfolioArtefactIndexer">
+								<property name="frontendManager" ref="epFrontendManager" />
+								<property name="portfolioModule" ref="portfolioModule" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+				
+				<bean id="helpIndexer" class="org.olat.lms.search.indexer.ContextHelpIndexer" />
+
+				<bean id="epDefaultMapIndexer" 
+					class="org.olat.lms.search.indexer.PortfolioMapIndexer">
+					<property name="frontendManager" ref="epFrontendManager" />
+					<property name="portfolioModule" ref="portfolioModule" />
+				</bean>
+
+				<bean id="epStructuredMapIndexer"
+					class="org.olat.lms.search.indexer.PortfolioStructuredMapIndexer">
+					<property name="frontendManager" ref="epFrontendManager" />
+					<property name="portfolioModule" ref="portfolioModule" />
+				</bean>
+				
+				<bean id="epStructuredMapIndexerTemplate"
+					class="org.olat.lms.search.indexer.PortfolioStructuredMapTemplateIndexer">
+					<property name="frontendManager" ref="epFrontendManager" />
+					<property name="portfolioModule" ref="portfolioModule" />
+				</bean>
+				
+				<!-- NOT IMPLEMENTED YET <bean id="homeIndexer" class="org.olat.lms.search.indexer.HomeIndexer" 
+					scope="prototype"> </bean> -->
+			</list>
+		</property>
+	</bean>
+
+
+
+	<!-- SEARCH PROXY SIDE CONFIGURATION -->
+	<!-- =============================== -->
+
+	<bean id="searchClient" class="org.olat.lms.search.searcher.SearchClientJMSProxy"
+		init-method="springInit" destroy-method="stop">
+		<property name="connectionFactory" ref="searchConnectionFactory" />
+		<property name="searchQueue" ref="searchQueue" />
+		<property name="receiveTimeout" value="45000" />
+		<property name="timeToLive" value="45000" />
+	</bean>
+
+	<!-- SEARCH COMMON CONFIGURATION (PROXY-SIDE AND SERVICE-SIDE) -->
+	<!-- ========================================================= -->
+
+	<!-- JMS Stuff -->
+	<bean id="searchConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${search.broker.url}" />
+	</bean>
+
+	<!-- used for sending the search requests -->
+	<bean id="searchQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="olat/searchQueue" />
+	</bean>
+
+
+</beans>

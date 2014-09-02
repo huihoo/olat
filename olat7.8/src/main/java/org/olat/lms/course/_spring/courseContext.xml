@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+<bean id="courseModule" class="org.olat.lms.course.CourseModule" 
+	depends-on="userModule,  fileresourceManager" init-method="init" destroy-method="destroy">
+	<constructor-arg index="0" ref="coordinatorManager"/>
+	<property name="defaultProperties">
+		<value>
+		<!--
+			If the Instant Messaging is enabled you can switch here the availability of the course chat.
+			So chatting can be used generally and in groups but disabled in the course.
+		-->
+		enableCourseChat=true
+		
+		<!-- Select exported demo courses to be deployed automatically. -->
+		deployCourseExportsEnabled=true
+		
+		<!-- whether the toolbox should display the current participant count or not -->
+		displayParticipantsCount=${course.display.participants.count}
+
+		</value>
+	</property>
+	
+	<!-- Select exported courses to be deployed automatically.  See property (DeployCourseExportsEnabled) below.
+		Default access is 4:
+			value=1 : Access only for owners (B)
+			value=2 : Access only for owners and authors (BA)
+			value=3 : Access for all registered users (BAR)
+			value=4 : Access for all registered users and anonymous guests
+		
+		Be increasing the version with the same identifier, the repo entry gets deleted and the new version gets deployed
+		If you are changing *only* the identifier there will be a new course deployed and the old one will stay.
+		
+		Do not forget to adapt also the /OLAT-LMS/src/test/java/org/olat/test/_spring/demoCourseExport.xml when updating the demo course version
+	-->
+	<property name="courseExportFiles">
+		<list>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/demo-kurs/7.2/demo-kurs-7.2.zip" />
+				<property name="identifier" value="Demo Kurs" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/demo-course/7.2/demo-course-7.2.zip" />
+				<property name="identifier" value="Demo Course" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/demokurs-themeneinschreibung/7.2/demokurs-themeneinschreibung-7.2.zip" />
+				<property name="identifier" value="Demokurs-Themeneinschreibung" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/course-template-big/7.2/course-template-big-7.2.zip" />
+				<property name="identifier" value="Demo course template big" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/course-template-small/7.2/course-template-small-7.2.zip" />
+				<property name="identifier" value="Demo course template small" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/kursvorlage-gross/7.2/kursvorlage-gross-7.2.zip" />
+				<property name="identifier" value="Kursvorlage gross" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/kursvorlage-klein/7.2/kursvorlage-klein-7.2.zip" />
+				<property name="identifier" value="Kursvorlage klein" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/demo-course-enrolment/7.2/demo-course-enrolment-7.2.zip" />
+				<property name="identifier" value="Demo course enrolment" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/demo-course-enrol-to-topics/7.2/demo-course-enrol-to-topics-7.2.zip" />
+				<property name="identifier" value="Demo course enrol to topics" />
+				<property name="version" value="7.2" />
+			</bean>
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/content/repositories/resources/org/olat/examples/demokurs-einschreibung/7.2/demokurs-einschreibung-7.2.zip" />
+				<property name="identifier" value="Demokurs Einschreibung" />
+				<property name="version" value="7.2" />
+			</bean>
+
+			<!-- this one is the help course which will server as the online help, helpAsser flag is TRUE! -->
+			<bean class="org.olat.lms.course.DeployableCourseExport">
+				<property name="courseUrl" value="http://repo.olat.org/nexus/service/local/artifact/maven/redirect?r=resources&amp;g=org.olat.help&amp;a=olat-help&amp;e=zip&amp;v=LATEST" />
+				<property name="identifier" value="OLAT Hilfe" />
+				<property name="access" value="4" />
+				<property name="version" value="7.2" />
+				<property name="helpCourse" value="true" />
+				<!-- 
+					Url to the course which should be used as help course. The specified course will be used 
+					in all languages.
+					To disable the help course feature, leave the helpCourseFile configuration empty.
+					Have also a look at the ContextHelpModule configuration.
+				--> 
+			</bean>
+		</list>
+	</property>
+	
+	
+	
+	
+	<!-- Three Logs are available within a course:
+		- Adminlog, logs administrative activity in the course
+		- Userlog, logs the course user activity, where the user is identifiable
+		- Statisticlog, logs the course user activity, where the user is anonymized
+		The following switches define which of the above mentioned log files are
+		visible to the course author. Hence she can configure log levels or delete the
+		respective log file(s).
+		
+		It is clear, that disabling the course logging overrides these settings.
+		
+		Possible values are VISIBLE, INVISIBLE
+		
+		In the case of absent configuration values default to INVISIBLE.
+		-->
+	<property name="logVisibilityForCourseAuthor">
+		<map >
+			<entry key="AdminLog" value="VISIBLE" />
+			<entry key="UserLog" value="INVISIBLE" />
+			<entry key="StatisticLog" value="VISIBLE" />
+		</map>
+	</property>
+	
+</bean>
+				
+<bean id="courseFactory" class="org.olat.lms.course.CourseFactory" depends-on="businessGroupManager">
+	<!-- all static methods, autowire not possible -->
+	<constructor-arg index="0" ref="coordinatorManager" />
+	<constructor-arg index="1" ref="repositoryManager" />
+	<constructor-arg index="2" ref="resourceManager" />
+	<constructor-arg index="3" ref="baseSecurityManager" />
+	<constructor-arg index="4" ref="referenceService" />
+	<constructor-arg index="5" ref="glossaryManager" />
+	<constructor-arg index="6" ref="persistingCourseGroupManager" />
+</bean>
+
+</beans>

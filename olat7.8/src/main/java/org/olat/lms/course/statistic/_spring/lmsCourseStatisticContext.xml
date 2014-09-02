@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- 
+		
+		Configuration for the Export Manager
+		
+		
+		There are currently three different implementations for exporting log files:
+		
+		 a) SimpleLogExporter
+		    .................
+		    a generic hibernate version which does a plain select and writes the resulting
+		    LoggingObject list into a csv file.
+		    
+		    This version runs on all standard OLAT deployments where the o_loggingtable
+		    resides in the normal DB
+		    
+		    The downside of this version is that it is slow with big tables and result sets
+		    
+		 b) SQLLogExporter
+		    ..............
+		    an optimized sql-export version which leaves the job to export the selected
+		    o_loggingtable rows into a csv file to the database.
+		    
+		    This version requires database specific SQL to be configured in this file.
+		    
+		    This version should be performant since it leaves the job to the database
+		    to export and doesn't read the result into the JVM.
+		    
+		    The downside of this version is that it requires 'FILE' permissions for
+		    the database user executing the 'SELECT INTO OUTFILE' statement. This FILE
+		    permission is a security risk and hence a possible concern.
+		   
+		 c) UZHStoredProcedureLogExporter
+		    ............................... 
+		    a stored-procedure version where the database does the job of exporting
+		    the selected o_loggingtable rows into a csv including avoiding the 
+		    security risk of the FILE permission.
+		    
+		    To avoid the FILE permission concern, this version uses a stored procedure
+		    (which has root permissions) and only grants the executing user the permission
+		    to execute mentioned stored procedure.
+		    
+		    This version requires a special database setup - i.e. it requires the
+		    stored procedure to be set plus the GRANT ON PROCEDURE permission for the
+		    executing user.
+		    
+		    This version should be performant since it leaves the job to the database
+		    to export and doesn't read the reuslt into the JVM.
+		    
+		    The downside of this version is the setup work necessary plus it is currently
+		    only available (i.e. tested) for MySQL
+		
+	-->
+	
+	<!-- 
+	.........................................................
+	Configuration of ExportManager - required for any version
+	.........................................................
+	
+	Cluster-Node:
+		An ExportManager must be configured on every host in a cluster,
+		plus an AsyncExportManager
+	 -->
+	 
+	<bean id="logExportManager"
+		class="org.olat.lms.course.statistic.ExportManager">
+	
+		<property name="courseLogExporter">
+			<ref bean="courseLogExporter"/>
+		</property>
+	</bean>
+	
+	<bean id="asyncLogExportManager"
+		class="org.olat.lms.course.statistic.AsyncExportManager">
+		
+		<property name="concurrentExportsPerNode" value="2"/>
+	</bean>
+
+	
+
+</beans>

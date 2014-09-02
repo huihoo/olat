@@ -1,0 +1,19 @@
+
+<h4>Transaction Retryer</h4>
+<br>
+<p>Subscribe each time for a new publisher. <br>
+	The Subscribe button calls subscribe in 2 threads using every time the same CONTEXT_ID=1 and SOURCE_ID=2.<br>
+	This publisher will be deleted during synchronizedPublishers job. <br>
+	Please check the log for TransactionRetryer logging. <br>
+	If you get an info message, subscribe was successful. If you get an error message, subscribe failed.
+</p>
+<p>$r.render("button.subscribe")</p>
+<p>$r.render("button.unsubscribe")</p>
+
+<p>Check if the subscribe was successful. This only works if the subscription was done in the current Controller.<br>	
+</p>
+<p>$r.render("button.check.subscription")</p>
+
+
+
+

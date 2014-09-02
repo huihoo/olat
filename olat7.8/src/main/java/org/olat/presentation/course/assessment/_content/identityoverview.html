@@ -1,0 +1,23 @@
+<h5>$r.translate("identityoverview.title")</h5>
+$r.render("backLink")
+<br><br>
+<span class="b_with_small_icon_left b_user_icon">
+	$r.escapeHtml($userFirstAndLastName)
+</span>
+<br />
+<a href="mailto:$userEmail" class="b_link_mailto">$userEmail</a>
+#if ($userInstitutionalEmail)
+	<br />
+	<a href="mailto:$userInstitutionalEmail" class="b_link_mailto">$userInstitutionalEmail</a>
+#end
+#if ($userInstitutionalName)
+	<br />
+	<span class="b_with_small_icon_left b_institution_icon">
+		$r.escapeHtml($userInstitutionalName)
+	</span>
+#end
+#if ($userInstitutionalUserIdentifier)
+	($r.escapeHtml($userInstitutionalUserIdentifier))
+#end
+
+$r.render("assessmentOverviewTable")

@@ -1,0 +1,22 @@
+${mailBody.getHeader()}
+<br/>
+<br/>
+#foreach( $contextEntry in $mailBody.getContextEntries())
+${contextEntry.getHeaderPrefix()} <b>${contextEntry.getHeader()}</b> &quot;<a href="${contextEntry.getUrlLink()}">${contextEntry.getContextTitle()}</a>&quot;<br/>	
+#foreach( $sourceEntry in $contextEntry.getSourceEntries())
+${sourceEntry.getHeaderPrefix()} <b>${sourceEntry.getHeader()}</b> &quot;<a href="${sourceEntry.getUrlLink()}">${sourceEntry.getSourceTitle()}</a>&quot;<br/>
+#foreach ($sourceContentEntry in $sourceEntry.getSourceContentEntries())	
+${sourceContentEntry.getFirstPart()} &quot;<a href="${sourceContentEntry.getUrlLink()}">${sourceContentEntry.getEntryTitle()}</a>&quot; ${sourceContentEntry.getSecondPart()}<br/>		
+#end
+#end
+<br/>	
+#end
+${mailBody.getGreeting()}
+<br/>
+${mailBody.getGreetingFrom()}
+<br/>
+---
+<br/>
+${mailBody.getMailBodyInfo().getFirstPart()} <a href="${mailBody.getMailBodyInfo().getUrlLink()}">${mailBody.getMailBodyInfo().getSecondPart()}</a> ${mailBody.getMailBodyInfo().getThirdPart()}
+<br/>
+${mailBody.getFooterFirstPart()} &quot;<a href="${mailBody.getNotificationSettingsUrl()}">${mailBody.getFooterSecondPart()}</a>&quot;.

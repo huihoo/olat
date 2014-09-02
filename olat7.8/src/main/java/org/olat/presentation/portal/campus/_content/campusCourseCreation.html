@@ -1,0 +1,17 @@
+$r.contextHelpWithWrapper("org.olat.presentation.portal.campus","campusCourseCreation.html","help.hover.campusCourseCreation")
+<br>
+<p>
+	$r.render("courseCreationChoice")
+</p>
+
+#if ($createByTemplate == false)
+		$r.translate("info.campus.course.creation.by.copying")
+	<p>
+		$r.render("tableController")
+	</p>
+#else
+	<div style="float:right" class="b_clearfix b_button_group">
+		 $r.render("cancel")
+		 $r.render("campus.course.creation.submit")
+	</div>
+#end

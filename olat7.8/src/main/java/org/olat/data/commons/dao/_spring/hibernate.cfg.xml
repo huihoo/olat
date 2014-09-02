@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+          "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<mapping class="org.olat.data.notification.Publisher"/>
+		<mapping class="org.olat.data.notification.Subscriber"/>
+		<mapping class="org.olat.data.notification.Subscription"/>
+		<mapping class="org.olat.data.notification.NotificationEvent"/>
+		
+		<mapping class="org.olat.data.course.campus.Course" />
+		<mapping class="org.olat.data.course.campus.Student" />
+		<mapping class="org.olat.data.course.campus.Lecturer" />
+		<mapping class="org.olat.data.course.campus.StudentCourse" />
+		<mapping class="org.olat.data.course.campus.CourseStudent" />
+		<mapping class="org.olat.data.course.campus.LecturerCourse" />
+		<mapping class="org.olat.data.course.campus.CourseLecturer" />
+		<mapping class="org.olat.data.course.campus.Event" />
+		<mapping class="org.olat.data.course.campus.Text" />
+		<mapping class="org.olat.data.course.campus.ImportStatistic" />
+		<mapping class="org.olat.data.course.campus.SkipItem" />
+		<mapping class="org.olat.data.course.campus.Export" />
+		<mapping class="org.olat.data.course.campus.SapOlatUser" />	
+		<mapping class="org.olat.data.course.campus.Org" />	
+		<mapping class="org.olat.data.course.campus.Delegation" />	
+		
+		<mapping resource="org/olat/data/basesecurity/IdentityImpl.hbm.xml"/>
+		<mapping resource="org/olat/data/user/UserImpl.hbm.xml"/>
+				
+<!-- Example Named Queries 
+		<mapping resource="orderentry/daos/NamedQueries.hbm.xml" />
+-->
+
+	</session-factory>
+</hibernate-configuration>

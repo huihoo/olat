@@ -1,0 +1,18 @@
+This file contains Bugs found during ORID-1007 refactoring (most probably these bugs are also on ORID-1003)
+
+1. (BB) RSS Feed link doesn't work - NullPointerException fixed in changeset 3326 + better exception handling in changeset 3335
+   							  - still opened problem with commented code in FeedViewHelper.getJumpInLink  
+
+3. (CG) Notification missing Translations :
+   Im Zusammenhang mit dem Prototype Notification-Service ist mir beim vorhandenen NotificationService aufgefallen, dass vermutlich die Emails nicht uebersetzt werden da in der NotificationServiceImpl Klasse der Translator mit dem NotificationsDaoImpl gebildet wird.
+       translator = PackageUtil.createPackageTranslator(NotificationsDaoImpl.class, locale);
+
+4. (CG) Missing Jumpin Link in Email (null Value)
+   Changeset : ORID-1003: app layering notifications, deleted lagacy jumpin stuff
+               http://hg.olat.uzh.ch/repos/OLAT-ORID-1003/rev/81395168a12b
+   Stellen markiert mit 'TODO: ORID-1003,JumpIn-URL to REST migration'
+   
+5. (LD)  RedScreen at Administration/System Configuration/Layout/Switch layout from default to example
+	- RedScreen wegen ein änderung von Guido am LayoutAdminController.formInnerEvent (throw new NotImplementedException("the stoage of the gui theme hase been removed from the settings class and has to be remplemented in a better way");) 
+  
+   	

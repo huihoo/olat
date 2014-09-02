@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="SeleniumTestingORID-1007" verbose="1" >
+
+  <test name="debugging" junit="true">
+    <classes>
+      <class name="org.olat.test.load.MultiBrowserClusterEnrolmentLoadManualtest" />
+      <class name="org.olat.test.functional.lr.lr_createQuestionnaireTest" />
+      <class name="org.olat.test.functional.lr.lr_createTestTest" />
+      <class name="org.olat.test.functional.test.CombiQuestionnaireTest" />
+      <class name="org.olat.test.functional.group.management.GroupManagementCombiTest" />
+    </classes>
+  </test>
+</suite>
+

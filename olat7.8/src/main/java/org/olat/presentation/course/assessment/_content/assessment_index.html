@@ -1,0 +1,14 @@
+<div class="b_float_right">
+	$r.contextHelp("org.olat.presentation.course.assessment","course-assess-tool.html","help.hover.assess")
+</div>
+<h5>$r.translate("index.title")</h5>
+#if($hasAssessableNodes)
+<p>
+	$r.translate("index.intro")
+</p>
+
+#else
+	<p>
+		$r.translate("index.noAssessableNodes")
+	</p>
+#end

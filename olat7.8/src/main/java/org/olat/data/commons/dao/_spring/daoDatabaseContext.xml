@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+  http://www.springframework.org/schema/tx
+  http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+  http://www.springframework.org/schema/aop
+  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+  http://www.springframework.org/schema/util 
+  http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+
+
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+	<context:annotation-config />
+	<context:component-scan base-package="org.olat.data.commons.dao" />
+		
+    <bean id="daoSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <!--TODO: this was commented because of encoding, is this needed at all?<property name="dataSource" ref="${db.vendor}DataSource" />-->
+        <property name="configLocation" value="classpath:org/olat/data/commons/dao/_spring/hibernate.cfg.xml"></property>
+        <!-- DB Connection is defined in mysqlHibernateProperties, postgresqlHibernateProperites, etc. and the other hibernate properties in the bean "commonHibernateProperties" -->
+        <property name="hibernateProperties" ref="${db.vendor}DaoHibernateProperties" />
+    </bean>
+    
+
+	<bean id="mysqlDaoHibernateProperties" class="org.olat.data.commons.database.DBVendorHibernatePropertiesSimplification">
+		<constructor-arg>
+			<props>
+			     <!-- Using datasource of hibernate -->
+				<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+		        <prop key="hibernate.connection.url">jdbc:mysql://${db.host}:${db.host.port}/${db.name}${db.url.options.mysql}</prop>
+		        <prop key="hibernate.connection.username">${db.user}</prop>
+		        <prop key="hibernate.connection.password">${db.pass}</prop>
+		        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+	        </props>            
+		</constructor-arg>
+		<property name="addMoreProperties" ref="c3p0DaoHibernateProperties" />
+	</bean>
+
+	<bean id="hsqldbDaoHibernateProperties" class="org.olat.data.commons.database.DBVendorHibernatePropertiesSimplification">
+		<constructor-arg>
+			<props>
+			     <!-- Using datasource of hibernate -->
+				<prop key="hibernate.connection.driver_class">org.hsqldb.jdbc.JDBCDriver</prop>
+		        <prop key="hibernate.connection.url">jdbc:hsqldb:file:${java.io.tmpdir}/olatdata/database/${db.name}</prop>
+		        <prop key="hibernate.connection.username">SA</prop>
+		        <prop key="hibernate.connection.password"></prop>
+		        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+	        </props>            
+		</constructor-arg>
+		<property name="addMoreProperties" ref="commonDaoHibernateProperties" />
+	</bean>
+
+	<bean id="testDaoHibernateProperties" class="org.olat.data.commons.database.DBVendorHibernatePropertiesSimplification">
+		<constructor-arg>
+			<props>
+			     <!-- Using datasource of hibernate -->
+				<prop key="hibernate.connection.driver_class">org.hsqldb.jdbc.JDBCDriver</prop>
+		        <prop key="hibernate.connection.url">jdbc:hsqldb:mem:${db.name}</prop>
+		        <prop key="hibernate.connection.username">SA</prop>
+		        <prop key="hibernate.connection.password"></prop>
+		        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+	        </props>            
+		</constructor-arg>
+		<property name="addMoreProperties" ref="commonDaoHibernateProperties" />
+	</bean>
+
+
+	<bean id="PostgresqlDaoHibernateProperties" class="org.olat.data.commons.database.DBVendorHibernatePropertiesSimplification">
+		<constructor-arg>
+			<props>
+			     <!-- Using datasource of hibernate -->
+				<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+		        <prop key="hibernate.connection.url">jdbc:postgresql://${db.host}:${db.host.port}/${db.name}</prop>
+		        <prop key="hibernate.connection.username">${db.user}</prop>
+		        <prop key="hibernate.connection.password">${db.pass}</prop>
+		        <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+	        </props>            
+		</constructor-arg>
+		<property name="addMoreProperties" ref="c3p0DaoHibernateProperties" />
+	</bean>
+
+	<bean id="c3p0DaoHibernateProperties" class="org.olat.data.commons.database.DBVendorHibernatePropertiesSimplification">
+		<constructor-arg>
+			<props>
+	            <prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+	            <!-- Min pool size -->
+	            <prop key="hibernate.c3p0.min_size">${db.hibernate.c3p0.minsize}</prop>
+	            <!-- Max pool size , mysql-default value is 100, If you need to support more connections, you should set a larger value for this variable in mysql config -->
+	            <prop key="hibernate.c3p0.max_size">${db.hibernate.c3p0.maxsize}</prop>
+	            <!-- Connection timeout in sec -->
+	            <prop key="hibernate.c3p0.timeout">1800</prop>
+	            <!-- Size of prepared statements -->
+	            <prop key="hibernate.c3p0.max_statements">10000</prop>
+	            <!-- Commit on connection close --> 
+	            <prop key="hibernate.c3p0.autoCommitOnClose">false</prop>
+	            <!-- Number of connection acquired when pool is exhausted -->
+	            <prop key="hibernate.c3p0.acquire_increment">2</prop>
+	             <!-- Idle time (in sec) before pooled connection is validated -->
+	             <prop key="hibernate.c3p0.idle_test_period">500</prop>
+	
+	            <!--  OLAT-5528: under heavy load situations threads have been seen to deadlock on acquire/release of a connection.
+	                             increasing number of helper threads from 3 to 10 plus limiting the max time for administrative tasks to 2min
+	                             is expected to allow these situations to resolve themselves -->
+	            <!-- Number of c3p0 helper threads - default is 3 --> 
+	            <prop key="hibernate.c3p0.numHelperThreads">10</prop>
+	            <!-- Maximum time spent by c3p0 for administrative tasks in seconds - default infinity=0 --> 
+	            <prop key="hibernate.c3p0.maxAdministrativeTaskTime">120</prop>
+	        </props>
+		</constructor-arg>
+		<property name="addMoreProperties" ref="commonDaoHibernateProperties" />
+	</bean>
+
+	<util:map id="commonDaoHibernateProperties">
+		<!-- "validate, update, create, create-drop"  are valid entries for  hibernate.hbm2ddl.auto-->
+		<entry key="hibernate.hbm2ddl.auto"><value>${db.hibernate.ddl.auto}</value></entry>
+		<entry key="hibernate.show_sql"><value>${db.show_sql}</value></entry>
+		<entry key="hibernate.query.factory_class"><value>org.hibernate.hql.ast.ASTQueryTranslatorFactory</value></entry>
+		<!-- <entry key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</value></entry> -->
+		<entry key="hibernate.query.substitutions"><value>true 1, false 0, yes 'Y', no 'N'</value></entry>     
+		<!-- for development phase only: -->
+		<entry key="hibernate.c3p0.debugUnreturnedConnectionStackTraces"><value>true</value></entry>
+		<entry key="hibernate.c3p0.unreturnedConnectionTimeout"><value>${db.hibernate.c3p0.unreturnedConnectionTimeout}</value></entry>
+		<!-- end for development phase only -->
+		
+		<entry key="hibernate.transaction.factory_class"><value>org.hibernate.transaction.JDBCTransactionFactory</value></entry>
+		<entry key="hibernate.jdbc.batch_size"><value>0</value></entry>
+		<entry key="hibernate.jdbc.use_streams_for_binary"><value>true</value></entry>
+		<entry key="hibernate.use_outer_join"><value>true</value></entry>
+		<entry key="hibernate.max_fetch_depth"><value>10</value></entry>
+		<!-- TODO: may update to version 2.x of ehcache which only has the  region.factory_class property-->
+		<!-- <entry key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</value></entry> -->
+		<entry key="hibernate.cache.provider_class"><value>${hibernate.caching.singlevm.class}</value></entry>
+		<entry key="hibernate.cache.use_query_cache"><value>${hibernate.caching.use.query.cache}</value></entry>
+		<entry key="hibernate.cache.use_second_level_cache"><value>${hibernate.use.second.level.cache}</value></entry> <!-- TODO: ask christian, does this need to be false on SV mode? -->
+		<!-- <entry key="hibernate.cache.region.factory_class">org.hibernate.cache.jbc2.SharedJBossCacheRegionFactory</value></entry> -->
+		<entry key="hibernate.cache.region.factory_class"><value>${hibernate.caching.cluster.class}</value></entry>
+		
+		<entry key="hibernate.cache.region.jbc2.query.localonly"><value>true</value></entry>
+		<entry key="hibernate.cache.region_prefix"><value>olat</value></entry>
+		<!-- to disable caching use this class -->
+		<!-- <hibernate.cache.region.factory_class>org.hibernate.cache.NoCacheProvider</hibernate.cache.region.factory_class> -->
+		<!-- from java.sql.Connection
+		int TRANSACTION_READ_UNCOMMITTED = 1;
+		int TRANSACTION_READ_COMMITTED   = 2;
+		int TRANSACTION_REPEATABLE_READ  = 4;
+		int TRANSACTION_SERIALIZABLE     = 8;
+		olat works only with level 2; the database must support level 2
+		-->
+		<entry key="hibernate.connection.isolation"><value>2</value></entry>
+	</util:map>
+
+	<!-- this datasource is used for unit testing and is in memory only! -->
+	<bean id="testDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
+	        <property name="driverClassName"><value>org.hsqldb.jdbc.JDBCDriver</value></property>
+	        <property name="url"><value>jdbc:hsqldb:mem:${db.name}</value></property>
+	        <property name="username"><value>SA</value></property>
+	        <property name="password"><value></value></property>
+	</bean>
+
+	<!-- The mysql datasource checks upon startup whether the tables are of type InnoDB, if not it will not start. If you have an other type of transactional tables just switch back the spring config
+	to the normal  org.springframework.jdbc.datasource.DriverManagerDataSource and the check is gone.-->                  
+	<bean id="mysqlDataSource" class="org.olat.data.commons.database.InnoDBAwareDriverManagerDataSource" lazy-init="true" init-method="init">
+	        <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+	        <property name="url"><value>jdbc:mysql://${db.host}:${db.host.port}/${db.name}?useUnicode=true&amp;characterEncoding=UTF-8</value></property>
+	        <property name="username" value="${db.user}" />
+	        <property name="password" value="${db.pass}" />
+	        <property name="dbVendor" value="${db.vendor}" />
+	</bean>
+
+	<bean id="postgresqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
+	        <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+	        <property name="url"><value>jdbc:postgresql://${db.host}:${db.host.port}/${db.name}</value></property>
+	        <property name="username" value="${db.user}" />
+	        <property name="password" value="${db.pass}" />
+	</bean>
+	
+	
+</beans>

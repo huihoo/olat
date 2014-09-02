@@ -1,0 +1,38 @@
+ -----
+ The OLAT LMS Code Fragments for Developers  
+ -----
+ The OLAT Team
+ -----
+ November 2011
+
+OLAT Code Fragments for Developers
+ 
+
+* Main Spring Annotations
+
++-----
+@Autowired
+@Qualifier("daoSessionFactory")
+
+@Service("bookmarkService")
+@Repository
+@Component
+
+@Scope("prototype")
++-----
+
+* Use olat-properties in Spring-beans
+
+mit '@Value("${<PROPERTY_NAME>}")' können Property Werte gesetzt werden.
+
++-----
+@Component
+public class EmailBuilder {
+  @Value("${adminemail}")
+  private String mailFormAddress;
+
+adminemail ist im olat.local.properties definiert :
+  adminemail=christian.guretzki@id.uzh.ch
+im olat.properties steht der default Wert :
+  adminemail=webmaster@myolat.com 
++-----

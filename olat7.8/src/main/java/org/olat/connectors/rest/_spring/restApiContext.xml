@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="restModule" class="org.olat.connectors.rest.RestModule" init-method="init" destroy-method="destroy">
+		<property name="defaultProperties">
+			<value>
+				rest.enabled=false
+			</value>
+		</property>
+	</bean>
+
+	<bean id="org.olat.connectors.rest.security.RestSecurityBean" class="org.olat.connectors.rest.security.RestSecurityBeanImpl"/>
+	
+	<bean id="org.olat.connectors.rest.support.RestRegistrationService" class="org.olat.connectors.rest.support.RestRegistrationServiceImpl">
+		<property name="classnames">
+			<list>
+				<value>org.olat.connectors.rest.api.ApiWebService</value>
+				<value>org.olat.connectors.rest.i18n.I18nWebService</value>
+				<value>org.olat.connectors.rest.support.Ping</value>
+				<value>org.olat.connectors.rest.security.Authentication</value>
+				<value>org.olat.connectors.rest.user.UserWebService</value>
+				<value>org.olat.connectors.rest.user.UserAuthenticationWebService</value>
+				<value>org.olat.connectors.rest.group.LearningGroupWebService</value>
+				<value>org.olat.connectors.rest.repository.RepositoryEntriesResource</value>
+				<value>org.olat.connectors.rest.repository.course.CourseWebService</value>
+				<value>org.olat.connectors.rest.repository.course.CoursesWebService</value>
+				<value>org.olat.connectors.rest.repository.course.CourseElementWebService</value>
+				<value>org.olat.connectors.rest.repository.course.CourseAssessmentWebService</value>
+				<value>org.olat.connectors.rest.repository.course.CourseFolderWebService</value>
+				<value>org.olat.connectors.rest.repository.course.CourseResourceFolderWebService</value>
+				<value>org.olat.connectors.rest.repository.course.COWebService</value>
+				<value>org.olat.connectors.rest.repository.course.ENWebService</value>
+				<value>org.olat.connectors.rest.forum.ForumImportWebService</value>
+				<value>org.olat.connectors.rest.forum.ForumCourseNodeWebService</value>
+				<value>org.olat.connectors.rest.catalog.CatalogWebService</value>
+			</list>
+		</property>
+		<!-- property name="singletonBeans">
+			<list>
+				<ref bean="userWebService"/>
+			</list>
+		</property -->
+	</bean>
+	
+	<!-- Using singletons would be good for the future and prevent using CoreSpringFactory -->
+	<!-- bean id="userWebService" class="org.olat.connectors.rest.user.UserWebService"/ -->
+
+<bean id="configFactory" class="org.olat.connectors.rest.repository.course.config.CustomConfigFactory">
+	<constructor-arg index="0" ref="${assessmentplugin.activate}CustomConfigCreator" />
+</bean>
+
+<bean id="OlatCustomConfigCreator" class="org.olat.connectors.rest.repository.course.config.OlatCustomConfigCreator" lazy-init="true"/>
+
+</beans>

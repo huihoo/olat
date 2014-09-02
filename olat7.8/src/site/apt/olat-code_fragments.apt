@@ -1,0 +1,113 @@
+ -----
+ The OLAT LMS Code Fragments for Developers  
+ -----
+ The OLAT Team
+ -----
+ November 2011
+
+OLAT Code Fragments for Developers
+ 
+* Logging
+
++-----
+import org.olat.system.logging.log4j.LoggerHelper;
+import org.apache.log4j.Logger;
+
+private static final Logger log = LoggerHelper.getLogger();
++-----
+
+
+* Example DAO
+
++-----
+@Repository
+public class ExampleDaoImpl implements ExampleDao {
+
+    @Autowired
+    GenericDao<ExampleEntity> genericDao;
+
+    public ExampleDaoImpl() {
+    }
+
+    @Override
+    public ExampleEntity findById(Long id) {
+        return genericDao.findById(ExampleEntity.class, id);
+    }
+    ...
+}
++-----
+
+* Example Entity
+
++-----
+@Entity
+@Table(name = "o_tst_daotest")
+public class ExampleEntity implements Serializable {
+
+    @Id
+    @Column(name = "dao_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Version
+    private Long version;
+
+    @Basic(optional = true)
+    @Column(name = "name")
+    private String name;
+
+    @Basic(optional = true)
+    @Column(name = "description")
+    private String description;
+
+    public ExampleEntity() {
+        super();
+    }
+	// Other Constructors
+	// getter & setter
+}
++-----
+
+* Entity Klasse eintragen in org/olat/data/commons/dao/_spring/hibernate.cfg.xml
+
++-----
+<hibernate-configuration>
+	<session-factory>
+		<mapping class="org.olat.data.commons.dao.ExampleEntity"/>
+	</session-factory>
+</hibernate-configuration>
++-----
+
+* Load only certain Spring-Context for testing
+
++-----
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:org/olat/data/commons/dao/_spring/daoDatabaseContextTest.xml" })
+public class DaoITCase extends AbstractTransactionalJUnit4SpringContextTests {
+  ...
+}
++-----
+
+* Mockito
+
++-----
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+NotificationEvent otherSameNotificationEvent = mock(NotificationEvent.class);
+when(otherSameNotificationEvent.getCreationDate()).thenReturn(mockDate);
+
+// when(...).thenThrow or doThrow(...).when(...)
+// Vermutung => doThrow bei void-Return-value
+// Example :
+Session mockSession = mock(Session.class);
+genericDao.sessionFactory = mock(SessionFactory.class);
+when(genericDao.sessionFactory.getCurrentSession()).thenReturn(mockSession);
+// COMPILE ERROR : when(mockSession.update(entity)).thenThrow(throwables);
+doThrow(new TransientObjectException("Test Exception")).when(mockSession).update(entity);
+return genericDao.update(ExampleEntity.class, entity);
++-----
+
+
+
+

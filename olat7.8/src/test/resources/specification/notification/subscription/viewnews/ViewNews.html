@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+    <head>
+        <title>Neuigkeiten anschauen</title>
+        <link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h1>Benachrichtigungen anschauen</h1>
+        <div class="userstory">
+            <h2>User Story</h2>
+            <p>
+                Als Student/Dozent/Tutor kann ich sofort alle Neuigkeiten (bestellte Benachrichtigungen) in OLAT anschauen, damit ich schnell informiert bin.
+                <br/> 
+            </p>
+        </div> 
+        
+            <h3> Formatvorlage</h3>      
+            <p><a href="./img/GUIHomeSubscriptionsTabNews.jpg"><img width="300" alt="GUI für Tab Neuigkeiten" title="GUI für Tab Neuigkeiten" src="./img/GUIHomeSubscriptionsTabNews.jpg" /></a></p>  
+            
+            <div class="attention">
+                <ul>
+                    <li>Alle Benachrichtigungen des letzten Monats (der letzten 31 Tage) werden angezeigt.</li>
+                    <li>Die aktuellsten Beiträge werden per Default zuoberst in der Tabelle angezeigt.</li>
+                    <li>Tabellensuche ist gleich, wie jetztige Tabellensuche in OLAT 7.2.1.</li>
+                    <li>Die Tabellenspalten können auch wie im jetztigen OLAT 7.2.1 mittels Klicken auf Pfeil-Icon aufsteigend und absteigend sortiert werden. Nach Typ kann sortiert werden.</li>
+                    <li>Die Tabellenreihen sind abwechslend grau hinterlegt vgl. jetziger OLAT-Tabellen-Style.</li>
+                    <li>Die Beiträge sind direkt verlinkt. Aussnahme: Bei einem Forumsbeitrag in der Dateidiskussion wird via Link auf den Baustein Dateidiskussion gesprungen, d.h. die oberste Ebene, und nicht direkt auf den Beitrag.</li>
+                    <li>Die Bausteine sind direkt verlinkt.</li>
+                    <li>Die Kurse sind direkt verlinkt.</li>
+                    <li>Achtung: Hyperlinks in OLAT werden nicht unterstrichen angezeigt. OLAT-Hyperlinks-Style belassen.</li>
+                    <li>Bei mehr als 20(?) Einträgen Seitenwechselfunktion anbieten.</li>
+                    <li>Tabellendownload und Tabellenkonfiguration analog zu OLAT 7.2.1 anbieten. Defaultanzeige=alle Spalten.</li>
+                    <li>Mouseover bei >> weiter bzw. zurück.</li>
+                    <li>Button "Neuigkeiten per E-Mail versenden" entfernen</li>
+                    <li>Gibt es keine Benachrichtigungen, wird dies mit folgendem Text angezeigt: "Sie haben keine Benachrichtigungen."</li>
+                    
+                </ul></div> 
+       
+                
+      <h3> Vorlage Home</h3>      
+            <p><a href="./img/GUIHomeSubscriptionsNewsPortlet.png"><img width="300" alt="GUI für Home" title="GUI für Home" src="./img/GUIHomeSubscriptionsNewsPortlet.png" /></a></p>  
+            
+            <div class="attention">
+                <ul>
+                    <li>Navigation links: "Abonnements" ersetzen durch "Benachrichtigungen"</li>
+                    <li class="notyet">Portlets: Skripte bei Druckerei ausdrucken, Comic, Wussten Sie...?, OLAT-Schnellstart-Links, Meine Notizen, OLAT Systemausfälle weglassen.</li>
+                    <li class="notyet">Reihenfolge der Portlets gemäss Vorlage.</li>
+                    <li>"Benachrichtigungen anzeigen" ist ein Link auf den Tab "Benachrichtigungen".</li>
+                    <li>Keine Sortiermöglichkeiten in der Konfiguration des Portlets "Meine Benachrichtigungen".</li>
+                    <li>Wird das Portlet via Konfiguration in den Papierkorb verschoben, erscheint die Anzeige danach unten links auf der Seite wie folgt: "Schnellzugriff auf Ihre Benachrichtigungen."</li>
+                    <li>Gibt es keine Benachrichtigungen, wird dies mit folgendem Text angezeigt: "Sie haben keine Benachrichtigungen."</li>
+                    <li>RSS Feed weglassen.</li>
+                                       
+                </ul></div>  
+        
+            
+        
+        
+      
+        <h2>Out-of-Scope</h2>
+        <ul><li>Es wird nicht beim Anzeigen des Tabs Benachrichtigungen in Home/Benachrichtigungen gleich abgeglichen, 
+            ob der Benutzer immer noch für alle seine Abonnements berechtigt ist, sondern nur einmal täglich.</li>
+        </ul>
+       
+  
+    </body>
+</html>

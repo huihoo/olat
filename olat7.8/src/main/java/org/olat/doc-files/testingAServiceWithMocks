@@ -1,0 +1,29 @@
+@Service
+public class CatalogServiceImpl implements CatalogService {
+
+	@Autowired
+	CatalogDao catalogDao;
+	@Autowired
+	BaseSecurity securityManager;
+	@Autowired
+	BookmarkService bookmarkService;
+	@Autowired
+	UserDeletionManager userDeletionManager;
+
+	CatalogServiceImpl() {
+		//
+	}
+	
+	********************************
+catalogService = new CatalogServiceImpl();	
+
+catalogService.catalogDao = mock(CatalogDao.class);
+catalogService.baseSecurity = mock(BaseSecurity.class);
+catalogService.bookmarkService = mock(BookmarkService.class);
+catalogService.uesrDeletionManager = mock(UserDeletionManager.class);
+
+
+**************************
+
+To test a spring managed object without the need of an additional constructor make your fields default visible inkl. your default construtor with default visibiliy
+and you can set your mocks by directly accessing the fields of your testobject.

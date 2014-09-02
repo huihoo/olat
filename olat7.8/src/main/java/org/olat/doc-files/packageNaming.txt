@@ -1,0 +1,12 @@
+Package Naming
+============== 
+ - no empty packages 
+   Bad example : org.olat.catalog.service without any classes or packages at org.olat.catalog
+   
+ - no plural in package names
+   Exception : commons (because it is a general concept e.g. apache-commons)
+   
+ - General package names :
+   - 'edit' Edit view e.g. course editor
+   - 'run'  Run view e.g. course run
+   

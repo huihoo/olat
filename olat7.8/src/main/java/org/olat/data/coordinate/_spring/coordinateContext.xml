@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!--
+		****************************************************
+		*** Configuration for OLAT Cluster/SingleVM Coordinator   ***
+		****************************************************
+		
+	-->
+	<!-- spring replaces vars with values from olat.properties -->
+	<bean class="org.olat.data.commons.CheckForOLATLocalPropertiesFile">
+		<property name="locations">
+			<list>
+				<value>classpath:serviceconfig/olat.properties</value>
+				<value>classpath:olat.local.properties</value>
+			</list>
+		</property>
+	</bean>
+
+  
+<bean id="ClusterCoordinator" class="org.olat.data.coordinate.ClusterCoordinator" lazy-init="true">
+		<property name="locker" >
+			<bean class="org.olat.data.coordinate.lock.ClusterLocker" init-method="init">
+				<property name="syncer" ref="clusterSyncer" />
+				<property name="eventBus" ref="clusterEventBus" />
+				<!-- to avoid circular reference method lookup is used for dependency injection of persistent lock manager -->
+				<lookup-method name="getPersistentLockManager" bean="persistentLockManager"/>
+			</bean>
+		</property>
+		
+		<property name="clusterConfig" ref="clusterConfig" />
+		<property name="syncer" ref="clusterSyncer" />
+		<property name="eventBus" ref="clusterEventBus" />
+		
+		<property name="cacher">
+			<!-- cache config, please note that settings can also stem from the file ehcache.xml (deprecated) -->
+			<bean class="org.olat.system.coordinate.cache.cluster.ClusterCacher" init-method="init">
+				<property name="clusterConfig" ref="clusterConfig" />
+				<property name="eventBus" ref="clusterEventBus" />
+				<property name="rootConfig">
+					<bean class="org.olat.system.coordinate.cache.CacheConfig">
+						<property name="childrenConfig">
+							<map>
+								<entry key="org.olat.lms.security.authentication.LoginModule_blockafterfailedattempts" value-ref="loginModule_blockafterfailedattempts" />
+								<entry key="org.olat.lms.ims.qti.process.QTIHelper_QTI_xml_Documents"  value-ref="QTI_xml_Documents"/>
+								<entry key="org.olat.lms.wiki.WikiManager_wiki" value-ref="wikiManager_wiki"/>
+								<entry key="org.olat.lms.calendar.CalendarManager_calendar" value-ref="calendarManager_calendar" />
+								<entry key="org.olat.lms.course.CourseFactory_courses" value-ref="courseFactory_courses" />
+								<entry key="org.olat.presentation.collaboration.CollaborationToolsFactory_tools" value-ref="collaborationToolsFactory_tools" />
+								<entry key="org.olat.lms.course.assessment.NewCachePersistingAssessmentManager" value-ref="newCachePersistingAssessmentManager" />
+								<entry key="org.olat.connectors.instantmessaging.RemoteSessionsOnIMServerOverXMPP_items" value-ref="remoteSessionsOnIMServerOverXMPP_items"/>
+								<entry key="org.olat.lms.glossary.GlossaryItemManager_glossary" value-ref="glossaryItemManager_glossary"/>
+								<entry key="org.olat.lms.course.nodes.projectbroker.ProjectBrokerManagerImpl_pb" value-ref="projectBroker"/>
+								<entry key="org.olat.connectors.webdav.WebDAVManagerImpl_webdav" value-ref="org.olat.connectors.webdav.WebDAVManagerImpl_webdav" />
+							
+								
+								<!-- 
+									for the cache-test of the cluster admin controller  .
+									this is also a sample how cache parameters can be assigned to a specific resource only.
+								 	// ClusterAdminController:cachetest::0@subcachetypetest::123
+								-->
+								<entry key="org.olat.presentation.admin.cluster.ClusterAdminControllerCluster_cachetest">
+									<bean class="org.olat.system.coordinate.cache.CacheConfig">
+										<!-- no cache needed on this level here, but configure children -->
+										<property name="childrenConfig">
+											<map>
+												<entry key="subcachetypetest::123">
+													<bean class="org.olat.system.coordinate.cache.CacheConfig">
+														<!-- for demo reason, let the values expire after 30 seconds -->													
+														<property name="timeToLive" value="30" />
+														<property name="timeToIdle" value="0" />
+														<property name="maxElementsInMemory" value="1" />	
+													</bean>													
+												</entry>
+											</map>
+										</property>							
+									</bean>
+								</entry>
+							</map>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+</bean>
+
+<bean id="SingleVMCoordinator" class="org.olat.data.coordinate.SingleVMCoordinator" lazy-init="true">
+		<property name="syncer" ref="clusterSyncer"/>
+  		<property name="eventBus" ref="singleVMEventBus"/>
+		<property name="locker" ref="singleVMLocker"/>
+
+	<property name="cacher">
+			<!-- cache config, please note that settings can also stem from the file ehcache.xml (deprecated) -->
+			<bean class="org.olat.system.coordinate.cache.singlevm.SingleVMCacher" init-method="init">
+				<property name="rootConfig">
+					<bean class="org.olat.system.coordinate.cache.CacheConfig">
+						<property name="childrenConfig">
+							<map>
+								<entry key="org.olat.lms.security.authentication.LoginModule_blockafterfailedattempts" value-ref="loginModule_blockafterfailedattempts" />
+								<entry key="org.olat.lms.ims.qti.process.QTIHelper_QTI_xml_Documents"  value-ref="QTI_xml_Documents"/>
+								<entry key="org.olat.lms.wiki.WikiManager_wiki" value-ref="wikiManager_wiki"/>
+								<entry key="org.olat.lms.calendar.CalendarManager_calendar" value-ref="calendarManager_calendar" />
+								<entry key="org.olat.lms.course.CourseFactory_courses" value-ref="courseFactory_courses" />
+								<entry key="org.olat.presentation.collaboration.CollaborationToolsFactory_tools" value-ref="collaborationToolsFactory_tools" />
+								<entry key="org.olat.lms.course.assessment.NewCachePersistingAssessmentManager" value-ref="newCachePersistingAssessmentManager" />
+								<entry key="org.olat.connectors.instantmessaging.RemoteSessionsOnIMServerOverXMPP_items" value-ref="remoteSessionsOnIMServerOverXMPP_items"/>
+								<entry key="org.olat.lms.glossary.GlossaryItemManager_glossary" value-ref="glossaryItemManager_glossary"/>
+								<entry key="org.olat.lms.course.nodes.projectbroker.ProjectBrokerManagerImpl_pb" value-ref="projectBroker"/>
+								<entry key="org.olat.connectors.webdav.WebDAVManagerImpl_webdav" value-ref="org.olat.connectors.webdav.WebDAVManagerImpl_webdav" />
+							</map>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+</bean>
+	
+	
+
+	
+<bean id="clusterSyncer" class="org.olat.data.coordinate.ClusterSyncer" >
+		<constructor-arg index="0" ref="lockManager" />
+		<!-- if the ClusterSyncer is on debug level and if a sync takes longer than the given threshold in milliseconds, then a warn message is written into the log -->
+		<property name="executionTimeThreshold" value="1000" />
+		<property name="dbInstance" ref="database"></property>
+</bean>
+
+
+<bean id="clusterEventBus" class="org.olat.data.coordinate.jms.ClusterEventBus" 
+init-method="springInit" destroy-method="stop" lazy-init="true">
+		<property name="clusterConfig"     ref="clusterConfig" />
+		<property name="connectionFactory" ref="jmsConnectionFactory"/>
+		<property name="destination"       ref="sysbus.topic"/>
+		<property name="sendInterval"      value="15000" />
+		<property name="jmsMsgDelayLimit"  value="5000" />
+</bean>
+
+<bean id="singleVMEventBus" class="org.olat.data.coordinate.singlevm.SingleVMEventBus" lazy-init="true"/>
+
+<!-- Special SingleVMEventBus with Scope=prototype to have for each user his own instance -->
+<bean id="singleUserEventBus" class="org.olat.data.coordinate.singlevm.SingleVMEventBus" lazy-init="true" scope="prototype"/>
+
+<bean id="singleVMLocker" class="org.olat.data.coordinate.singlevm.SingleVMLocker" init-method="init" lazy-init="true">
+		<property name="eventBus" ref="singleVMEventBus"/>
+		<lookup-method name="getPersistentLockManager" bean="persistentLockManager"/>
+	</bean>
+
+
+
+</beans>	

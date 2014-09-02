@@ -1,0 +1,23 @@
+#Mon Dec 02 16:12:55 CET 2013
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/java/org/olat/lms/core/notification/impl/_i18n/LocalStrings_en.properties=UTF-8
+encoding//src/main/java/org/olat/lms/core/notification/impl/_i18n/LocalStrings_it.properties=UTF-8
+encoding//src/main/java/org/olat/lms/course/wizard/create/_i18n/LocalStrings_it.properties=UTF-8
+encoding//src/main/java/org/olat/presentation/course/nodes/ta/_i18n/LocalStrings_en.properties=UTF-8
+encoding//src/main/java/org/olat/presentation/framework/core/components/form/flexible/impl/elements/richText/plugins/olatmovieviewer/_i18n/LocalStrings_de.properties=ISO-8859-1
+encoding//src/main/java/org/olat/presentation/group/run/_i18n/LocalStrings_en.properties=UTF-8
+encoding//src/main/java/org/olat/presentation/registration/_i18n/LocalStrings_en.properties=UTF-8
+encoding//src/main/java/org/olat/presentation/user/_i18n/LocalStrings_en.properties=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/test/java=UTF-8
+encoding//src/test/resources=UTF-8
+encoding//webapp/WEB-INF/src=UTF-8
+encoding//webapp/WEB-INF/src/org/olat/ims/qti/container/qtielements/Matapplet.java=UTF-8
+encoding//webapp/WEB-INF/src/org/olat/ims/qti/container/qtielements/Response_label.java=UTF-8
+encoding//webapp/static=UTF-8
+encoding//webapp/static/flash/localStrings_de.properties=UTF-8
+encoding//webapp/static/flash/localStrings_en.properties=UTF-8
+encoding/<project>=UTF-8
+encoding/COPYING=UTF-8
+encoding/LICENSE.TXT=UTF-8

@@ -1,0 +1,7 @@
+service inject via getter oder field
+
+service test via setter vs. protected constructor
+
+final macht code unleserlich
+
+ev. package als referenz? welches?

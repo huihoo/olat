@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+<title>Mitteilungen</title>
+<link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1>Mitteilungen verfassen und lesen</h1>
+<div class="userstory">
+    <h2>User Story</h2>
+    <p>
+        Als Dozent/Tutor will ich für die Studierenden eine Mitteilung verfassen, um sie zu informieren. <br/> 
+     </p>
+    </div> 
+ <h1>Mitteilungsbaustein</h1>  
+   
+   <h2>BPM Mitteilung</h2>
+        
+        <p><a href="./img/BPM_Mitteilungsbaustein.jpg"><img width="300" alt="BPM Mitteilungsbaustein" title="BPM Mitteilungsbaustein" src="./img/BPM_Mitteilungsbaustein.jpg" /></a></p>
+    
+    <a href="./img/BPM_Mitteilungsbaustein.mdzip">Magic Draw Datei BPM Mitteilungsbaustein</a>
+    
+    
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="2">Verfasser (Dozent)</td><td rowspan="2">Erstellt neue Mitteilung im Mitteilungsbaustein oder editiert bestehende Mitteilung</td><td>Empfänger (Student) sieht neue oder geänderte Mitteilung im Mitteilungsbaustein-GUI. (Empfänger erhält kein Email; Empfänger sieht Mitteilung nicht im Mitteilungsbausteinportlet. Mitteilungsbausteinportlet wird abgeschafft).</td></tr>       
+         
+ </table>
+  
+ <div class="attention">
+ <p>Das Portlet im Home zum Mitteilungsbaustein gibt es nicht mehr.</p></div> 
+
+<h2>GUI Vorlage für Mitteilungsbaustein</h2>
+<p>Ideal wäre es, wenn wir das GUI vom Mitteilungsbaustein etwas überarbeiten könnten. Sollte dies aus zeitlichen oder technischen 
+Gründen nicht möglich sein, dann genügt es, den jetzigen Wizard zu eliminieren.</p>
+   <ul>
+    <li>Abonnierbutton entfernen und Aktion „Neue Mitteilung erstellen“ rechtsbündig positionieren.</li>
+    <li>Die Erstellung nicht mehr in einem Popup-Fenster darstellen.</li>
+    <li>Die Aktionen „Zurück“ und „Weiter“ weglassen. Die Aktion „Fertigstellen“ ersetzen durch „Speichern“ und zusammen mit der Aktion „Abbrechen“ rechtsbündig positionieren.</li> 
+    <li>Wenn eine Mitteilung verfasst, aber noch nicht gespeichert wurde und ein anderer Link angeklickt wird (z.B. in der Navigation) muss Hinweis kommen, dass man noch ungespeicherte Formulardaten hat. (Gleiche Meldung wie z.B. beim Forum: "Achtung! Sie haben noch ungespeicherte Formulardaten ...")</li>
+    <li>Wenn eine Mitteilung verfasst, aber noch nicht gespeichert wurde und ein anderer Button angeklickt wird (z.B. Neue Mitteilung erstellen) muss entweder Hinweis kommen, dass man noch ungespeicherte Formulardaten hat (analog zum Punkt oben) oder Buttons dürfen nicht anklickbar sein. Entweder sind Buttons deaktiviert oder nicht sichtbar. </li>  
+   <li>Wenn man Mitteilung erstellt und gespeichert hat und anschliessend auf Button "Editieren" klickt, soll auch kein Wizard geöffnet, sondern die Mitteilung direkt im GUI angezeigt werden.</li>
+   </ul>
+   <ul>
+    <li><a href="./img/Mitteilungsbaustein_Kurseditor.jpg">GUI Kurseditor</a></li>
+    <li><a href="./img/Mitteilungsbaustein_Uebersicht.jpg">GUI Mitteilungsübersicht</a></li>  
+    <li><a href="./img/GUIMitteilungsbausteinNeueMitteilung.jpg">GUI Neue Mitteilung erstellen</a></li>   
+   </ul>
+    	
+    	
+ <h1>Mitteilungen</h1>      	
+ 	<h2>Mitteilung via Home Kontaktformular</h2>
+<a href="HomeKontaktformular.odt">Mitteilung via Home Kontaktformular (ODT)</a>	</br>
+<a href="HomeKontaktformular.pdf">Mitteilung via Home Kontaktformular (PDF)</a>
+    	
+ 	<h2>Mitteilung an Katalogverwalter</h2>
+<a href="Katalogverwalter.odt">Mitteilung an Katalogverwalter (ODT)</a>	</br>
+<a href="Katalogverwalter.pdf">Mitteilung an Katalogverwalter (PDF)</a>
+
+<h2>Mitteilung aus Benutzerliste</h2>
+<a href="Benutzerliste.odt">Mitteilung an ausgewählte Benutzer aus Benutzerliste (ODT)</a>	</br>
+<a href="Benutzerliste.pdf">Mitteilung an ausgewählte Benutzer aus Benutzerliste (PDF)</a>   	    	
+    	    	
+ <h2>Mitteilung aus Gruppen</h2>
+<a href="Gruppenmitteilungen.odt">Mitteilung aus Gruppen(ODT)</a>	</br>
+<a href="Gruppenmitteilungen.pdf">Mitteilung aus Gruppen (PDF)</a>    </br>	 
+
+<h2>Mitteilung aus Kursbaustein E-Mail</h2>
+<a href="KursE-MailBaustein.odt">Mitteilung aus E-Mail Kursbaustein (ODT)</a>	</br>
+<a href="KursE-MailBaustein.pdf">Mitteilung aus aus E-Mail Kursbaustein (PDF)</a>    </br>	   	
+    
+<h2>Mitteilung über Redscreen</h2>
+<a href="Redscreen.odt">Mitteilung über Redscreen (ODT)</a>	</br>
+<a href="Redscreen.pdf">Mitteilung über Redscreen (PDF)</a> </br>	    
+    
+   </br> 
+    
+    	
+ <div class="openquestions">
+            <h2>Offene Fragen</h2>
+            <p> <ul>
+    <li>Warum haben wir an manchen Orten den TinyEditor, um Texte zu verfassen (z.B. Forum) und an anderen (z.B. Mitteilungsbaustein, Email) nicht? Wäre es nicht eine Vereinfachung überall den TinyEditor zu verwenden?</li>
+   </ul></p> 
+            
+        </div>
+
+
+  <h2>Akzeptanzkriterien</h2>
+
+    <h3>Automatische Tests</h3>
+    <ul>
+        <li><a href="">[ACCEPTANCETEST 1]</a></li>  
+        <li><a href="">[ACCEPTANCETEST 2]</a></li>  
+    </ul>
+    
+     
+<h4>Bemerkungen zu den automat. Tests</h4>
+<p>[DESCRITPION: PARAGRAPH, LIST OR TABLE]</p>
+
+   
+  
+    <h2>Out-of-Scope</h2>
+    <ul><li>[DESCRIPTION]</li>
+    </ul>  
+  
+  
+    
+</body>
+</html>

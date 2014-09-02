@@ -1,0 +1,22 @@
+To have less spring xml code and also make testing easier try to move code away from the constructor call of an object but use
+the Initializable type. The initializable type is under control of an integration test and checks if your either call the init method in spring xml via 
+init-metod attribute or use the annotation @PostConstruct
+
+
+*****************************************
+
+@Service
+public class CalendarServiceImpl implements CalendarService, UserDataDeletable, Initializable {
+
+	private CalendarServiceImpl(){}
+
+	/**
+	 * [spring]
+	 */
+	@Override
+	@PostConstruct
+	public void init() {
+		userDeletionManager.registerDeletableUserData(this);
+	}
+
+ 

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+	<!-- E-PORTFOLIO CONFIGURATION -->
+	<!-- ========================= -->
+	
+	<bean id="portfolioModule" class="org.olat.lms.portfolio.PortfolioModule" init-method="init" destroy-method="destroy">
+		<!-- those handlers are not connected to an olat-module, therefore need to be loaded and registered here. -->
+		<property name="artefactHandlers">
+			<list>
+				<ref bean="forumArtefactHandler"/>
+				<ref bean="wikiArtefactHandler"/>
+				<ref bean="efficiencyStatementArtefact"/>
+				<ref bean="fileArtefactHandler"/>
+				<ref bean="textArtefactHandler"/>
+				<!-- hide everywhere as long as its not used 
+				<ref bean="structureElementArtefactHandler"/> -->
+				<ref bean="liveBlogArtefactHandler"/>
+				<ref bean="blogArtefactHandler"/>
+			</list>
+		</property>
+		<property name="defaultProperties">
+			<value>
+				portfolio.enabled=true
+				<!--
+				set the names of available styles for portfolio-maps, this can be selected by user. translation is done with "org.olat.presentation.portfolio.structel:map.style.<value>"
+				it needs also the style definitions in brasato.css , where the names are class names. the dropdown on a map can be styled with "<value>_icon".
+				-->
+				portfolio.map.styles=${portfolio.map.styles}
+				portfolio.offer.public.map.list=${portfolio.offer.public.map.list}
+				<!-- 
+				handler.org.olat.data.portfolio.ForumArtefactHandler=true
+				handler.org.olat.lms.portfolio.model.artefacts.FileArtefactHandler=true
+				 -->
+			</value>
+		</property>
+	</bean>
+	
+	<!-- Portfolio Main View/all my artefacts in users Home -->
+	<bean class="org.olat.presentation.portfolio.extension.EPArtefactPoolExtension"/>
+	
+	<!-- Portfolio map view in users Home -->
+	<bean class="org.olat.presentation.portfolio.extension.EPMyMapsExtension"/>
+	
+	<!-- Portfolio map view for invitee -->
+	<bean class="org.olat.presentation.portfolio.extension.EPMapOnInvitationExtension"/>
+	
+	<!-- Portfolio map view in users Home -->
+	<bean class="org.olat.presentation.portfolio.extension.EPMyStructuredMapsExtension"/>
+	
+	<!-- Portfolio map view in users Home -->
+	<bean class="org.olat.presentation.portfolio.extension.EPOtherMapsExtension"/>
+	
+	
+	
+	<!-- Portfolio admin. panel -->
+	<bean class="org.olat.presentation.framework.extensions.action.GenericActionExtension" init-method="initExtensionPoints">
+		<property name="actionController">	
+			<bean class="org.olat.presentation.framework.core.control.creator.FactoryControllerCreator" scope="prototype">
+				<property name="factoryName" value="org.olat.presentation.portfolio.EPUIFactory"/>
+				<property name="factoryMethod" value="createPortfolioAdminController"/>
+			</bean>
+		</property>
+		<property name="i18nActionKey" value="admin.menu.title"/>
+		<property name="i18nDescriptionKey" value="admin.menu.title.alt"/>
+		<property name="translationPackage" value="org.olat.presentation.portfolio"/>
+		<property name="extensionPoints">
+			<list>	
+				<value>org.olat.presentation.admin.SystemAdminMainController</value>		
+			</list>
+		</property>
+		<property name="order" value="37" />
+	</bean> 
+	
+	
+	<bean name="epSettingsManager" class="org.olat.lms.portfolio.EPSettingsManager" />
+	
+
+	<bean name="epFrontendManager" class="org.olat.lms.portfolio.EPFrontendManager">
+				
+		<constructor-arg index="0" ref="epSettingsManager" />
+		<constructor-arg index="1" ref="coordinatorManager" />
+		
+		<property name="searchClient" ref="searchClient"/>
+	</bean>
+	
+	
+	
+	<bean name="forumArtefactHandler" class="org.olat.presentation.forum.ForumArtefactHandler"/>
+	
+	<bean name="wikiArtefactHandler" class="org.olat.presentation.wiki.portfolio.WikiArtefactHandler"/>
+	
+	<bean name="efficiencyStatementArtefact" class="org.olat.presentation.course.assessment.portfolio.EfficiencyStatementArtefactHandler"/>
+	
+	<bean name="fileArtefactHandler" class="org.olat.lms.portfolio.artefacthandler.FileArtefactHandler"/>
+	
+	<bean name="textArtefactHandler" class="org.olat.lms.portfolio.artefacthandler.EPTextArtefactHandler"/>
+	
+	<bean name="structureElementArtefactHandler" class="org.olat.lms.portfolio.artefacthandler.EPStructureElementArtefactHandler"/>
+	
+	<bean name="liveBlogArtefactHandler" class="org.olat.presentation.webfeed.blog.portfolio.LiveBlogArtefactHandler"/>
+	
+	<bean name="blogArtefactHandler" class="org.olat.presentation.webfeed.blog.portfolio.BlogArtefactHandler"/>
+	
+
+	<!-- add the db-mappings here or in the module-context where your XYArtefactHandler for the appropriate type is. 
+	this allows real decoupling of the ePortfolio-Module from olatcore.
+	-->
+	<bean id="portfolioDBMappings" class="org.olat.data.commons.database.AdditionalDBMappings">
+		<property name="xmlFiles">
+			<list>								
+				<value>org/olat/data/portfolio/artefact/AbstractArtefact.hbm.xml</value>
+				<value>org/olat/data/portfolio/artefact/ForumArtefact.hbm.xml</value>
+				<value>org/olat/data/portfolio/artefact/WikiArtefact.hbm.xml</value>
+				<value>org/olat/data/portfolio/artefact/BlogArtefact.hbm.xml</value>
+				<value>org/olat/data/portfolio/artefact/LiveBlogArtefact.hbm.xml</value>
+				<value>org/olat/data/portfolio/artefact/EfficiencyStatementArtefact.hbm.xml</value>
+				<value>org/olat/data/portfolio/structure/StructureElement.hbm.xml</value>
+				<value>org/olat/data/portfolio/restriction/CollectRestriction.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- wrapper for add-link in folder -->
+	<bean name="folderCMDAddToEPortfolio" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >
+		<property name="className" value="org.olat.presentation.portfolio.artefacts.collect.CmdAddToEPortfolioImpl"/>
+	</bean>
+	
+	<!-- Deadline Job -->
+	<bean id="epDeadlineTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="epDeadlineJob.${cluster.singleton.services}" />
+  	<!-- adjust cron style syntax for your notification needs 
+   	"0 10 0 * *"  e.g. 10 minutes after midnight
+   	
+   	A "Cron-Expression" is a string comprised of 6 or 7 fields separated by white space. The 6 mandatory and 1 optional fields are as follows:
+		Field Name 	  	Allowed Values 	  	Allowed Special Characters
+		Seconds 	  	0-59 	  			, - * /
+		Minutes 	  	0-59 	  			, - * /
+		Hours 	  		0-23 	  			, - * /
+		Day-of-month 	1-31 	  			, - * ? / L W C
+		Month 	  		1-12 or JAN-DEC 	, - * /
+		Day-of-Week 	1-7 or SUN-SAT 	  	, - * ? / L C #
+		Year (Optional)	empty, 1970-2099 	, - * /    	
+		
+		e.g. 0 5 */8 * * ?
+   	-->
+		<property name="cronExpression" value="${portfolio.deadline.cron.expression}" />
+		<property name="startDelay" value="60000" />
+	</bean>
+
+	<bean id="epDeadlineJob.enabled" class="org.springframework.scheduling.quartz.JobDetailBean" lazy-init="true">
+		<property name="jobClass" value="org.olat.lms.portfolio.EPDeadlineJob" />
+	</bean>
+	
+	<!-- dummy bean -->
+	<bean id="epDeadlineJob.disabled" class="org.springframework.scheduling.quartz.JobDetailBean"  lazy-init="true">
+		<property name="jobClass" value="org.olat.lms.commons.scheduler.DummyJob" />
+	</bean>
+	
+	
+</beans>

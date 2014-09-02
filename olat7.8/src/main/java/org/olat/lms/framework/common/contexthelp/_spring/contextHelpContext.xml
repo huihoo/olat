@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+  
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+<context:annotation-config />
+
+
+	
+<bean id="contextHelpModule" class="org.olat.lms.framework.common.contexthelp.ContextHelpModule" init-method="init" destroy-method="destroy" >
+
+	<property name="defaultProperties">
+			<value>
+			<!-- global on/off of context help -->
+			contextHelpEnabled=true
+			<!-- allow users to rate entries in the help (helpfull, not helpfull) -->
+			ratingEnabled=true
+			<!-- TODO: this setting does not work at the moment, need refactoring towards configOnOff interface. gs -->
+			</value>
+     </property>
+	
+	<property name="CHelpBlacklist">
+		<!-- 
+		The context help blacklist is used to specify context help pages
+		that should not be used in the context help index page. This is useful
+		if a certain software module is not enabled and thus the context help
+		must not confuse users.
+		Add one reference per line. Lines starting with the #-sign are ignored
+		A context help is referenced like this: package.name:page.html
+		
+		Example:
+		org.olat.presentation.xyz.demo 					-> exclude all pages in this package
+		org.olat.presentation.xyz.demo:chelp-demo.html  	-> exclude exactly this page
+		 -->
+		<set>
+			<value>de.bps.course.nodes.den</value>
+		</set>
+	</property>
+</bean>
+
+</beans>

@@ -1,0 +1,36 @@
+$r.contextHelpWithWrapper("org.olat.presentation.portal.campus","campus.html","help.hover.campus")
+<br>
+#if ( $to_create_course_list.isEmpty() && $go_to_course_list.isEmpty() )
+	$r.translate("portlet.message.course.list.is.empty")
+#else
+	$r.translate("portlet.message.course.list.header")<br>
+	<br>
+	## 1. List of courses which can be startet
+	$r.render("go_to_course_tbl")
+	
+	<br>
+	## 2. List of courses which could be created
+	<table>
+	#foreach ($entry in $to_create_course_list)
+		##renders the link
+		<tr>	
+			<td>$entry.getCourseTitleForPortlet()</td>
+			<td>$r.render($entry.getButtonId())</td>
+		</tr>
+	#end
+	</table>
+	
+	## 3. List of courses which are not yet created (for students only)
+	#foreach ($entry in $not_yet_created_course_list)
+		##renders the link
+			$r.render($entry.getCourseTitleForPortlet())<br>
+	#end
+	
+	<br>
+	## 4. List of courses which are not yet activated
+	#foreach ($entry in $not_yet_activated_course_list)
+		##renders the link
+			$r.render($entry.getCourseTitleForPortlet())<br>
+	#end
+#end
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+  http://www.springframework.org/schema/tx
+  http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+   http://www.springframework.org/schema/aop 
+   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+<!-- this turns on annotation configuration (e.g. @Autowired, @Service, ...) for the path org.olat.lms.* -->
+<context:annotation-config />
+<context:component-scan base-package="org.olat.lms" />
+
+<tx:annotation-driven transaction-manager="transactionManager" order="200"/>
+
+<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+  <property name="sessionFactory" ref="daoSessionFactory" />
+</bean>
+
+<aop:config>
+	<!-- any method with Retryable annotation -->	
+	<aop:pointcut id="retryableOperation" expression="@annotation(org.olat.system.commons.Retryable)" />
+	
+	<aop:aspect id="retryLearnOperationsAspect" ref="transactionRetryer">			
+		<aop:around method="retry" pointcut-ref="retryableOperation"/>
+	</aop:aspect>		
+</aop:config>
+
+<bean id="transactionRetryer" class="org.olat.lms.learn.TransactionRetryer">
+	<property name="order" value="1"/>	
+	<property name="maxRetriesPerException">
+		<map>
+			<entry key="org.hibernate.exception.ConstraintViolationException" value="1" />
+			<entry key="org.hibernate.StaleObjectStateException" value="1" />
+			<entry key="org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException" value="1" />		
+			<entry key="org.springframework.mail.MailSendException" value="3" />	
+		</map>
+	</property>
+</bean>
+
+</beans>

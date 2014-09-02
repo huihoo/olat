@@ -1,0 +1,125 @@
+1. Installing OLAT 
+------------------
+Please refer to the online HTML documentation at 
+http://www.olat.org/docu/
+
+*Unreleased versions* are always described in this file (see below...)
+
+2. Licensing
+------------
+With regard to licensing please refer to the file LICENSE.TXT
+
+3. Contact information
+----------------------
+You are welcome to participate in our development. If you make any patches to
+the code, please send them to:
+
+mailto:info@olat.org 
+
+For further information about OLAT please visit the product's website at
+
+http://www.olat.org/
+
+4. Mailing lists
+-----------------
+Feel free to subscribe to our mailinglists at http://lists.olat.org
+- announce: Get informed about new releases - very low traffic
+- users: Discussion of users topics - not primarily technical discussions but
+  discussions on how to use OLAT or general discussions about e-learning.
+- developers: Technical discussions, feature requests, bug reports, patches...
+
+
+
+*******************************************************************************************
+*******************************************************************************************
+Setting up latest OLAT version on Eclipse
+*******************************************************************************************
+
+o As the latest development is often ahead of the current documentation you will always find an up to date install guide here.
+o There a two different approaches to install a development environment for OLAT. Choose the one you prefer.
+
+*******************************************************************************************
+Setting up OLAT in Eclipse with Mercurial and Maven from the command line
+
+*******************************************************************************************
+
+1. Check that you have Eclipse with the WTP plugins (app server integration e.g. Tomcat) or full JEE version which will be needed to start OLAT from within eclipse
+	with the "run on server" command.
+2. Check that you have Mercurial (hg) installed
+3. perform fresh clone from: http://hg.olat.org/repos/OLAT
+4. In Terminal: make sure that you are using maven 2.2 or higher (mvn -V)
+5. In Terminal: create eclipse project settings and create .classpath file by running
+	mvn eclipse:clean eclipse:eclipse -Declipse.workspace=<workspace_path> eclipse:add-maven-repo
+	(Note: If you already have an M2_REPO bound to your local maven repository then the last two arguments are optional)
+
+5. In Eclipse: import the project with the eclipse wizzard "Import->General->Existing project into workspace"
+
+
+6. In Eclipse: setup tomcat server by clicking on olat->Run As->"Run on Server". 
+  6.1 The Run on Server wizzard will pop up and check: manually define a new server
+  6.2 look for Apache->Tomcat v6.0 Server
+  6.3 Click finish (This step often fails as the default timeout for starting is 45 seconds only). Double click the newly created server and 
+  increase the timeout
+  6.4 The "Run on server" task created a folder in the Package Explorer. Open the explorer and edit the following line in the server.xml file.
+
+    <Context docBase="OLAT-LMS" path="/olat" reloadable="false" source="org.eclipse.jst.jee.server:OLAT-LMS"/></Host>
+    --> reloadable must be false
+
+
+*************************************************************************************************
+Setting up OLAT in Eclipse with "Mercurial Eclipse Plugin" and "Maven Eclipse Plugin" installed
+
+*************************************************************************************************
+Preconditions:
+	o Check that you have maven 2.2.x installed/referenced in eclipse. Eclipse Helios comes already with maven 3.x which will not work!!!
+	o Check that you have the mercurial plugin installed
+	o Check that you have the maven m2 eclipse plugin installed
+
+
+1. Create an Mercurial repo location (http://hg.olat.org/repos/OLAT) and clone the repo.
+  1.1 Do not add a password and make sure you uncheck the init Mercurial repo checkbox at the end. Right click to clone repo into your workspace.
+2. Run the "m2: create eclipse project settings" launch configuration from the green play button in eclipse.
+  You have to select the project by clicking on it with otherwise the variable "project_loc" will be empty.
+    2.1 If you do not see the launch configuration close the project and reopen it. This will reload the config and fix this issue.
+3. continue with step 6 from above "Run As"-> "Run on Server"...
+
+
+
+*******************************
+Appendix
+*******************************
+
+A. (optional) In Eclipse: setup VM arguments by clicking on olat-lms->Run Configurations->Arguments->VM Arguments and pasting:
+-Djava.io.tmpdir="/yourhome/olatdata"
+-Xmx512m -Xms512m
+
+B. (optional) Create an empty olat.local.properties and save it to /yourTomcatDir/lib (OLAT searches for this file on the classpath and /tomcat/lib is part of it). 
+  But OLAT should start with just the default config which is in the file olat.properties!
+
+D. (optional) Usually you will get a timeout exception when you start a new OLAT. After double clicking on the server entry you can increase the timeout for the startup.
+
+E. (optional). If your tomcat starts very quickly but you cannnot access OLAT it might be that tomcat did not find the OLAT context.
+  Right click the server entry and click publish to inform eclipse about a new or updated context.
+
+F. If you run into problems with classes or resources not found e.g. "ClassNotFoundException" right click your server config and run the "Clean..." Task to republish 
+  all resources. Problems comes mostly when switching from eclipse to console and back with command like mvn clean, or eclipse clean and such.
+  You will always get a clean and working environment when you do the following: Eclipse clean, create eclipse settings with launch, Server publish clean resources and restart OLAT.
+
+G. If you get the error "maven.build.properties" not found you either did not run the eclipse:eclipse command or your wtp deploy path is not in sync with the workspace. 
+	Check your deploy path (looks something like: ~/yourworkspcace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps) and if you do not see the static folder, 
+	the maven.build.properties file and jars and classes your should right click your server config and say clean... This will sync your workspace with the deploy path.
+	
+H. If you get the error "M2-REPO variable not bound" you have to add your local maven repository location to eclipse by modifing project properties:
+	properties -> build path -> variables -> add new "M2_REPO" that points to your local maven repo e.g. /home/peter/.m2/repository
+
+Background (optional for further interest)
+------------------------------------------------------------------
+
+o There is only one spring context for the whole OLAT which you can access via CoreSpringFactory (only needed in rare special cases!). The context is configured with
+  the files olat.properies and can be overwritten with olat.local.properties. 
+  changes in olat.local.properties are reflected upon each restart of Tomcat.
+  Developers can use the embedded Hsqldb and do not need to create a database manually (Default installation of data and database points to java.io.tmpdir which you can overwrite with  
+  -Djava.io.tmpdir=/yourdir if you like or adjust the olat.local.properties file as before)
+
+hd was here
+

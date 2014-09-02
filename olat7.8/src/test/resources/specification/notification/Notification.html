@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+<title>Benachrichtungen</title>
+<link href="../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>Benachrichtigungen</h1>
+<p>
+Es gibt verschiedene Benachrichtungstypen die &uuml;ber einen Benachrichtungskanal verwaltet werden. Die &Auml;nderungen werden mit einer bestimmbaren Periodizit&auml;t angezeigt bzw. versandt.</p>
+
+<b>Tests zu Benachrichtungen</b>
+    <p>   <a href="./NotificationManuellTests.html">Manuelle Tests zu Benachrichtigungen</a></p>
+    <p>   <a href="./NotificationPerformanceTests.html">Last Tests zu Benachrichtigungen</a></p>
+
+<b>Keys für Übersetzungen</b>
+<p> Die Entwickler sind gebeten auf der folgenden Seite die geänderten und neuen Keys einzutragen:</p>
+<p>   <a href="./NotificationKeysForTranslators.html">Keys für Übersetzungen</a></p>
+
+
+<b>Formen der Benachrichtung</b>
+<ul>
+<li><a concordion:run="concordion" href="./subscription/Subscription.html">Abonnements</a></li>
+<li><a href="./confirmations/Confirmations.html">Bestätigungen</a></li>
+<li><a href="./messages/Messages.html">Mitteilungen</a></li>
+<li><a href="./activations/Activations.html">Aktivierungen</a></li>
+</ul>
+<p>
+<img alt="Benachrichtigungstypen" src="NotificationTypes.gif" width="600px" />
+</p>
+
+    <table border="1" >
+        
+        <tr>
+            <th>Typ</th>
+            <th>Was</th>
+            <th colspan="2" >Merkmale</th>
+        </tr>
+        
+        <tr >
+            <td rowspan="5" ><strong>Abonnements</strong></td>
+            <td rowspan="5">Abonnierbare Bausteine:
+                Blog, Podcast, Ordner, Forum, Wiki, Dateidiskussion</td>
+            <td>Absender:</td>
+            <td>System</td>
+        </tr>
+        <tr>
+            <td>Empfänger:</td>
+            <td>Abonnierer</td>
+        </tr>
+        <tr>
+            <td>Versand:</td>
+            <td>Muss aktiviert  werden --&gt; automatisch sobald abonniert wurde und tägliche Benachrichtigung ausgewählt wurde, tägliche Zustellung</td>
+        </tr>
+        <tr>
+            <td>Inhalt:</td>
+            <td>Vom System definierter Text mit JumpIn-Link, Benachrichtigungen über Änderungen und Neuigkeiten im Kurs</td>
+        </tr>
+        <tr>
+            <td>Weitere:</td>
+            <td>Einsehbar unter Home/Abonnements/Neuigkeiten</td>
+        </tr>
+        <tr>
+            <td rowspan="5" ><strong>Mitteilungen</strong></td>
+            <td rowspan="5" ><p>Kontaktformular via Visitenkarte</p>
+                <p>Email-Baustein(Kurs und Gruppe)</p>
+                <p>Mitteilungsbaustein</p>
+                <p>Red Screen versenden</p></td>
+            <td>Absender:</td>
+            <td>Benutzer</td>
+        </tr>
+        <tr>
+            <td>Empfänger:</td>
+            <td>Vom Benutzer ausgewählter Empfänger</td>
+        </tr>
+        <tr>
+            <td>Versand:</td>
+            <td>Explizit per &bdquo;Senden-Button&ldquo;, sofortige Zustellung</td>
+        </tr>
+        <tr>
+            <td>Inhalt:</td>
+            <td>Vom Benutzer frei definierter Text (allenfalls vom System definierter nicht veränderbarer Footer)</td>
+        </tr>
+        <tr >
+            <td>Weitere:</td>
+            <td>Kopie an Absender und Attachment möglich</td>
+        </tr>
+        <tr>
+            <td rowspan="5"><strong>Bestätigungen</strong>
+            </td>
+            <td rowspan="5">Aufgabenbaustein: Abgabeordner, Rückgabeordner, Bewertung, Musterlösung
+                <p>Bewertungsbaustein</p>
+                <p>Themenvergabe</p>
+                <p>Ein- und Austragen in einer Gruppe durch Dritte</p>
+                <p>Logfiles-Archivierung (wenn Kurs archiviert wird)</p></td>
+            <td>Absender:</td>
+            <td>System</td>
+        </tr>
+        <tr>
+            <td>Empfänger:</td>
+            <td>Betroffener oder auslösender Benutzer</td>
+        </tr>
+        <tr>
+            <td>Versand:</td>
+            <td>Automatisch bzw. im Kurseditor eingestellt, dass Bestätigung gesendet wird, sofortige Zustellung</td>
+        </tr>
+        <tr>
+            <td>Inhalt:</td>
+            <td>Vom System definierter Text, Bestätigung, dass Aktion, von der man betroffen ist oder die man ausgelöst hat, ausgeführt wurde.</td>
+        </tr>
+        <tr>
+            <td>Weitere:</td>
+            <td>Studierender wird nicht mehr per E-Mail über Abgabe bestätigt, sondern es ist für Studierende via GUI ersichtlich, dass und was er abgegeben hat.</td>
+        </tr>
+        <tr>
+            <td rowspan="5"><strong>Aktivierungen</strong>
+                
+            </td>
+            <td rowspan="5">Email-Aktivierung (Bestätigung von E-Mail Adresse)
+                <p>User Administration / Einstellungen</p>
+                <p>Portfoliomappe  freigeben</p>
+                <p>Löschen von Benutzern und Lernressourcen</p></td>
+            <td>Absender:</td>
+            <td>System</td>
+        </tr>
+        <tr>
+            <td>Empfänger:</td>
+            <td>Betroffener Benutzer bzw. bei E-Portfolio-Einladung bestimmt der Benutzer den Empfänger.</td>
+        </tr>
+        <tr>
+            <td>Versand:</td>
+            <td>Automatisch, bzw. &bdquo;Send-Button&ldquo; bei E-Portfolio-Einladung, sofortige Zustellung</td>
+        </tr>
+        <tr>
+            <td>Inhalt:</td>
+            <td>Vom System definierter Text mit JumpIn-Link,</td>
+        </tr>
+        <tr>
+            <td>Weitere:</td>
+            <td>Erfordert Aktion des Empfängers (z.B. Aktivierung der E-Mail oder Aufruf der Lernressource, falls sie nicht gelöscht werden soll)</td>
+        </tr>
+    </table>
+    
+    
+     
+  
+    
+    
+    
+    
+    <br></br>
+     <b>Verwendung von Begriffen</b>
+      <table><tr><th>Deutsch</th><th>Englisch</th></tr>
+          <tr><td>Benachrichtigung</td><td>Notification</td></tr>
+          <tr><td>Abonnements</td><td>Subscriptions</td></tr>
+          <tr><td>Mitteilungen</td><td>Messages</td></tr>
+          <tr><td>Bestätigungen</td><td>Confirmations</td></tr>
+          <tr><td>Aktivierungen</td><td>Activations</td></tr>
+          <tr><td>Auslöser (für Benachrichtigungen)</td><td>Events</td></tr>
+          <tr><td>Benachrichtigungseinstellungen</td><td>Subscribers Settings</td></tr>
+          <tr><td>Neuigkeiten</td><td>News</td></tr>
+         
+      </table>     
+
+<br></br>
+
+
+ <h2>Fehlschlagen des E-Mail-Versandes</h2>
+      <ul>
+       <li>Falls eine E-Mail-Transaktion pro Benutzer fehlschlägt, probiert OLAT weitere drei Male die E-Mail-Transaktion pro Benutzer durchzuführen, bevor der Status "failed" gelogt wird.</li>
+       <li>Eine E-Mail Benachrichtigung mit der Information "Mail-Delivery failed" wird nur bei der Rolle Administrator verschickt.</li>
+       <li>In OLAT gibt es kein Fehler-Pop-up über das Fehlschlagen des E-Mail-Versandes</li>
+      </ul>
+     
+<br></br>
+
+
+<div class="metrics">
+  
+    <h2>Metriken für Abonnemente</h2>
+    <ol><li><b>Zustellverlässlichkeit während der Laufzeit</b><br/>
+    Die Zustellverlässlichkeit ist der Anteil der erfolgreich versendeten Emails bezüglich aller 
+    versendeten Emails während der Laufzeit des OLAT Service.<br/>
+    <b>emailSuccessRate </b> = 1 - ( #nichtErfolgreichVersendet / #alleVersendete )<br/>
+
+    <div class="example">
+    Gegeben während der Laufzeit des OLAT Service, werden 3x Benachrichtigungen berechnet
+    <table>
+    <tr><th>#nichtErfolgreichVersendet</th><th>#alleVersendete</th></tr>
+    <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">5</td><td concordion:set="#numberOfSentEmails">100</td></tr>
+    <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">23</td><td concordion:set="#numberOfSentEmails">200</td></tr>
+    <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">2</td><td concordion:set="#numberOfSentEmails">300</td></tr>
+    </table>
+    Dann erwarten wir eine emailSuccessRate von <span concordion:assertEquals="getEmailSuccessRate()">0.95</span>.
+    </div>
+
+    <div class="example">
+    Gegeben während der Laufzeit des OLAT Service, wird 1x die Benachrichtigung berechnet und es gibt keine Emails zu versenden
+    <table>
+    <tr><th>#nichtErfolgreichVersendet</th><th>#alleVersendete</th></tr>
+    <tr concordion:execute="addNotifyStatistics(#numberOfSentEmails,#numberOfFailedEmails)"><td concordion:set="#numberOfFailedEmails">0</td><td concordion:set="#numberOfSentEmails">0</td></tr>
+    </table>
+    Dann erwarten wir eine emailSuccessRate von <span concordion:assertEquals="getEmailSuccessRate()">1.0</span>, und keine Fehlermeldung wegen einer Division by Zero.
+    </div>
+    </li>
+   
+    <li class="notyet">
+    Test, ob Datum im Mail älter als Versandintervall. 
+    </li>
+    <li class="notyet">
+    Wieviele Benachrichtigungen der Benutzer, die Benachrichtigungen abonniert haben, sind, während einer Woche,
+    pro Benutzer nicht angekommen, im Vergleich zu allen versandten Benachrichtigungen pro Benutzer pro Monat im Durchschnitt? 
+    Red: Über 20%, Amber: bis 20%, Green: bis 10%.
+    <ul><li>X= Anzahl zu versendender E-Mail-Benachrichtigungen pro Tag geteilt durch Anzahl Forumsabonnierer</li>
+        <li>Y= Anzahl zu versendender E-Mail-Benachrichtigungen minus Anzahl nicht versendeter E-Mail-Benachrichtigungen pro Tag geteilt durch Anzahl Forumsabonnierer</li>
+        <li>Z= 100% geteilt durch X mal Y</li>
+        <li>Jeder Tag erhält eine Bewertung in Punkten. Wenn Z kleiner gleich 80% dann erhält der Tag die Bewertung 1 Punkt; wenn Z grösser als 80% und kleiner gleich 90% dann erhält der Tag die Bewertung 2 Punkte; wenn Z grösser als 90% dann erhält der Tag die Bewertung 3 Punkte </li>
+        <li>Aus diesen Punkten wird über die Dauer einer Woche jeweils der "Moving Average" berechnet. </li>
+        <li>Daraus lässt sich dann folgende Kategorisierung ableiten: Red ist kleiner gleich 16 geteilt durch 7; Amber ist grösser als 16 geteilt durch 7 und kleiner gleich 18 geteilt durch 7; Green ist grösser als 18 geteilt durch 7</li>
+    </ul></li>
+
+    <li class="notyet">Wieviele Benutzer haben innerhalb eines Monates eine Zustellverlässlichkeit von weniger als 80%? Red: ab 100 Personen, Amber: bis 50 Personen, Green: bis 20 Personen.</li>
+    <li class="notyet">Wieviele Benachrichtigungen kommen erst beim zweiten Versenden, also verspätet, pro Benutzer, pro Monat an?</li>
+    <li class="notyet">Wieviele Benutzer erhalten 80% der Meldungen verspätet?</li>
+    </ol>
+    </div>
+
+
+
+    <div class="metrics">
+  
+        <h2>Metriken für Bestätigungen, Aktivierungen, Mitteilungen</h2>
+        <ol><li><b>Zustellverlässlichkeit während der Laufzeit</b><br/>
+        Die Zustellverlässlichkeit ist der Anteil der erfolgreich versendeten Emails bezüglich aller 
+        versendeten Emails während der Laufzeit des OLAT Service.<br/>
+        <b>emailSuccessRate </b> = 1 - ( #nichtErfolgreichVersendet / #alleVersendete )<br/>
+ 
+       
+        
+     <div class="example">
+        Ab Serverstart alle sofort versendeten Benachrichtigungen (Bestätigungen, Aktivierungen, Mitteilungen).
+        <table>
+            <tr><th>#nichtErfolgreichVersendet</th><th>#alleVersendete</th></tr>
+            <tr><td>5</td><td>100</td></tr>
+            <tr><td>23</td><td>200</td></tr>
+            <tr><td>2</td><td>300</td></tr>
+        </table>
+             Dann erwarten wir eine emailSuccessRate von <span>0.95</span>.
+      </div> 
+      </li>           
+  </ol> 
+  </div>
+            
+       
+
+
+</body>
+</html>

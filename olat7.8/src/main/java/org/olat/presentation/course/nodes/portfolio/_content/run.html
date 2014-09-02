@@ -1,0 +1,42 @@
+<div>
+	<table>
+		<tr>
+			<td>$r.translate("explanation.text")</td>
+			<td>$explanation</td>
+		</tr>
+		#if ($deadlineType)
+			<tr>
+				<td>$r.translate("map.deadline.${deadlineType}.label")</td>
+				<td>$deadlineInfo</td>
+			</tr>
+		#end
+		
+		#if ($portfolioTaskAvailable)
+			<tr>
+				<td colspan="2">$newMapText</td>
+			</tr>
+			<tr>
+				<td colspan="2">$r.render("availableTaskLink")</td>
+			</tr>
+		#else
+			<tr>
+				<td>$r.translate("select.mymap")</td>
+				<td>$r.render("collectedTaskLink")</td>
+			</tr>
+			<tr>
+				<td>$r.translate("map.copyDate")</td>
+				<td>$copyDate</td>
+			</tr>
+			#if ($returnDate)
+				<tr>
+					<td>$r.translate("map.returnDate")</td>
+					<td>$returnDate</td>
+				</tr>
+			#end
+		#end
+	</table>
+	
+	#if ($hasScoring)
+		$r.render("scoringController")
+	#end
+</div>

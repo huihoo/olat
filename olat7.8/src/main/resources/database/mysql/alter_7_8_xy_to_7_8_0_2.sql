@@ -1,0 +1,1 @@
+alter table ck_lecturer add column additionalPersonalNrs varchar(255);

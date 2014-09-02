@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+	<!-- Portlets are no longer added to a list but searched on the whole classpath. This means that you can add you own portlets packed
+		as a jar file or disable existing portlets over external properties files. Every portlet instance has a field enabeld which is true by default
+		an you can override like this:
+		<property name="enabled" value="${portlet.links.enabled}" />
+	 -->
+	
+	<!-- Portlet factory -->
+	<bean id="portletfactory" class="org.olat.presentation.framework.core.control.generic.portal.PortletFactory" />
+	
+	<!-- Portlets  -->
+	<bean id="CampusCourse" class="org.olat.presentation.portal.campus.CampusCoursePortlet">
+		<property name="name" value="CampusCourse" />
+		<property name="enabled" value="${portlet.campuscourse.enabled}" />
+	</bean>
+	<bean id="Bookmarks" class="org.olat.presentation.bookmark.BookmarksPortlet" scope="prototype">
+		<property name="name" value="Bookmarks" />
+		<property name="enabled" value="${portlet.bookmarks.enabled}" />
+	</bean>
+	<bean id="Groups" class="org.olat.presentation.portal.group.GroupsPortlet" scope="prototype">
+		<property name="name" value="Groups" />
+		<property name="enabled" value="${portlet.groups.enabled}" />
+	</bean>
+	
+	<bean id="Notification" class="org.olat.presentation.notification.NotificationPortlet" scope="prototype">
+		<property name="name" value="Notification" />
+		<property name="enabled" value="${portlet.notification.enabled}" />
+	</bean>
+	<bean id="Calendar" class="org.olat.presentation.portal.calendar.CalendarPortlet" scope="prototype">
+		<property name="name" value="Calendar" />
+		<property name="enabled" value="${portlet.calendar.enabled}" />
+	</bean>
+	<bean id="EfficiencyStatements" class="org.olat.presentation.course.assessment.EfficiencyStatementsPortlet" scope="prototype">
+		<property name="name" value="EfficiencyStatements" />
+		<property name="enabled" value="${portlet.efficiencyStatements.enabled}" />
+	</bean>
+
+	<!-- the users home portal -->
+	<bean id="homeportal" class="org.olat.presentation.framework.core.control.generic.portal.PortalMainImpl" scope="prototype">
+		<property name="name" value="homeportal" />
+		<property name="portalColumns">
+		<!-- this is the default configuration, used when user has no own configuration -->
+			<list>
+				<list>
+					<value>CampusCourse</value>
+					<value>Bookmarks</value>
+					<value>Groups</value> 
+				</list>
+				<list>
+					<value>Notification</value>
+					<value>Calendar</value>
+					<value>EfficiencyStatements</value>
+				</list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- the guests home portal -->
+	<bean id="guestportal" class="org.olat.presentation.framework.core.control.generic.portal.PortalMainImpl" scope="prototype">
+		<property name="name" value="guestportal" />
+		<property name="portalColumns">
+		<!-- this is the default configuration, used when user has no own configuration -->
+			<list>
+				<list>
+					<value>CampusCourse</value>
+					<value>Bookmarks</value>
+					<value>Groups</value> 
+				</list>
+				<list>
+					<value>Notification</value>
+					<value>Calendar</value>
+					<value>EfficiencyStatements</value>
+				</list>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

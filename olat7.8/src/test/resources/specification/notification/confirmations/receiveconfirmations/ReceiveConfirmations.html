@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>Bestätigungen erhalten</title>
+<link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1>Bestätigungen erhalten</h1>
+<div class="userstory">
+    <h1>User Story</h1>
+    <p>
+        Als Student/Dozent will ich über Aktionen, die mich betreffen oder die ich ausgelöst habe, informiert sein, so dass ich reagieren kann. <br/> 
+    </p>
+    </div>  
+<br></br>    
+<h1>Übersicht Bestätigungen</h1>  
+ 
+ 
+   <h2>BPM Bestätigungen</h2>
+        
+        <p><a href="./img/BPMConfirmations.jpg"><img width="300" alt="BPM Bestätigungsübersicht" title="BPM Bestätigungsübersicht" src="./img/BPMConfirmations.jpg" /></a></p>
+
+<p><a href="./img/BPMConfirmations2.mdzip">BPM Bestätigungsübersicht</a></p>
+
+  
+<h1>Aufgabe</h1>  
+  
+  <h2>BPM Aufgabenbaustein</h2>
+        
+        <p><a href="./img/BPMConfirmationsTask.jpg"><img width="300" alt="BPM Bestätigung Aufgabe" title="BPM Bestätigung Aufgabe" src="./img/BPMConfirmationsTask.jpg" /></a></p>
+<br></br>    
+  
+ 
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="2">Student</td><td rowspan="2">Hochladen einer Datei in den Abgabeordner der Aufgabe (Anzeige des erfolgreichen Hochladens über Informations Pop-up)</td><td>Bestätigung an Student</td></tr>
+          <tr><td>Bestätigung an Kursbesitzer und Betreuer der entsprechenden Aufgabe (Vorbedingung: Benachrichtigung im Kurseditor ist aktiviert)</td></tr>
+          <tr><td>Dozent</td><td>Hochladen einer Datei in den Rückgabeordner des Aufgabenbausteins (über Bewertungswerkzeug)</td><td>Bestätigung an Student</td></tr>
+          <tr><td rowspan="2">Student</td><td rowspan="2">Hochladen einer Datei in den Abgabeordner der Themenvergabe (Anzeige des erfolgreichen Hochladens über Informations Pop-up)</td><td>Bestätigung an Student</td></tr>
+          <tr><td>Bestätigung an Kursbesitzer der entsprechenden Themenvergabe und Betreuer (Themenverantwortliche) des entsprechenden Themas (Vorbedingung: Benachrichtigung im Kurseditor ist aktiviert)</td></tr>
+          <tr><td>Dozent</td><td>Hochladen einer Datei in den Rückgabeordner seines Themas in der Themenvergabe</td><td>Bestätigung an Student</td></tr>         
+      </table> 
+      <div class="attention">
+                <ul>
+                    <li>Themenvergabe: Beim Hochladen einer Datei in den Rückgabeordner der Themenvergabe wird (noch) keine E-Mail-Benachrichtigung ausgelöst.</li>
+                    <li>Themenvergabe: Die Benachrichtigung sollte nur an die Themenverantwortliche des entsprechenden Themas, für welches der Student eine Datei hochgeladen hat, verschickt werden.</li>
+                    <li>Die Bestätigungs-E-Mails werden sofort verschickt.</li>                                                           
+                </ul></div>   
+   
+<br></br>
+
+<h2>GUI Vorlage für die Themenvergabe für den Tab "Themenverwaltung" eines Themas</h2>
+    
+    <a href="./img/GUITopicAssignmentTopic.jpg"><img width="300" alt="GUI für Tab Themenverwaltung in der Themenvergabe" title="GUI für Tab Themenverwaltung in der Themenvergabe" src="./img/GUITopicAssignmentTopic.jpg" /></a>    
+  
+  <div class="attention">
+                <ul>
+                    <li>Für die Verständlichkeit sollte die Überschrift für die Themenverantwortlichen angepasst werden.<br/> 
+                        ALT: "Verantwotliche des Themas", NEU: "Themenverantwortliche"</li>
+                </ul></div>   
+   
+                    
+                    
+<br></br>                    
+                    
+<h2>GUI Vorlage für Aktivierung der Abgabebestätigung für den Dozenten (Aufgabenbaustein und Themenvergabe)</h2>
+    
+    <a href="./img/GUITaskTabDuedate.jpg"><img width="300" alt="GUI für Tab Abgabe in der Aufgabe" title="GUI für Tab Abgabe in der Aufgabe" src="./img/GUITaskTabDuedate.jpg" /></a>    
+    <a href="./img/GUITopicAssignmentTabDuedate.jpg"><img width="300" alt="GUI für Tab Abgabe in der Themenvergabe" title="GUI für Tab Abgabe in der Themenvergabe" src="./img/GUITopicAssignmentTabDuedate.jpg" /></a>
+ 
+  <div class="attention">
+                <ul>
+                    <li>Der Dozent kann im Kurseditor wählen, ob er eine Bestätigung über die Abgabe der Aufgabe durch einen Studenten, erhalten möchte.</li>
+                    <li>Wird die E-Mail Benachrichtigung aktiviert, ist diese für Besitzer des Kurses wie auch für Betreuer dieser Aufgabe gültig.</li>
+                    <li>Default: E-Mail Benachrichtigung ist nicht aktiviert.</li>
+                                                           
+                </ul></div>   
+                      
+<h2>GUI Vorlage für Aufgabenbaustein im Kursrun</h2>
+    
+    <a href="./img/GUITaskCourseRun.jpg"><img width="300" alt="GUI für Aufgabenbaustein" title="GUI für Aufgabenbaustein" src="./img/GUITaskCourseRun.jpg" /></a>    
+  <div class="attention">
+                <ul>
+                    <li>Abonnierbutton für Abgabeordner, Rückgabeordner und Musterlösung entfernen.</li>
+                                                                               
+                </ul></div>         
+
+<h2>Formatvorlagen für Bestätigungs-Emails</h2>
+    <p>Student: Sabrina Sutter <br/>
+        Dozent: Daniel Diener <br/>
+        Tutor: Thomas Tanner
+    </p>
+    <h3>Formatvorlage E-Mail an Dozent, dass Student Aufgabe im Abgabeordner abgegeben hat oder dass Student eine Datei im Abgabeordner der Themenvergabe hochgeladen hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Daniel.Diener@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Abgabebestätigung von Sabrina Sutter
+
+Hiermit wird bestätigt, dass Sabrina Sutter die Datei "<a href="LINK ZUM BEWERTUNGSWERKZEUG NACH BENUTZER DETAILANSICHT DER BEWERTUNG">Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+am 30.04.2012 um 10:15 Uhr im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" abgegeben hat.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+
+  <div class="attention">
+                <ul>
+                    <li>Kursbaustein "Aufgabe": Kein Link direkt zum Aufgabenbaustein, ansonsten wird bei einer automatischen Zuweisung eine Aufgabe gezogen.</li>
+                    <li>Kursbaustein "Aufgabe": Seminararbeit_Thema_Vogelschwärme.doc --> LINK ZUM BEWERTUNGSWERKZEUG NACH BENUTZER DETAILANSICHT DER BEWERTUNG</li>
+                    <li>Kursbaustein "Themenvergabe": Seminararbeit_Thema_Vogelschwärme.doc --> LINK ZUM KURSBAUSTEIN THEMENVERGABE, DETAIL THEMA, TAB ORDNER</li>
+                    <li>Email To: alle Kursbesitzer, alle Gruppenbetreuer</li>
+                    <li>Vorsicht bei Keyerstellung für Übersetzer</li>
+                                                           
+                </ul></div>         
+  
+
+    <h3>Formatvorlage E-Mail an Student, dass er Aufgabe im Abgabeordner abgegeben hat oder eine Datei im Abgabeordner der Themenvergabe hochgeladen hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Sabrina.Sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Abgabebestätigung für Sabrina Sutter
+
+Hiermit wird bestätigt, dass Sie, Sabrina Sutter, die Datei "<a href="LINK ZUM ABGABEORDNER DES AUFGABENBAUSTEIN IM KURS">Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+am 30.04.2012 um 10:15 Uhr im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" abgegeben haben.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+    </pre>
+    <div class="attention">
+        <ul>
+            <li>Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM ABGABEORDNER DES AUFGABENBAUSTEIN IM KURS</li>
+            <li>Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM ABGABEORDNER DER THEMENVERGABE IM KURS IM THEMA, TAB ORDNER</li>
+          
+            
+        </ul></div>    
+   
+    <h3>Formatvorlage E-Mail an Student, dass Dozent/Tutor etw. in den Rückgabeordner gelegt hat</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: Sabrina.Sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Rückgabebestätigung 
+
+Thomas Tanner hat Ihnen am 30.05.2012 um 10:00 Uhr die Datei "<a href="LINK ZUM RÜCKGABEORDNER DES AUFGABENBAUSTEINS IM KURS">Korrektur_Seminararbeit_Thema_Vogelschwärme.doc</a>" 
+in den Rückgabeordner des Kurses "<a href="LINK ZUM KURS">Biologie I</a>" gelegt.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+
+    <div class="attention">
+        <ul>
+            <li>Korrektur_Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM RÜCKGABEORDNER DES AUFGABENBAUSTEINS IM KURS</li>
+            <li>Korrektur_Seminararbeit_Thema_Vogelschwärme.doc--> LINK ZUM RÜCKGABEORDNER, TAB ORDNER DES THEMAS IN DER THEMENVERGABE</li>
+         </ul></div>     
+
+
+    <h1>Benachrichtigung bei Löschen eines Aufgaben-Files im Aufgabenbaustein</h1>
+<a href="DeleteTaskFile.odt">Aufgaben-File löschen (ODT)</a>	</br>
+<a href="DeleteTaskFile.pdf">Aufgaben-File löschen (PDF)</a>
+ 
+ 
+</br>
+</br>
+
+  
+<h1>Benachrichtigung bei eingegangenen Testresultaten</h1>  
+ 
+ 
+   <h2>BPM Test</h2>
+        
+        <p><a href="./img/BPMConfirmationsTest.jpg"><img width="300" alt="BPM Bestätigung Test" title="BPM Bestätigung Test" src="./img/BPMConfirmationsTest.jpg" /></a></p>
+<br></br>   
+ 
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="2">Student</td><td rowspan="2">Absolviert einen Test</td><td>Bestätigung an Student</td></tr>
+          <tr><td>Bestätigung an Kursbesitzer und Betreuer des entsprechenden Tests (Vorbedingung: Benachrichtigung im Kurseditor ist aktiviert)</td></tr>
+                  
+      </table>  
+ 
+ 
+ 
+ <h2>GUI Vorlage für Testkonfiguration im Editor</h2>
+    
+    <a href="./img/GUI_Editor_Test.jpg"><img width="300" alt="GUI für Aufgabenbaustein" title="GUI für Testkonfiguration im Editor" src="./img/GUI_Editor_Test.jpg" /></a>    
+  <div class="attention">
+                <ul>
+                    <li>Abonnierbutton im Bewertungswerkzeug entfernen.</li>
+                    <li>Per Default ist Email NICHT aktiviert.</li>
+                                                                               
+                </ul></div>  
+ 
+ 
+ <h2>Formatvorlagen für Bestätigungs-Email bei eingegangenen Testresultaten</h2>
+    <p>Student: Sabrina Sutter <br/>
+        Dozent: Daniel Diener <br/>
+        Tutor: Thomas Tanner
+    </p>
+    <h3>Formatvorlage E-Mail an Dozent und Tutor, dass Student Test gelöst hat.</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: daniel.diener@uzh.ch, thomas.tanner@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Neue Testresultate von Sabrina Sutter
+
+Hiermit wird bestätigt, dass Sabrina Sutter den Test "<a href="LINK ZUM TEST">Test_Vogelschwärme</a>" 
+am 30.04.2012 um 10:15 Uhr im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" absolviert hat.
+Das individuelle Testergebnis finden Sie auf der <a href="LINK ZUR DETAILSEITE DER TESTBEWERTUNG">Detailseite der Bewertung</a>,
+alle Ergebnisse in der <a href="LINK ZUR BEWERTUNGSÜBERSICHT DES BENUTZERS">Bewertungsübersicht</a>.
+
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+ <div class="attention">
+                <ul>
+                    <li>Test_Vogelschwärme --> LINK ZUM TEST</li>
+                    <li>Email To: alle Kursbesitzer, alle Gruppenbetreuer</li>
+                    <li>Vorsicht bei Keyerstellung für Übersetzer</li>
+                                                                               
+                </ul></div>  
+ 
+ 
+  <h3>Formatvorlage E-Mail an Student als Bestätigung</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Testbestätigung für Sabrina Sutter
+
+Hiermit wird bestätigt, dass Sie, Sabrina Sutter den Test "<a href="LINK ZUM TEST">Test_Vogelschwärme</a>" 
+am 30.04.2012 um 10:15 Uhr im Kurs "<a href="LINK ZUM KURS">Biologie I</a>" absolviert haben.
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+ <div class="attention">
+                <ul>
+                    <li>Test_Vogelschwärme --> LINK ZUM TEST</li>
+                    <li>Email To: Student, der Test gelöst hat</li>
+                    <li>Vorsicht bei Keyerstellung für Übersetzer</li>                                                                             
+                </ul></div>  
+ 
+ 
+    <h1>Benachrichtigung bei Test- oder Fragebogen auswechseln</h1>
+<a href="ChangeTestQuestionnaire.odt">Test- oder Fragebogen auswechseln (ODT)</a>	</br>
+<a href="ChangeTestQuestionnaire.pdf">Test- oder Fragebogen auswechseln (PDF)</a>
+ 
+ 
+ </br>
+ </br> 
+ 
+ 
+ 
+ 
+ <h1>Benachrichtigung bei Eintragen und Austragen von Benutzern via Gruppenmanagement</h1>  
+ 
+ <h2>GUI Vorlage für Gruppenmanagement</h2>
+ 
+ <p><a href="../GruppenBestaetigung.pdf">GUI Gruppenmanagement</a></p>
+   
+   <div class="attention">
+   Alle Orte beachten, bei denen Benutzer hinzugefügt oder entfernt werden können (ausser Katalogverwalter und Gruppenverwalter)
+                <ul>
+                    <li>Besitzer, Betreuer, Teilnehmer, Warteliste im Gruppenmanagement von Arbeitsgruppen, Lerngruppen, Rechtegruppen</li>
+                    <li>Themenverantwortliche im Kurseditor im Baustein Themenvergabe</li> 
+                    <li>Verantwortliche des Themas, Akzeptierte Teilnehmer und Kandidaten im Kursrun in der Teilnehmerverwaltung in einem Thema im Baustein Themenvergabe</li>
+                    <li>Keine E-Mail-Benachrichtigung beim Hinzufügen eines Katalogverwalters und beim Hinzufügen eines Benutzers in der Gruppenverwaltung</li>
+                </ul>    
+    Bei allen Aktionen muss der Workflow angepasst werden, d.h. zukünftigt soll es keine Wahl (bisheriges Pop-up entfernen) mehr geben, ob ein E-Mail versendet werden möchte. Bei den folgenden Aktionen wird immer automatisch eine sofortige E-Mail-Benachrichtigung ausgelöst.                                                                  
+                </div>
+                
+                 
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="12">Besitzer (Dozent)/Betreuer</td><td>Besitzer/Betreuer fügt hinzu/importiert Teilnehmer in eine Lerngruppe</td><td>Bestätigung an Teilnehmer</td></tr>
+          <tr><td>Besitzer/Betreuer fügt hinzu/importiert Betreuer in eine Lerngruppe</td><td>Bestätigung an Betreuer</td></tr>
+          <tr><td>Besitzer/Betreuer fügt hinzu/importiert Teilnehmer in eine Arbeitsgruppe</td><td>Bestätigung an Teilnehmer</td></tr>
+          <tr><td>Besitzer/Betreuer fügt hinzu/importiert Betreuer in eine Arbeitsgruppe</td><td>Bestätigung an Betreuer</td></tr>
+          <tr><td>Besitzer/Betreuer fügt hinzu/importiert ein Mitglied in eine Rechtegruppe</td><td>Bestätigung an Mitglied</td></tr>
+          <tr><td>Besitzer/Betreuer entfernt Teilnehmer aus Lerngruppe</td><td>Bestätigung an Teilnehmer</td></tr>
+          <tr><td>Besitzer/Betreuer entfernt Betreuer aus Lerngruppe</td><td>Bestätigung an Betreuer</td></tr>
+          <tr><td>Besitzer/Betreuer entfernt Teilnehmer aus Arbeitsgruppe</td><td>Bestätigung an Teilnehmer</td></tr> 
+          <tr><td>Besitzer/Betreuer entfernt Mitglied aus Rechtegruppe</td><td>Bestätigung an Mitglied</td></tr>
+          <tr><td>Besitzer/Betreuer fügt  hinzu/importiert Teilnehmer in Wartliste einer Lerngruppe</td><td>Bestätigung an Teilnehmer</td></tr> 
+          <tr><td>Besitzer/Betreuer entfernt Teilnehmer aus Warteliste einer Lerngruppe</td><td>Bestätigung an Teilnehmer</td></tr>
+          <tr><td>Besitzer/Betreuer verschiebt Teilnehmer aus Warteliste in Teilnehmerliste einer Lerngruppe</td><td>Bestätigung an Teilnehmer</td></tr>
+          <tr><td>System</td><td>Teilnehmer rückt automatisch aus der Warteliste in eine Lerngruppe nach (betrifft auch Kursbaustein"Einschreibung")</td><td>Bestätigung an Teilnehmer</td></tr> 
+          <tr><td rowspan="4">Besitzer/Themenverantwortlicher</td><td>Besitzer/Themenverantwortlicher fügt hinzu/importiert Teilnehmer für ein Thema in der Themenvergabe</td><td>Bestätigung an Teilnehmer</td></tr> 
+          <tr><td>Besitzer/Themenverantwortlicher entfernt Teilnehmer aus einem Thema in der Themenvergabe</td><td>Bestätigung an Teilnehmer</td></tr> 
+          <tr><td>Besitzer/Themenverantwortlicher akzeptiert Teilnehmer für ein Thema in der Themenvergabe</td><td>Bestätigung an Teilnehmer</td></tr>  
+          <tr><td>Besitzer/Themenverantwortlicher akzeptiert Teilnehmer nicht für ein Thema in der Themenvergabe</td><td>Bestätigung an Teilnehmer</td></tr>  
+          <tr><td rowspan="2">Teilnehmer (Student)</td><td>Teilnehmer wählt Thema (Vorbedingung: Benachrichtigung im Kursrun im entsprechenden Thema ist aktiviert)</td><td>Bestätigung an Besitzer/Themenverantwortlicher</td></tr>      
+          <tr><td>Teilnehmer wählt Thema ab (Vorbedingung: Benachrichtigung im Kursrun im entsprechenden Thema ist aktiviert)</td><td>Bestätigung an Besitzer/Themenverantwortlicher</td></tr>    
+      </table>                  
+                
+      <br/>         
+                
+                
+                
+                
+                
+                
+  <h2>Formatvorlagen für Bestätigungs-Email bei Eintragen und Austragen von Benutzern via Gruppenmanagement</h2>
+    <p>Student: Sabrina Sutter <br/>
+        Dozent: Daniel Diener <br/>
+        Tutor: Thomas Tanner<br/>
+        Themenverantwortliche: Tanja Teller
+    </p>
+    
+<h3>Formatvorlage E-Mail Eintragen eines Benutzers in Gruppe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Eintrag in Gruppe Vogelschwärme
+
+Daniel Diener hat Sie am 30.04.2012 um 10:15 Uhr in die Gruppe 
+"<a href="LINK ZUR GRUPPE">Vogelschwärme</a>" des Kurses "<a href="LINK ZUM KURS">BIO 2</a>" eingetragen.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+<div class="attention">
+                <ul>
+                    <li>Gleiche Vorlage für Arbeitsgruppe, Lerngruppe, Rechtegruppe. Bei Arbeitsgruppe fällt der Satzteil "des Kurses BIO 2" weg.</li> 
+                    <li>Keine Unterscheidung, ob man als Teilnehmer, Betreuer, Besitzer eingetragen wurde.</li>  
+                    <li>Eintrag in Warteliste einer Gruppe benötigt separate Formatvorlage</li>                                            
+                </ul></div> 
+
+<h3>Formatvorlage E-Mail Eintragen eines Benutzers in Warteliste einer Gruppe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Eintrag in Warteliste der Gruppe Vogelschwärme
+
+Daniel Diener hat Sie am 30.04.2012 um 10:15 Uhr in die Warteliste der Gruppe 
+"<a href="LINK ZUR GRUPPE">Vogelschwärme</a>" des Kurses "<a href="LINK ZUM KURS">BIO 2</a>" eingetragen.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+<div class="attention">
+                <ul>
+                    <li>Gleiche Vorlage für Arbeitsgruppe, Lerngruppe, Rechtegruppe. Bei Arbeitsgruppe fällt der Satzteil "des Kurses BIO 2" weg.</li>
+                </ul></div> 
+    
+    
+    <h3>Formatvorlage E-Mail Austragen eines Benutzers aus Gruppe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Austrag aus Gruppe Vogelschwärme
+
+Daniel Diener hat Sie am 30.04.2012 um 10:15 Uhr aus der Gruppe 
+"Vogelschwärme" des Kurses "<a href="LINK ZUM KURS">BIO 2</a>" ausgetragen.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+<div class="attention">
+                <ul>
+                    <li>Gleiche Vorlage für Arbeitsgruppe, Lerngruppe, Rechtegruppe. Bei Arbeitsgruppe fällt der Satzteil "des Kurses BIO 2" weg.</li>
+                    <li>Keine Unterscheidung, ob man als Teilnehmer, Betreuer oder Besitzer ausgetragen wurde.</li>                                              
+                </ul></div> 
+
+<h3>Formatvorlage E-Mail Austragen eines Benutzers aus der Warteliste der Gruppe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Austrag aus Warteliste der Gruppe Vogelschwärme
+
+Daniel Diener hat Sie am 30.04.2012 um 10:15 Uhr aus der Warteliste der Gruppe 
+"Vogelschwärme" des Kurses "<a href="LINK ZUM KURS">BIO 2</a>" ausgetragen.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+
+
+
+
+<h3>Formatvorlage E-Mail automatisches Nachrücken eines Benutzers aus der Warteliste in eine Gruppe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Eintrag in Gruppe Vogelschwärme
+
+Sie wurden am 30.04.2012 um 10:15 Uhr von der Warteliste in die Teilnehmerliste der Gruppe 
+"<a href="LINK ZUR GRUPPE">Vogelschwärme</a>" des Kurses "<a href="LINK ZUM KURS">BIO 2</a>" übernommen.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+
+
+
+
+<h3>Formatvorlage E-Mail Student hat Thema gewählt</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: tanja.teller@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Wahl Thema Vogelschwärme
+
+Sabrina Sutter hat am 30.04.2012 um 10:15 Uhr Ihr Thema
+"<a href="LINK ZUM THEMA">Vogelschwärme</a>" im Kurs "<a href="LINK ZUM KURS">BIO 2</a>" gewählt.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+
+<h3>Formatvorlage E-Mail Student hat Thema abgewählt</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: tanja.teller@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Abwahl Thema Vogelschwärme
+
+Sabrina Sutter hat am 30.04.2012 um 10:15 Uhr Ihr Thema
+"<a href="LINK ZUM THEMA">Vogelschwärme</a>" im Kurs "<a href="LINK ZUM KURS">BIO 2</a>" abgewählt.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+ 
+
+<br/> 
+
+
+<h1>Benachrichtigung bei Thema löschen oder ändern in der Themenvergabe</h1>  
+     
+   <div class="attention">
+                <ul>
+                    <li>Die Bestätigung für Besitzer und Betreuer (Themenverantwortliche) bei Löschung eines Themas wurde bereits entfernt.</li>
+                    <li>Die Bestätigung für Besitzer und Betreuer (Themenverantwortliche) bei Änderung eines Themas soll entfernt werden.</li>
+                    <li>Das Bestätigungs-E-Mail über die Löschung oder Änderung des Themas für die "eingeschriebenen" Teilnehmer zu dem entsprechenden Thema soll automatisch ausgelöst werden.</li> 
+                </ul>    
+                                                             
+               </div>
+               
+                 
+<h2>Aktionen und ihre Auswirkungen auf Benachrichtigungen</h2>
+      <table><tr><th>Auslöser</th><th>Aktion</th><th>Auswirkung</th></tr>
+          <tr><td rowspan="2">Besitzer oder Themenverantwortlicher</td><td rowspan="2">Besitzer oder Themenverantwortlicher löscht Thema</td><td>Bestätigung an, zu dem entsprechenden Thema eingeschriebene Teilnehmer (inkl. Kandidaten)</td></tr>
+          <td>Keine Bestätigung an Besitzer und Themenverantwortlicher</td></tr>
+          <tr><td rowspan="2">Besitzer oder Themenverantwortlicher</td><td rowspan="2">Besitzer oder Themenverantwortlicher ändert ein Thema</td><td>Bestätigung an, zu dem entsprechenden Thema eingeschriebene Teilnehmer (inkl. Kandidaten)</td></tr>
+          <td>Keine Bestätigung an Besitzer und Themenverantwortlicher</td></tr>  
+      </table>                  
+                
+      <br/>         
+                
+           
+                
+                
+                
+                
+  <h2>Formatvorlagen für Bestätigungs-Email bei Löschung und Änderung eines Themas in der Themenvergabe</h2>
+    <p>Student: Sabrina Sutter <br/>
+        Dozent: Daniel Diener <br/>
+        Tutor: Thomas Tanner<br/>
+        Themenverantwortliche: Tanja Teller
+    </p>
+    
+<h3>Formatvorlage E-Mail beim Löschen eines Themas in der Themenvergabe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Löschung Thema Vogelschwärme
+
+Daniel Diener hat das Thema "Vogelschwärme" im Kurs "<a href="LINK ZUM KURS">BIO 2</a>" am 30.04.2012 um 10:15 Uhr gelöscht.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+
+
+<h3>Formatvorlage E-Mail beim Ändern eines Themas in der Themenvergabe</h3>
+    
+    <pre>
+From: noreply@olat.uzh.ch
+To: sabrina.sutter@uzh.ch
+Subject:[OLAT-Benachrichtigung]: Änderung Thema Vogelschwärme
+
+Tanja Teller hat das Thema "<a href="LINK ZUM THEMA">Vogelschwärme</a>" im Kurs "<a href="LINK ZUM KURS">BIO 2</a>" am 30.04.2012 um 10:15 Uhr geändert.
+
+
+Freundliche Gr&uuml;sse 
+Ihr OLAT-Team
+
+---
+
+
+Diese Nachricht wurde über die Lernplattform <a href="https://www.olat.uzh.ch/olat">OLAT</a> versandt.
+
+</pre>
+<h1>Benachrichtigungen bei Teilnehmerverwaltung in der Themenvergabe (Teilnehmer hinzufügen, entfernen, akzeptieren, nicht akzeptieren...)</h1>  
+<a href="Themenvergabe.odt">Teilnehmerverwaltung Themenvergabe (ODT)</a>	</br>
+<a href="Themenvergabe.pdf">Teilnehmerverwaltung Themenvergabe (PDF)</a>
+
+<h1>Benachrichtigungen bei eingegangenen Bewertungen</h1>  
+  
+  <h2>BPM Bewertungen</h2>
+        
+        <p><a href="./img/BPM_Bewertung.jpg"><img width="300" alt="BPM Bewertungen" title="BPM Bewertungen" src="./img/BPM_Bewertung.jpg" /></a></p>
+
+<h2>Spezifikation Bewertungen</h2>
+<a href="Bewertung.odt">E-Mail-Benachrichtigung bei Bewertungen (ODT)</a>	</br>
+<a href="Bewertung.pdf">E-Mail-Benachrichtigung bei Bewertungen (PDF)</a>  
+  
+</body>
+</html>

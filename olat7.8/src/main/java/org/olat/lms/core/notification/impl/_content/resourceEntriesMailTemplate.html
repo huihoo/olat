@@ -1,0 +1,16 @@
+<br/>
+${mailBody.getContent()}
+<br/>
+<br/>
+#foreach( $resourceEntry in $mailBody.getResourceEntries())
+	${resourceEntry}
+	<br/>	
+#end
+<br/>
+${mailBody.getGreeting()}
+<br/>
+${mailBody.getGreetingFrom()}
+<br/>
+---
+<br/>
+${mailBody.getFooter()}

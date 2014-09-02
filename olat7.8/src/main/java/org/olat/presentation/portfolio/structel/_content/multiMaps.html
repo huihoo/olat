@@ -1,0 +1,58 @@
+#if ($r.available("restrictLink")) <p>$r.render("restrictLink") </p>#end
+#if(!$noMaps)
+
+#if($!showPaging)
+	<div class="b_map_page">
+		#foreach($pageLink in $pageLinks)
+			$r.render($pageLink.componentName)
+		#end
+		
+		#if($r.available("forwardLink"))$r.render("forwardLink")#end
+	</div>
+#end
+
+<ul class="b_eportfolio_maps">
+	#foreach($map in $userMaps)
+		#set($viewLink = "viewLink$velocityCount")
+		#set($delLink = "deleteLink$velocityCount")
+		#set($copyLink = "copyLink$velocityCount")
+		#set($shareLink = "shareLink$velocityCount")
+		#set($courseLink = "courseLink$velocityCount")
+		#set($courseName = "courseName$velocityCount")
+		#set($index = ($velocityCount - 1))
+		#if($map.getClass().getSimpleName() == "EPStructuredMapTemplate") #set($addTempStamp = "template") #end
+		<li class="$!mapStyles.get($index) $!addTempStamp">	 
+			<h4>$r.escapeHtml($map.title)</h4> 
+			$r.filterXSS($map.shortenedDescription)
+			<div class="b_map_info">
+			#if ($owners.get($index)) <p>$r.translate("map.owners", $r.escapeHtml($owners.get($index))) </p> #end
+			<p>$amounts.get($index)
+			#if ($deadLines.get($index)) <br/> $r.translate("map.deadline", "$r.formatDate($deadLines.get($index))")  #end
+			#if ($restriStats.get($index)) <br/> $r.translate("map.restriction.overview", $restriStats.get($index))  #end
+			</p>
+			#if($r.available($viewLink))  $r.render($viewLink) </br>#end
+			#if($r.get($courseLink))
+				$r.translate("course.link.intro.small"): <a href="$r.get($courseLink)">$r.get($!courseName)</a><br/>
+			#end
+			#if($r.available($shareLink)) $r.render($shareLink) <br/> #end
+			#if($r.available($delLink))   $r.render($delLink) <br/> #end
+			#if($r.available($copyLink))  $r.render($copyLink) #end
+			</div>
+		</li>
+	#end
+</ul>
+
+#if($!showPaging)
+	<div class="b_map_page">
+		#foreach($pageLink in $pageLinks)
+			$r.render($pageLink.componentName)
+		#end
+		
+		#if($r.available("forwardLink"))$r.render("forwardLink")#end
+	</div>
+#end
+
+#else
+	<br/>
+	$r.translate("no.maps.found")
+#end

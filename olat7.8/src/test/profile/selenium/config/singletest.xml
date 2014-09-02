@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="SeleniumTesting72x" verbose="1" >
+
+
+  <test name="load" junit="true">
+    <classes>
+      <class name="org.olat.test.load.LoginLoadTest" />
+      <class name="org.olat.test.load.MultiBrowserClusterEnrolmentLoadManualtest" />
+      <class name="org.olat.test.load.OpenAllCoursesOnFirstPageTest" />
+      <class name="org.olat.test.load.OpenAllCoursesTest" />
+    </classes>
+  </test>
+
+  <test name="functional" junit="true">
+    <classes>
+      <class name="org.olat.test.functional.codepoints.cluster.ConcurrentEnrolmentWithCheckpointsTest" />
+    </classes>
+  </test>
+</suite>
+

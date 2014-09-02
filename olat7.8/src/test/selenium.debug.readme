@@ -1,0 +1,22 @@
+for extended testing documentation see: http://dev.olat.uzh.ch/docs/DOCS-OLAT-7.8.x-STAGING/olat-testing.html 
+
+debugging selenium tests - very short description
+-------------------------------------------------
+
+prerequisites: 
+-------------
+1) clean olattest DB
+2) firefox3.6 installed locally
+3) olat project mercurial clone, start eclipse and import project in eclipse
+
+steps (windows style):
+---------------------
+(please change the paths accordigly)
+1) prepare olattest DB
+2) clone olat project into workspace_selenium
+3) Install tomcats into the cloned olat project: 
+mvn validate -Pinstall-tomcats
+4) start selenium server and the olat 2-node tomcats with: 
+mvn verify -Dwith-selenium -Pdebug -Dtest.env.testngfile=smoketest.xml -Dtest.env.cluster.activemq.configdir=C:/Users/lavinia/workspace_selenium/OLAT-1024/cargo -Dtest.env.firefox-bin=C:/Users/lavinia/Programs/firefox_3_6/firefox.exe
+  4.1. if this step fails because of cargo timeout, increase timeout in pom.xml: e.g. <cargo.container.timeout>600000</cargo.container.timeout>
+5) run selenium test from eclipse as JUnit test

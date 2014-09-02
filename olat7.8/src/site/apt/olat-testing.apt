@@ -1,0 +1,424 @@
+ -----
+ The OLAT LMS Guide to Testing
+ -----
+ The OLAT Team
+ -----
+ July 2011
+
+Test Execution Summary
+ 
+ The following summary is for the impatient (aware of the 
+concepts), and which is assumed to know the limitations, 
+prerequisites and configuration needed (e.g Firefox Versions, Windows issues, and
+ the eclipse - maven console refresh issues).
+
+ The results of the test are visible in the maven output, and also persisted 
+in the <<<target/surefire-reports>>> folder.
+
+ The selenium version used for browser gui testing supports only the firefox versions 
+up to 3.6. Hence you need to provide the path to this version as a maven -D property as follows:
+
++----
+...... -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin ....
++----
+
+ You may consider it worth to place this environment specific configuration into your 
+<<<.settings.xml>>>. This allows you to omit the -Dtest.env.firefox-bin in all 
+the command line examples.
+
+* Unit tests
+
+ Unit tests are always executed if the test phase is activated. Unit tests are 
+Java Classes matching <<<*Test*.java>>>.
+
++-----
+mvn test
++-----
+
+
+* Integration tests
+ 
+ These tests must be activated on the command line. The activation determines 
+the DB backend for the tests. Integration tests are Java Classes matching 
+<<<*ITCase*.java>>> or the <<<*ITCaseNew*.java>>>. The <<old>> ITCase are executed 
+in the specific and strict order defined by the AllITCases.java suite. In contrast 
+the emerging integration tests following the ITCaseNew paradigma are not managed 
+in a suite. They are matched by a regular expression from the 
+maven-surefire-plugin during test execution.
+
++-----
+mvn test -Dclean-mysql -Dwith-mysql
+mvn test -Dwith-hsql
++-----
+
+  A single integration test can be run also. This example shows the command:
+
++-----
+mvn test -Dclean-mysql -Dwith-mysql -Dtest.env.it.test.include=PublisherDaoITCase.java -Dtest.env.it.new.test.include=None.java
++-----
+
+* NG tests
+
++-----
+mvn -Pngtests -Dclean-mysql test clean
++-----
+
+* Performance tests
+
+  Similar to integration tests, except that they run take long time to execute since they produce a lot of data in their setup.
+They have the prefix "Performance".
+
+  Run all performance tests with the command:
+
++-----
+mvn test -Dclean-mysql -Dwith-mysql -Dtest.env.it.test.include=*Performance.java -Dtest.env.it.new.test.include=None.java
++-----
+
+* Install tomcats
+
+ The two tomcats must be installed once per workspace. You 
+find them in your workspace under <<<${WORKSPACE}/cargo/...>>>. The tomcats are a 
+prerequesite for the Acceptance and Smoketest execution, and also for the 
+cluster debug facility.
+
++-----
+mvn validate -Pinstall-tomcats
++-----
+
+
+* Acceptance tests
+ 
+ These tests run against an olat two node cluster. The tests are based upon 
+Selenium and organized within the <<<src/test/profile/selenium/config/testng.xml>>> and
+ the <<<src/test/profile/selenium/config/fragileexile.xml>>>. Whereas the latter 
+file contains the selenium tests which fail unpredictably. The fragile tests are 
+not automatically executed.
+
+ Under *nix you can use:
+
++-----
+mvn verify -Dwith-selenium \
+ -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin
++-----
+
+ Under Windows you have to provide the activemq configuration directory path, 
+due to a maven-windows issue.
+
++-----
+mvn verify -Dwith-selenium \
+ -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin \
+ -test.env.cluster.activemq.configdir=<your_windows_path_to_the_project>/cargo
++-----
+
+
+ If you are running under *nix you may install xvfb framebuffer to run the 
+selenium openend browser windows "off-screen".
+
++-----
+mvn verify -Dwith-selenium -Pxvfb \
+ -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin
++-----
+
+
+* Smoke test
+ 
+ The Smoketest executes one or more Acceptance tests ensuring that at least 
+the log in process works.
+
++-----
+mvn verify -Dwith-selenium -Dtest.env.testngfile=smoketest.xml \
+ -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin
++-----
+
+
+Eclipse Test Debugging
+
+ In general, eclipse has to be started first, before entering any maven testing commands on the console. This 
+is due the problem, that eclipse may refresh the <<<target>>> directory upon startup. Maven testing 
+depends on some copy-and-filtered resources from within the folders <<<src/test/resources>>> and the 
+<<<src/test/profile/*>>>. Eclipse may delete the needed files during a complete refresh and rebuild cycle, 
+and the execution of integration or acceptance test will fail afterwards.
+
+ In case of test failures you may check first, that no eclipse - maven refresh 
+problem is the cause. You can check this if following files exists and that the 
+replacement of <<<$\{...\}>>> worked as expected in these files:
+
++----
+target/test-classes/
+...
+...
+├── debugging.xml
+├── defaultcontext.xml
+├── fragileexile.xml
+├── maven.build.properties
+├── olat.local.properties
+├── testng.xml
+...
+...
++----
+
+ If this is not the case you can issue the corresponding maven command again, after 
+disabling the <<build automatically>> switch in eclipse.
+
+ Check also the logfile <<<target/selenium/server.log>>> for debugging selenium startup failures.
+
+
+* Unit test
+
+    * right click on class, <run as ...> or <debug as ... JUnit>
+    
+    []
+
+
+  The breakpoints work as expected and the test depend whether on <<<olat*properties>>> 
+configuration nor on <<<*Context.xml>>> files. With Unit test there is no refresh workspace problem with eclipse
+
+
+* Integration test
+
+    * <<<mvn process-test-resources -Pclean-mysql-dbsetup>>>
+
+       This initialises the mysql database, but does not clean the filesystem.
+
+    * right click on class, <run as ...> or <debug as ... JUnit>
+
+    []
+
+  The breakpoints work as expected. The config files <<<olat.local.properties>>>, <<<olat.properties>>>, <<<*Context.xml>>> play an important role. 
+See the <<<OlatTestCase>>> class for the Spring application context mocking. First of all make sure, the correct 
+properties are located in <<<target/test-classes/*>>> with the correct property values replaced. Each run of an 
+Integration test should be executed against an cleaned database beforehand.
+
+
+* Acceptance test
+  Keep the Windows user differences in mind.
+
+    * <<<mvn verify -Dwith-selenium -Pdebug \
+ -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin>>>
+
+    * check the log until both tomcats are started
+
+       Hint to filter the important information from the maven output:
+
++----
+... | tee /tmp/mvn.log | egrep "execution|Press \
+ Ctrl-C to stop the container"
++----
+
+    * right click on class, <run as ...> or <debug as ... JUnit>
+
+    []
+
+ The config files <<<olat.local.properties>>>, <<<olat.properties>>>, <<<*Context.xml>>> play an important role. See the files in <<<src/test/profile/cluster/*>>> and <<<src/test/profile/selenium/config/*>>>. First of all make sure, the correct properties are located in <<<target/test-classes/*>>> with the correct property values replaced. In an error case you may also check the <<<target/selenium/server.log>>> file.
+
+** Convenient fixing of Selenium Path issues
+
+  Typically new releases also introduce "small" renamings of certain concepts. This in turn makes Selenium based acceptance tests fail. 
+Fixing these issues requires changes, reprocessing of the xpaths in the <<<../profile/selenium/ui-map/*>>>. The selenium server must then be 
+restartet with the changed values. Because restarting the whole two node cluster takes a lot of a time, a facility to reconfigure and restart the selenium server only was introduced.
+
+ The convenient procedure to fix the selenium paths is:
+
+  [[1]] start the cluster
+
+  [[2]] run the selenium test and see where it fails.
+
+  [[3]] use for example the Chromium-browser and its console with xpath evaluation possibility, to fix the correct path.
+
+  [[4]] find the correct page set, or xpath in the selenium test.
+
+  [[5]] change the xpath, and reprocess, redeploy, restart the selenium server as follows:
+
++-----
+    mvn process-test-sources -Pstop-selenium
+    mvn process-test-resources -Prestartselenium
++-----
+
+  [[6]] fixing more xpath problems involves the same steps (2 - 5), except that <<<Ctrl-C>>> kills the maven process (started with -Prestartselenium) and also the restartet selenium server. The -Pstop-selenium is not needed in this case.
+
+    []
+
+  Please be aware that the restart of the selenium server needs the maven process not to terminate. This is achieved with a sleep function which is based on *nix shell only so far.
+
+
+Test Configuration
+
+ The maven principle convention over configuration was followed during the design 
+of the various test execution commands described in the Test Execution Summary. 
+The configuration can be adapted to your needs. Check the <<<pom.xml>>> properties 
+for an up-to-date list of possibilities.
+
+* Change defaults with the maven command line properties -D
+
+ You can specify / override the default property values on the command line. These 
+properties are then propagated to the various olat.local.properties file which 
+can be found under <<src/test/profile/..>>. (see the maven docu for further infos 
+and operation system related issues concerning -D property definitions).
+
+ The following example shows how to choose another database name to run the 
+integration tests.
+
++-----
+mvn test -Dclean-mysql -Dwith-mysql -Dtest.env.db.name=hudsonolattestl
++-----
+
+
+* Important properties and their defaults:
+
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| <<Property>>                         | <<default value>>                      | <<possible other values / Remark>>                                |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.db.name                     | olattest                               | <user defined>.                                                   |
+|                                      |                                        | The database name used for integration and acceptance testing.    |
+|                                      |                                        | The db.user must be allowed to drop/create the database.          |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.db.user                     | olat                                   | <user defined>.The database user name                             |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.db.pass                     | olat                                   | <user defined>. The Database user password                        |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.db.hibernate.ddl.auto       | create                                 | <validate>, empty string ""                                       |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.cluster.activemq.configdir  | ${basedir}/cargo                       | Windows user <<must>> specify this path to run the seleniumtests  |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.firefox-bin                 | no default possible                    | MUST to be defined for acceptance tests. Best practice is the placement in the .settings.xml |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| container.tomcat.one.port.part       | 81                                     | <user defined>, used to create the 8181, 8105, 8109 ports         |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| container.tomcat.two.port.part       | 82                                     | <user defined>, used to create the 8282, 8205, 8209 ports         |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| selenium.config.files.path           | <<<src/test/profile/selenium/config>>> | <user defined>. The place where the configuration of Selenium resides.                                                    |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+| test.env.testngfile                  | testng.xml                             | smoketest.xml for running smoketests, fragileexile.xml for running the fragile acceptance test part, and <user defined> for own testsets. |
+*--------------------------------------+----------------------------------------+-------------------------------------------------------------------+
+
+ 
+Introduction
+
+ Maven is the central point to start all kinds of tests in OLAT. It is recommended 
+ to understand the maven standard directory layout and the maven life-cycles. 
+
+ The test driver for all tests is JUnit, and or TestNG, and the acceptance tests 
+ are using Selenium. It is recommended to understand the basics and issues of running 
+ JUnit, TestNG tests and Selenium based tests.
+
+ This guide to testing deals with the technical setup for launching and debugging 
+ the tests from maven and also within the eclipse IDE. The guide does not discuss
+ how to write tests, nor what the OLAT standards for testing are. This guide 
+ is also not an introduction to JUnit, TestNG, Selenium or administration of a database.
+
+
+Overview
+
+ You will find the unit tests, integration tests, acceptance test within the <<<src/test/java>>> folder.
+
+ The unit tests are JUnit based and executed in mavens test phase. These tests run fast and use 
+ mocks to be independent of the heavy dependencies like filesystem, database, hibernate and spring.
+
+ The integration tests are JUnit based and depend on a database. They must be activated on mavens
+ commandline, and some prerequisites must be fullfilled (e.g. database account must be present). These 
+ tests are run within a servlet-less OLAT environment which is startet up with the first test.
+
+ The acceptance tests are based on JUnit and Selenium. They must be activated on mavens commandline,
+ and a bunch of prerequisites must be verified. These test are run in the browser (with the help of the
+ selenium RC) against a locally started olat two node tomcat cluster. The tomcat nodes are connected with 
+ JMS (activemq).
+
+
+Prerequisites
+
+ OLAT is tested with the maven 2.2.x versions. There are known issues with maven 3.
+ The following section lists the prerequisites needed, but does not say how to 
+ execute or configure the tests.
+
+ Unit tests:
+
+ * no prerequisites
+
+ []
+
+
+ Integration tests can be run against an in-memory DB (HSQL) or MySQL DB. In case of running them
+ against mysql you must have:
+
+ * mysql version 5.0.x installed
+   
+   5.5.x is unsupported yet
+
+ * mysql default storage engine is InnoDB
+   
+   see <<<my.cnf>>> and the MySQL handbook for further help.
+
+ * olat user in the DB
+  
+   defaults are username <<<olat>>> and password <<<olat>>>.
+   This olat user must have permission to drop, create schemas.
+
+ * two schemas
+   
+   defaults are <<<olat>>> and <<<olattest>>>.
+
+ * <<<olat>>> schema must be present and accessible by olat user.
+
+   This is a prerequisite for the sql-maven-plugin.
+
+  []
+
+
+
+ Acceptance tests are run in a browser against an olat two node cluster. The <tomcat> version is 
+ managed in nexus and the <activemq> with the maven activemq plugin. The cluster runs only with 
+ mysql. The browser support depends on the selenium version (maven selenium plugin).
+
+ * for mysql see the Integration tests requirements
+
+ * firefox version 3.6.x must be installed
+   
+   though must not be default browser, you must provide the path to the executable 
+via -Dtest.env.firefox-bin=<your_path_to>/firefox36/firefox-bin. (either on command line 
+or in the .settings.xml)
+
+ * free ports for 4444 / 8181 / 8105 / 8109 / 8282 / 8205 / 8209 / 616161 / 3000 / 3001 / 3002
+
+   you can override some of the default port settings with <<<-Dtest.env.xxxxx=value>>>, please consult 
+the <<<pom.xml>>> properties section for a current overview of the possible variables.
+
+ * Windows user must provide the -Dtest.env.cluster.activemq.configdir=\<absolute_path_to_activemq_configdir\>
+ due to an issue of maven property replacement in the activemq.xml.
+
+ []  
+
+
+Test conventions
+
+ All the tests are located in the standard maven layout project directory structure 
+src/test/java/*. Unit, integration and functional tests are distinguished with different 
+naming patterns. It is also noteworthy that the Unit and Integration tests are run with 
+JUnit and the Acceptance tests with Testng.
+
+*-------------------+------------------------------------------------------+-------------------------------------------------------------------+
+| <<Type of test>>  | <<Naming Pattern>>                                   | <<xUnit Technology>>\ |
+|                   |                                                      | <<Base Class to extend>>\ |
+|                   |                                                      | <<Annotations>>           |
+*-------------------+------------------------------------------------------+-------------------------------------------------------------------+
+| Unit test         | <<<\*Test\*.java>>>                                  | JUnit\ |
+|                   |                                                      | none\ |
+|                   |                                                      | <<<@Test>>>, <<<@Ignore>>> <<<@Before>>>, <<<@BeforeClass>>>, <<<@After>>>, <<<@AfterClass>>>, Spring annotations for autowiring are <<not>> supported            |
+*-------------------+------------------------------------------------------+-------------------------------------------------------------------+
+| Integration test  | <<<\*ITCase\*.java>>>\                                | JUnit\ |
+|                   | <<<\*ITCaseNew\*.java>>>                               | <<<org.olat.test.OlatTestCase>>>\ |
+|                   |                                                      | <<<@Test>>>, <<<@Ignore>>>, <<<@Before>>>, <<<@After>>>, Spring annotations for autowiring are <<supported>> (OlatTestCase extends from <<<AbstractJUnit4SpringContextTests>>>)\          |
+|                   |                                                      | ITCases are organized in the <<<AllITCase.java>>> suite and need the strict order defined there. The <<*ITCaseNew*>> are matched by maven-surefire-plugin without a strict order. |
+*-------------------+------------------------------------------------------+-------------------------------------------------------------------+
+| Acceptance test   | No naming pattern.\ |                                  Testng\ |
+|                   | The tests are located in \ | <<<org.olat.test.util.selenium.BaseSeleneseTestCase>>> \ |
+|                   |  <<<src/test/java/org/olat/test/functional/\*.java>>> | <<<@Test>>>, <<<@Ignore>>>, <<<@Before>>>, <<<@After>>>, Spring Annotations are useless here, but Testng annotations for grouping are specially useful, e.g. <<<@Test(groups={TopicAssignmentSuite.FIRST})>>>          |
+*-------------------+------------------------------------------------------+-------------------------------------------------------------------+
+| Specification by example  | <<<src/test/java/specification/SpecificationFixture.java>>> \ | JUnit + Concordion\ |
+|                   | <<<src/test/resources/specification/Specification.html>>> \ | Runner <<<WithConcordionRunner.java>>>\ |
+|                   |                                                      | <<<@runner>>>, html pages with <<<concordion:run>>>, <<<concordion:set>>>, etc.           |
+|                   | foreach folder a corresponding html file must exist, the folder is all lower-case, whereas the html files starts with an upper-case. I.e. <<<subscriptions>>> contains a Subscriptions.html. And foreach html file there must be in the same folder structure a corresponding java class with suffix test. I.e. <<<src/test/java/specification/.../subscriptions/SubscriptionsTest.java>>>.                                                      | |
+*-------------------+------------------------------------------------------+-------------------------------------------------------------------+
+
+
+
+ 

@@ -1,0 +1,92 @@
+/**
+ * OLAT - Online Learning and Training<br>
+ * http://www.olat.org
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); <br>
+ * you may not use this file except in compliance with the License.<br>
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing,<br>
+ * software distributed under the License is distributed on an "AS IS" BASIS, <br>
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. <br>
+ * See the License for the specific language governing permissions and <br>
+ * limitations under the License.
+ * <p>
+ * Copyright (c) since 2004 at Multimedia- & E-Learning Services (MELS),<br>
+ * University of Zurich, Switzerland.
+ * <p>
+ */
+package org.olat.presentation.framework.dispatcher;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.olat.lms.commons.i18n.I18nManager;
+import org.olat.presentation.commons.session.UserSession;
+import org.olat.presentation.framework.core.UserRequest;
+import org.olat.presentation.framework.core.Windows;
+import org.olat.presentation.framework.core.components.Window;
+import org.olat.presentation.framework.core.control.ChiefController;
+import org.olat.presentation.security.authentication.AuthHelper;
+import org.olat.system.exception.AssertException;
+import org.olat.system.logging.log4j.LoggerHelper;
+
+/**
+ * Description:<br>
+ * Dispatcher which redirects requests from / (root) to the default path defined in the <code>_spring/defaultconfig.xml</code> or the respective
+ * <code>_spring/extconfig.xml</code> and appended by the AutoGuest-login provider for example in a default installation this will be:<br>
+ * http://www.yourthingy.org/olat/ -> http://www.yourthingy.org/olat/dmz/?lp=xyz
+ * <P>
+ * Initial Date: 08.07.2006 <br>
+ * 
+ * @author patrickb
+ * @author Lars Eberle (<a href="http://www.bps-system.de/">BPS Bildungsportal Sachsen GmbH</a>)
+ */
+public class RedirectToAutoGuestLoginDispatcher implements Dispatcher {
+
+    private static final Logger log = LoggerHelper.getLogger();
+
+    /**
+	 */
+    @Override
+    public void execute(final HttpServletRequest request, final HttpServletResponse response, final String uriPrefix) {
+        final UserSession usess = UserSession.getUserSession(request);
+        UserRequest ureq = null;
+        try {
+            // upon creation URL is checked for
+            ureq = new UserRequest(uriPrefix, request, response);
+        } catch (final NumberFormatException nfe) {
+            // MODE could not be decoded
+            // typically if robots with wrong urls hit the system
+            // or user have bookmarks
+            // or authors copy-pasted links to the content.
+            // showing redscreens for non valid URL is wrong instead
+            // a 404 message must be shown -> e.g. robots correct their links.
+            if (log.isDebugEnabled()) {
+                log.debug("Bad Request " + request.getPathInfo());
+            }
+            DispatcherAction.sendBadRequest(request.getPathInfo(), response);
+            return;
+        }
+        final int loginStatus = AuthHelper.doAnonymousLogin(ureq, I18nManager.getInstance().getLocaleOrDefault(ureq.getParameter("lang")));
+        if (loginStatus != AuthHelper.LOGIN_OK) {
+            if (loginStatus == AuthHelper.LOGIN_NOTAVAILABLE) {
+                DispatcherAction.redirectToServiceNotAvailable(response);
+            }
+            DispatcherAction.redirectToDefaultDispatcher(response); // error, redirect to login screen
+            return;
+        }
+
+        // brasato:: ChiefController cc = Windows.getWindows(usess).getMainOlatChiefController();
+        final ChiefController cc = (ChiefController) Windows.getWindows(usess).getAttribute("AUTHCHIEFCONTROLLER");
+        if (cc == null) {
+            throw new AssertException("logged in, but no window/Chiefcontroller 'olatmain' found!");
+        }
+        final Window w = cc.getWindow();
+        w.dispatchRequest(ureq, true); // renderOnly
+    }
+
+}

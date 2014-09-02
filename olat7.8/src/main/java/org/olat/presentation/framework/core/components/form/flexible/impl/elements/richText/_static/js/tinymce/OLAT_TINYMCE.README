@@ -1,0 +1,7 @@
+tinymce_3_3_9_2
+
+Currently OLAT uses TinyMCE in version 3.3.9.2
+
+When updating to a newer version just drop the new release over the old one. Since 3.3.7 no custom OLAT patches are needed anymore.
+
+The language files have to be downloaded separately and applied over the tiny directory strucuture.

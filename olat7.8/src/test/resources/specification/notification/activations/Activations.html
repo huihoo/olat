@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Aktivierungen</title>
+        
+        <link href="../../concordion.css" rel="stylesheet" type="text/css" />
+    </head>
+    
+    <body>
+        <h1>Aktivierungen</h1>
+        
+        <p>Bei Benachrichtigungen vom Typ Aktivierungen wird der Benutzer per Email aufgefordert, eine Aktion durchzuführen wie z.B. einen Link anzuklicken, um eine neue eingetragene E-Mail-Adresse zu validieren.</p>
+        
+        
+        <h2>User Stories</h2>
+        <ul>
+            <li><a href="./receiveactivations/ReceiveActivations.html">Aktivierungsemails erhalten</a></li>
+            
+        </ul>
+         
+        
+        <h2>Entscheidungen</h2>
+        <table>
+            <tr><th>Wann</th><th>Was</th><th>Warum</th></tr>
+            <tr>
+            <td>08.11.12, SEV, LD, SB </td>
+            <td>Für "Link Passwort Vergessen" wird der Wizard nicht in Schritt 2 und 4 nicht entfernt. Auch der Schritt 5 wird nicht weggelassen. </td>
+            <td>Gemäss Support (Betriebsteam) wird diese Funktion für die UZH nicht gebraucht. Deshalb wird dafür kein Aufwand gemacht.</td>
+            </tr>
+            tr>
+            <td>08.11.12, SEV, SW, LD </td>
+            <td>Direktes Benutzerlöschen löst keine E-Mail-Benachrichtigung aus. SW erstellt ein JIRA Issue "Improvement" um die Tabelle mit den gelöschten Benutzern zu ergänzen. </td>
+            <td></td>
+            </tr>
+       
+        </table>
+        
+        
+        <div class="metrics">  
+            <h2>Metriken</h2>
+            <p>[METRICS]</p>
+        </div>
+        
+        
+        <div class="openquestions">
+            <h2>Offene Fragen</h2>
+            <p>[DESCRIPTION: PARAGRAPH, LIST OR TABLE]</p> 
+            
+        </div>
+        
+    </body>
+</html>

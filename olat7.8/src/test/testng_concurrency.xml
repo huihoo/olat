@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="testng" parallel="methods" >
+
+  <test name="notification" enabled="true">
+    <classes>
+      <class name="org.olat.lms.learn.notification.impl.NotificationServiceConcurrencyTestNG" />      
+    </classes>
+  </test>
+  
+  <test name="invalidateSubscription" enabled="true">
+    <classes>      
+      <class name="org.olat.lms.learn.notification.impl.NotificationConcurrencyInvalidateSubscriptionNGTest" />
+    </classes>
+  </test>  
+  <test name="publishEvent" enabled="true">
+    <classes>      
+      <class name="org.olat.lms.learn.notification.impl.NotificationConcurrencyPublishEventNGTest" />
+    </classes>
+  </test>
+
+  <test name="notificationServiceNGTest" enabled="false" parallel="none">
+    <classes>      
+      <class name="org.olat.lms.core.notification.impl.NotificationServiceImpTestNglTCaseNew" />
+    </classes>
+  </test>
+  
+</suite>
+

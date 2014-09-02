@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+  
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+	
+	<!-- OLAT specific popup windows default layout, which is also applied to 
+	popupwindows opened within core controllers, e.g. html editor or thelike -->
+	<bean id="popupBrowserWindowControllerCreator" 
+		class="org.olat.presentation.framework.layout.fullWebApp.popup.BaseFullWebappPopupLayoutCreator" >
+	</bean>
+	<!-- the specifed creator is responsible for the frameworks popup browser window layout.
+	     Special layouts must be implemented by wrapping the content into a content-layouting controller 
+	     TODO:pb: discuss a layoutconfig.xml?-->
+<!--	<bean id="popupBrowserWindowControllerCreator" -->
+<!--		class="org.olat.presentation.framework.core.control.generic.popup.BasePopupWindowControllerCreator" >-->
+<!--	</bean> -->
+	
+	<!-- An alternate popup controller when the base full web app controller is used
+	<bean id="popupBrowserWindowControllerCreator" 
+		class="org.olat.presentation.framework.layout.fullWebApp.popup.BaseFullWebappPopupLayoutCreator" >
+	</bean>
+	 -->
+
+
+	<!--
+		******************************************
+		*** Configure the controller in the    ***
+		*** header part, e.g. for a logo       ***
+		******************************************
+	-->
+	<bean id="fullWebApp.HeaderControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >
+		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.EmptyHeaderController"/>
+	</bean>
+	<!-- use the following header controller instead if you want a logo header header or configure you own
+	<bean id="fullWebApp.HeaderControllerCreator" class="org.olat.presentation.framework.layout.fullWebApp.LogoWithLinkHeaderControllerCreator" scope="prototype">
+		<property name="linkURI" value="http://www.brasatoframework.org" />	
+		<property name="imgURI" value="http://www.brasatoframework.org/images/logo.png" />	
+		<property name="imgAltText" value="Brasato Open Source WebApp Framework" />					
+	</bean> 		
+	-->
+	<!-- in case a Guest uses OLAT, see GuestBFWCParts -->
+	<!-- <bean id="fullWebApp.GuestHeaderControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" scope="prototype">
+		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.EmptyHeaderController"/>
+	</bean> -->
+	<!-- Header for DMZ, see DmzBFWCParts -->
+    <!-- <bean  id="fullWebApp.DMZHeaderControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.EmptyHeaderController"/>
+	</bean> --> 
+
+	
+	<!--
+		******************************************
+		*** Configure the controller in the    ***
+		*** right upper corner.                ***
+		******************************************
+	-->
+	<bean id="fullWebApp.DMZTopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatDmzTopNavController"/>
+	</bean>
+	<bean id="fullWebApp.TopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatTopNavController"/>
+	</bean>
+	<!-- uncomment this and comment above line if automatic guest login should be enabled 
+	<bean id="fullWebApp.TopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatGuestTopNavController"/>
+	</bean>
+	 -->
+<!--	<bean id="fullWebApp.TopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >-->
+<!--		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.DefaultTopNavController"/>-->
+<!--	</bean>-->
+
+	<!--
+		******************************************
+		*** Configure the controller in the    ***
+		*** right upper corner in pop ups      ***
+		******************************************
+	-->
+	<bean id="fullWebApp.MinimalTopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatMinimalTopNavController"/>
+	</bean>
+<!--	<bean id="fullWebApp.MinimalTopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">-->
+<!--		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.DefaultMinimalTopNavController" />-->
+<!--	</bean>-->
+
+	<!--
+		******************************************
+		*** Configure the controller in the    ***
+		*** Footer.                            ***
+		******************************************
+	-->
+	<bean  id="fullWebApp.FooterControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatFooterController"/>
+	</bean>
+	
+	<bean id="fullWebApp.ContextHelpFooterControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >
+		<property name="className" value="org.olat.presentation.framework.layout.OlatFooterController"/>
+	</bean>
+	
+    <!-- uncomment this and comment above line if automatic guest login should be enabled:  
+	<bean  id="fullWebApp.FooterControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatGuestFooterController"/>
+	</bean>
+    -->
+	<!-- in case a Guest uses OLAT, see GuestBFWCParts -->
+    <bean  id="fullWebApp.GuestFooterControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatGuestFooterController"/>
+	</bean>   	
+	<!-- Footer for DMZ, see DmzBFWCParts -->
+    <bean  id="fullWebApp.DMZFooterControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.layout.OlatGuestFooterController"/>
+	</bean>   		
+	<!-- 
+	<bean id="fullWebApp.MinimalFooterControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >
+		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.DefaultFooterController"/>
+	</bean>
+	 -->
+		
+	<!--
+		******************************************
+		*** Configure the controller in the    ***
+		*** header part, in context help       ***
+		******************************************
+	-->
+	<bean id="fullWebApp.ContextHelpHeaderControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >
+		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.EmptyHeaderController"/>
+	</bean>
+	<!--	<bean id="fullWebApp.ContextHelpHeaderControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">-->
+	<!--		<property name="className" value="org.olat.presentation.framework.layout.fullWebApp.EmptyHeaderController"/>-->
+	<!--	</bean> 		-->
+	<!--
+		******************************************
+		*** Configure the controller in the    ***
+		*** right upper corner in context help**
+		******************************************
+	-->
+	<bean id="fullWebApp.ContextHelpTopNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">
+		<property name="className" value="org.olat.presentation.framework.common.contextHelp.ContextHelpTopNavController" />
+	</bean>
+	
+<!--	<bean id="fullWebApp.ContextHelpNavControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator">-->
+<!--		<property name="className" value="org.olat.presentation.framework.common.contextHelp.ContextHelpMinimalTopNavController" />-->
+<!--	</bean>-->
+
+	<!--
+		**************************************************************************
+		*** Configure the controller-workflow which should be presented		   ***
+		*** right after a user logged in.                                      ***
+		*** See comment in AfterLoginInterceptorController                     ***
+		**************************************************************************
+	-->
+	<bean id="fullWebApp.AfterLoginInterceptionControllerCreator" class="org.olat.presentation.framework.core.control.creator.AutoCreator" >
+		<property name="className" value="org.olat.presentation.security.authentication.AfterLoginInterceptionController"/>
+	</bean>
+	
+	
+	
+  
+
+<!--
+	Optional configuration of the column default width given in EM values.
+	Set your custom values if the default values do not fit your layout theme 
+<bean id="org.olat.presentation.framework.layout.fullWebApp.LayoutMain3ColsConfig" class="org.olat.presentation.framework.layout.fullWebApp.LayoutMain3ColsConfig">
+	<property name="col1WidthEmDefault" value="14" /> 
+	<property name="col2WidthEmDefault" value="12" /> 
+</bean>
+-->
+
+<bean id="org.olat.presentation.framework.core.dev.IDE" class="org.olat.presentation.framework.core.dev.impl.EclipseIDE"/>
+
+    
+</beans>

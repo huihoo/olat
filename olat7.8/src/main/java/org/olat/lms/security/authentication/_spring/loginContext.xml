@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+  http://www.springframework.org/schema/context 
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<context:property-placeholder location="classpath:serviceconfig/olat.properties, classpath:olat.local.properties" />
+
+<bean id="loginModule" class="org.olat.lms.security.authentication.LoginModule" init-method="init" destroy-method="destroy">
+
+	<property name="defaultProperties">
+                    <value>
+                   		 <!--
+						Used to prevent brute-force login attacks. If enabled, logins for this IP are blocked for
+						the given period of time after the given number of unsuccessfull login attempts.
+						After timeoutmin is reached, the user (this IP) may log in again.
+						-->
+	                    AttackPreventionEnabled=true
+	                    AttackPreventionMaxattempts=5
+	                    AttackPreventionTimeoutmin=5
+	                    
+	                    <!--
+						Show login links for guests on the login page if set to true
+						-->
+						GuestLoginLinksEnabled=${login.enableGuestLoginLinks}
+						InvitationEnabled=${login.invitationLogin}
+						allowLoginUsingEmail=${login.using.username.or.email.enabled}
+                    </value>
+    </property>
+	<property name="authenticaionProviders">
+		<map>
+		<!--
+			An authentication provider needs to provide its Authenticator class and a name. 
+			Description and link text have to be i18n-properties files in xxAuthenticationController-package and be named
+			authentication.provider.linkText, authentication.provider.description . 
+		-->
+		
+		<!-- The standard OLAT authentication provider (username/password) -->
+		<entry key="OLAT">
+			<bean id="OLATAuthenticationProvider" class="org.olat.presentation.security.authentication.AuthenticationProvider" >
+					<constructor-arg index="0" value="OLAT"/>
+					<constructor-arg index="1" >
+						<bean class="org.olat.presentation.framework.core.control.creator.AutoCreator" scope="prototype">
+							<property name="className" value="org.olat.presentation.security.authentication.OLATAuthenticationController"/>
+						</bean>
+					</constructor-arg>
+					<constructor-arg index="2" value="${olatprovider.enable}"/>
+					<constructor-arg index="3" value="${olatprovider.default}"/>
+			</bean>
+		</entry>
+		<!-- The Shibboleth authentication provider used by UZH with switch embedded WAYF -->
+		<entry key="Shib">
+			<bean id="ShibUZHAuthenticationProvider" class="org.olat.presentation.security.authentication.AuthenticationProvider" >
+					<constructor-arg index="0" value="Shib"/>
+					<constructor-arg index="1" >
+						<bean class="org.olat.presentation.framework.core.control.creator.AutoCreator" scope="prototype">
+							<property name="className" value="org.olat.presentation.security.authentication.shibboleth.ShibbolethAuthenticationController"/>
+						</bean>
+					</constructor-arg>
+					<constructor-arg index="2" value="${shibbolethUZH.enable}"/>
+					<constructor-arg index="3" value="${shibbolethUZH.default}"/>
+			</bean>
+		</entry>
+		<!-- The Shibboleth default authentication provider (WAYF activated over shibd config) -->
+		<entry key="ShibGeneric">
+			<bean id="ShibAuthenticationProvider" class="org.olat.presentation.security.authentication.AuthenticationProvider" >
+					<constructor-arg index="0" value="ShibGeneric"/>
+					<constructor-arg index="1" >
+						<bean class="org.olat.presentation.framework.core.control.creator.AutoCreator" scope="prototype">
+							<property name="className" value="org.olat.presentation.security.authentication.shibboleth.DefaultShibbolethAuthenticationController"/>
+						</bean>
+					</constructor-arg>
+					<constructor-arg index="2" value="${shibbolethGeneric.enable}"/>
+					<constructor-arg index="3" value="${shibbolethGeneric.default}"/>
+			</bean>
+		</entry>
+		<!-- The LDAP authentication provider -->
+		<entry key="LDAP">
+			<bean id="LDAPAuthenticationProvider" class="org.olat.presentation.security.authentication.AuthenticationProvider" >
+					<constructor-arg index="0" value="LDAP"/>
+					<constructor-arg index="1" >
+						<bean class="org.olat.presentation.framework.core.control.creator.AutoCreator" scope="prototype">
+							<property name="className" value="org.olat.presentation.security.authentication.ldap.LDAPAuthenticationController"/>
+						</bean>
+					</constructor-arg>
+					<constructor-arg index="2" value="${ldap.enable}"/>
+					<constructor-arg index="3" value="${ldap.default}"/>
+			</bean>
+		</entry>
+		</map>
+	</property>
+</bean>
+
+<bean id="afterLoginInterceptionManager" class="org.olat.presentation.security.authentication.AfterLoginInterceptionManager" />
+
+
+</beans>

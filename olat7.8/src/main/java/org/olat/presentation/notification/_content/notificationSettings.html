@@ -1,0 +1,13 @@
+<fieldset>
+	<legend>$r.translate("settings.fieldset.label.interval")</legend>
+	<br/>
+	$r.contextHelpWithWrapper("org.olat.presentation.notification","home-settings-email.html","help.hover.notif")
+	$r.render("notificationSettingsFormController")	
+</fieldset>	
+
+<fieldset>
+	<legend>$r.translate("settings.fieldset.label.notifications")</legend>
+	<br/>
+	$r.contextHelpWithWrapper("org.olat.presentation.notification","home-settings.html","help.hover.notif")
+	$r.render("notificationSettingsTableController")
+</fieldset>

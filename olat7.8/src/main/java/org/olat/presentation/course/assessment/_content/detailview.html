@@ -1,0 +1,73 @@
+#if ($courseNode)
+	<div class="b_with_small_icon_left $courseNodeCss">$r.escapeHtml($courseNode.getShortTitle())
+	#if ($courseNode.getLongTitle() && $courseNode.getLongTitle() != "")
+		($r.escapeHtml($courseNode.getLongTitle()))
+	#end
+	</div>
+	<hr />
+#end
+<h4>$r.translate("detailview.title")</h4>
+$r.render("backLink")
+<br />
+<br />
+<table class="b_table">
+	<tr>
+		<td>
+			<span class="b_with_small_icon_left b_user_icon">$r.escapeHtml($userFirstAndLastName)</span>
+		</td>
+		<td>
+			$userEmail
+			#if ($userInstitutionalEmail)
+			 / $userInstitutionalEmail
+			#end
+			#if ($userInstitutionalName)
+				<br />$r.escapeHtml($userInstitutionalName)
+			#end
+			#if ($userInstitutionalUserIdentifier)
+				<br />$r.escapeHtml($userInstitutionalUserIdentifier)
+			#end
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<span class="b_with_small_icon_left b_group_icon">$r.translate("participantgroups.title")</span>
+		</td>
+		<td>
+			#foreach($group in $participantGroups)
+				$r.escapeHtml($group.getName())
+				#if ($velocityCount < $participantGroups.size())
+			,
+				#end
+			#end
+		</td>
+	</tr>
+</table>
+<hr />
+
+#if ($infoCoach && $infoCoach != "")
+	<div class="o_course_run_disclaimer">
+		<h4>$r.translate("title.infocoach")</h4>
+		$infoCoach
+	</div>
+#end
+
+#if ($hasDetails)
+	$r.render("detailsController")
+#end
+
+
+$r.render("assessmentform")
+
+	
+#if($showLog && $log)
+	<div class="o_course_run_log">
+		<h4>$r.translate("log.title")</h4>
+		$r.render("command.hidelog")
+		<pre>
+$log
+		</pre>
+	</div>
+#elseif ($log)
+	$r.render("command.showlog")
+#end
+</div>

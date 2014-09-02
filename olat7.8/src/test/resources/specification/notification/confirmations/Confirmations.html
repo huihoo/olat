@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Bestätigungen</title>
+        
+        <link href="../../concordion.css" rel="stylesheet" type="text/css" />
+    </head>
+    
+    <body>
+        <h1>Bestätigungen</h1>
+        
+        <p>Eine Bestätigung in OLAT ist eine vom System definierter Text, welcher über eine Aktion, von der man betroffen ist oder die man ausgelöst hat, 
+            per E-Mail informiert.</p>
+        <p>In folgenden Fällen erhält man als Student eine Bestätigung:</p>
+        <ul>
+            <li>Wenn der Student seine Aufgabe in den Abgabeordner des Aufgabebausteins lädt</li>
+            <li>Wenn der Dozent die Korrektur in den Rückgabeordner des Aufgabebausteins lädt</li>
+            <li>Wenn der Student seine Datei in den Abgabeordner des Themenvergabe-Bausteins lädt</li>            
+            <li>Wenn der Dozent den Studenten in eine Lerngruppe ein- oder austrägt</li>
+            <li>Wenn der Dozent eine Bewertung einträgt</li>            
+            <li>Wenn der Dozent die Korrektur in den Rückgabeordner der Themenvergabe lädt</li>
+            <li>Wenn der Dozent ein Thema in der Themenvergabe löscht für welches der Student eingeschrieben ist</li>
+            <li>Wenn der Dozent ein Thema in der Themenvergabe ändert für welches der Student eingeschrieben ist</li>
+            <li>Wenn der Dozent die Korrektur in den Rückgabeordner des Themas in der Themenvergabe lädt</li>
+            <li>Wenn der Dozent ein Test editiert oder auswechselt, welcher der Student angefangen oder absolviert hat</li>
+            <li>Wenn der Dozent ein Selbsttest editiert oder auswechselt, welcher der Student angefangen oder absolviert hat</li>
+            <li>Wenn der Dozent eine Aufgabendatei in der Aufgabe löscht, welche der Student zugewiesen hat</li>
+        </ul>
+      
+   
+        <p>In folgenden Fällen kann der Dozent wählen, ob er eine Bestätigung erhalten will:</p>
+        <ul>
+            <li>Wenn der Student eine Aufgabe in den Abgabeordners des Aufgabebausteins lädt</li>
+            <li>Wenn der Student eine Aufgabe in den Abgabeordners des Themenvergabe-Bausteins lädt</li>
+            <li>Wenn der Student einen Test absolviert hat</li>
+            <li>Wenn ein Student ein Thema in der Themenvergabe aus- oder abwählt</li>
+        </ul>
+        
+        <p>In folgenden Fällen erhält der Benutzer (Dozent oder Student) eine Bestätigung:</p>
+        <ul>
+            <li>Wenn der Benutzer durch einen anderen Benutzer in eine Lerngruppe eingetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer aus einer Lerngruppe ausgetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer in eine Arbeitsgruppe eingetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer aus einer Arbeitsgruppe ausgetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer in eine Rechtegruppe eingetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer aus einer Rechtegruppe ausgetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer in eine Warteliste eingetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer aus einer Warteliste ausgetragen wird</li>
+            <li>Wenn der Benutzer automatisch aus der Warteliste in die Teilnehmerliste nachrückt</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer in ein Thema in der Themenvergabe eingetragen wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer als Teilnehmer zu einem Thema akzeptiert wird</li>
+            <li>Wenn der Benutzer durch einen anderen Benutzer Als Teilnehmer zu einem Thema nicht akzeptiert wird</li>
+        </ul>
+        
+        
+        
+        
+        
+        <h2>User Stories</h2>
+        <ul>
+            <li><a href="./receiveconfirmations/ReceiveConfirmations.html">Bestätigungen erhalten</a></li>
+            
+        </ul>
+        
+        <h2>BPM</h2>
+        
+        <p><a href="BPMConfirmations2.mdzip">BPMConfirmation.mdzip</a></p>
+        
+        
+        
+        <h2>Zu entfernende Bestätigungen</h2>
+        <p>Folgende Bestätigung sind aus dem Code zu entfernen.</p>
+        <table>
+            <tr><th>Ort</th><th>IST-Zustand</th><th>SOLL-Zustand</th><th>Begründung</th><th>Status</th></tr>
+            <tr><td rowspan="2">Einschreiben</td>
+                <td>Der Benutzer, der sich eingeschrieben hat, erhält eine Bestätigung.</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.</td><td>DONE</td></tr>
+            <tr><td>Der Benutzer, der sich ausgetragen hat, erhält eine Bestätigung</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.
+                Zudem erhält man momentan beim Verlassen einer Arbeitsgruppe keine Bestätigung. 
+                Dies soll weiterhin so bleiben und wäre somit konsistent.</td><td>DONE</td></tr>
+            <tr><td>Test</td>
+                <td>Die Testteilnehmer und Besitzer werden bei Änderungen im Test informiert.</td>
+                <td>Keine Bestätigung</td>
+                <td>Mail in der heutigen Art ist nicht sehr verständlich, zudem kann das Changelog gelöscht werden.
+                    Changelog kann weiterhin im GUI angeschaut werden.</td><td>DONE</td></tr>
+            <tr><td>Arbeitsgruppe</td>
+                <td>Besitzer und Mitbesitzer erhalten eine Bestätigung, wenn eine Arbeitsgruppe gelöscht wird.</td>
+                <td>Keine Bestätigung</td>
+                <td>Da die Teilnehmer nicht informiert werden und die Mitbesitzer in der Regel untereinander die
+                Aktionen absprechen sollten, liegt die Verantwortung der Kommunikation beim Löscher. Über das Löschen 
+                der Lerngruppen und Rechtegruppen wird momentan auch nicht benachrichtigt.</td><td>DONE</td></tr>
+            <tr><td rowspan="3">Themenvergabe</td>
+                <td>Wenn ein Thema gelöscht wird, erhält der Themenverantwortliche eine Bestätigung. Gemäss Code erhält der Besitzer, der Themenverantwortliche und der eingeschriebene Student eine Benachrichtigung.</td>
+                <td>Keine Bestätigung an den Besitzer und den Themenverantwortlichen. Bestätigung an den eingeschriebenen Benutzer beibehalten.</td>
+                <td>Man kann das Thema nicht wiederherstellen, sondern muss das Thema neu erstellen.</td><td>DONE</td></tr>          
+            <tr><td>Der Benutzer erhält über die Wahl eines Themas eine Bestätigung. </td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.</td><td>DONE</td></tr>
+            <tr><td>Der Benutzer erhält über die Abwahl eines Themas eine Bestätigung.</td>
+                <td>Keine Bestätigung</td>
+                <td>Wir gehen davon aus, dass der Benutzer weiss, was er getan hat.</td><td>DONE</td></tr>
+            <tr><td>Kurswizard</td>
+                <td>Der Kursersteller erhält ein Bestätigungs/Informations-E-Mail nach der Erstellung eines Kurse mit dem Kurswizard.</td>
+                <td>Keine Bestätigung</td>
+                <td>Kurs im GUI ersichtlich. Der Kurswizard und der Kurseditor sollte so einfach sein, dass es keine lange Erklärungsmail braucht. 
+                Ev. wird der Kurswizard mit dem CampusCourse Projekt und Refactoring obsolet.</td><td>DONE</td></tr>
+            <tr><td>Kurs beenden</td>
+                <td>Sobald ein Kurs beendet wird, werden die Kursbesitzer informiert.</td>
+                <td>Keine Bestätigung. Der Workflow wird entsprechend angepasst. Der Schritt mit dem E-Mail Versand wird heraus genommen.</td>
+                <td>Studenten werden momentan nicht darüber informiert. Kommunkation über Beendung liegt beim Beender. Mit der SAP-Anbindung sollte klar werden,
+                welche Kurse aktuell sind.</td><td>DONE</td></tr>
+               <tr><td>Logfile archivieren (Datenarchivierung im Kurs)</td>
+                <td>Sobald Logfiles archiviert und im persönlichen Ordner gespeichert worden sind,  wird Logfileersteller informiert.</td>
+                <td>Keine Bestätigung</td>
+                <td>Symptombekämpfung weil Archivierungsprozess länger gehen kann. Es sind nicht die normalen User, sondern die PowerUser, die Logfiles archivieren und diese werden über GUI-Meldung informiert. Daher ist keine Email-Benachrichtigung nötig.  
+               </td><td>DONE</td></tr>
+        </table>
+        
+        <h2>Entscheidungen</h2>
+        <table>
+            <tr><th>Wann</th><th>Was</th><th>Warum</th></tr>
+            <tr><td>AM, SB, Mai 2012 </td><td>Die Auslösung einer E-Mail-Benachrichtigung bei der Abgabe einer Bewertung durch den Dozenten wird zur Zeit nicht gemacht. 
+            </td><td>Dies ist eine neue Funktionalität. Zuerst müssen wir alle alten "Abonniermöglichkeiten" ersetzen.</td></tr>
+            <tr><td>KI, SEV, SB, 10.07.12 </td><td>Wir verzichten auf die Auslösung einer E-Mail-Benachrichtigungen beim Hochladen der Musterlösung.</td>
+            <td>Sofortige E-Mail Benachrichtigungen wollen wir bei wirklich wichtigen Mitteilungen verschicken. Dies ist bei der Musterlösung nicht der Fall.</td></tr>
+            <tr><td>SEV, SB, 16.07.12 </td><td>Die Konfiguration im Kurseditor für die Themenvergabe im Tab "Abgabe" wird analog des Tabs "Abgabe" im Aufgabenbaustein gemacht. Bei gewünschter E-Mail-Benachrichtigung wird das gleiche E-Mailformat wie bei der Abgabe im Aufgabenbaustein verwendet.</td>
+            <td>Da die Auslöser und der Inhalt der E-Mail-Benachrichtigung für den Aufgabenbaustein und die Themenvergabe identisch sind, passen wir die Themenvergabe gleichzeitig an.</td></tr>
+            <tr><td>SEV, SB, 16.07.12 </td><td>Das Hochladen einer Datei im Rückgabeordner der Themenvergabe löst keine E-Mail-Benachrichtigung aus.</td>
+            <td>Es wird entschieden, dass dies zu einem späteren Zeitpunkt realisiert wird.</td></tr>            
+            <tr><td>SEV, 25.07.12 </td><td>Aktivierung der Abgabebestätigung für den Dozenten braucht kein context-help.</td>
+            <td>Keinen Mehrwert.</td></tr>
+            <tr><td>LD, SB, 30.08.12 </td><td>Bei der Löschung eines Themas wird die Benachrichtigung an den Besitzer und den Themenverantwortlichen entfernt. Die Benachrichtigung an den eingeschriebenen Studenten hingegen wird behalten.</td>
+            <td>Derjenige welcher ein Thema löscht, kennt seine Aktion. Der Student hingegen nicht.</td></tr>
+            <tr><td>AS, BB, SB, 20.09.12 </td><td>Bei Hinzufügen oder Austragen eines Benutzers in einer kursübergreifenden Gruppe in der Gruppenverwaltung wird keine automatische E-Mail-Benachrichtigung ausgelöst.</td>
+            <td>Ca. 50 Benutzer haben die Rolle "Gruppenverwalter" in OLAT. Die Funktion wird selten genutzt.</td></tr>
+            <tr><td>SEV, BB, SB, 08.10.12 </td><td>Bei Hinzfügen oder Austragen eines Benutzers als Katalogverwalter wird wie bisher ebenfalls keine E-Mail-Benachrichtigungen ausgelöst.</td>
+            <td></td></tr>
+            <tr><td>SEV, HF, SB, AM, 01.11.12 </td><td>Die Angabe der E-Mail-Adresse im E-Mail-Text (E-Mail-Format) wird weggelassen. Bis anhin war dies für die Bestätigungen in der Gruppenadministration und in der Themenvergabe vogesehen.</td>
+            <td>Wir wollen nicht die E-Mail-Adresse von Benutzern weggeben.</td></tr>
+        </table>
+        
+      
+                                                                            
+                               
+        <div class="openquestions">
+            <h2>Offene Fragen</h2>
+            <p>Was kann und soll genau als Metrik ermöglicht werden?</p> 
+            <p>Können die auslösenden Aktionen gezählt werden?</p>  
+        </div>
+        
+    </body>
+</html>

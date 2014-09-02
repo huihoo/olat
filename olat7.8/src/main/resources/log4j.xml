@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+
+
+	<!-- pattern layout reference: http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/EnhancedPatternLayout.html -->
+
+	<!-- This is just a minimal log4j config to get you started, for a production 
+		system adapt it for your needs -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.olat.system.logging.log4j.PatternLayoutWithCounter">
+			<param name="ConversionPattern"
+				value="%d || %-5p || %-8# ||  %-20t || %-20X{username} || %-30c{1} || %m || %X{referer} || %c%n" />
+		</layout>
+	</appender>
+	
+	<appender name="NotificationEmailExceptions" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${log.dir}/notificationEmail.log" />
+		<layout class="org.olat.system.logging.log4j.PatternLayoutWithCounter">
+			<param name="ConversionPattern"
+				value="%d || %-5p || %-8# || %-20X{username} || %-30c{1} || %m || %-15X{ip} || %c%n" />
+		</layout>
+	</appender>
+	
+	<appender name="IndexerLogFile" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${log.dir}/indexer.log" />
+		<layout class="org.olat.system.logging.log4j.PatternLayoutWithCounter">
+			<param name="ConversionPattern"
+				value="%d || %-5p || %-30t || %-30c{1} || %m %n" />
+		</layout>
+	</appender>
+	
+	<logger name="org.olat.lms.core.notification.impl.channel.MailChannel">
+		<level value="error" />
+		<appender-ref ref="NotificationEmailExceptions" />
+	</logger>
+	
+	<logger name="org.springframework">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.olat.lms.search.indexer">
+		<level value="info" />
+		<appender-ref ref="IndexerLogFile" />
+	</logger>
+	
+	<!-- remove as soon as OLAT-6824 is resolved -->
+	<logger name="OLAT-6824">
+		<level value="debug" />
+	</logger>
+	
+	<root>
+		<priority value="info"></priority>
+		<appender-ref ref="stdout" />
+	</root>
+
+</log4j:configuration>

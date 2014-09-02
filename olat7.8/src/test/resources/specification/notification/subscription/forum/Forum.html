@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"file:src/test/resources/dtd/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+<title>Forum abonnieren</title>
+<link href="../../../concordion.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h1>Forum abonnieren</h1>
+
+<div class="userstory">
+    <h2>User Story</h2>
+    <p>
+        Als registrierter Benutzer will ich ein Forum abonnieren, <br/> 
+        damit ich zu dem von mir gew&auml;hlten Zeitpunkt &uuml;ber neue 
+        Eintr&auml;ge und &Auml;nderungen via OLAT Startseite, RSS, E-Mail  informiert werde<br/>
+        und somit auf dem neuesten Stand bin.
+    </p>
+    </div> 
+   
+       <h2>Akzeptanzkriterien</h2>
+
+    <h3>Automatische Tests</h3>
+       
+     
+<h4>Bemerkungen zu den automat. Tests</h4>
+<ul>
+<li>Falls ein Beitrag ein Zitat enth&auml;lt, wird das Zitat in der sofortigen Zustellung des E-Mails nicht angezeigt.</li>
+<li>Der Benutzer soll nicht über eigene Änderungen benachrichtigt werden.</li>
+    <li>E-Mail Inhalt ist HTML-formatiert. Multimedia Internet Mail Extension (MIME) muss unterstützt werden</li> 
+    <li>Die tägliche Benachrichtigung wird um 00:10 Uhr verschickt. Sollte dieser Zeitpunkt ungünstig sein 
+    aufgrund von Backup und Downzeit von OLAT, muss ein neuer Zeitpunkt gewählt werden.</li>
+    <li>Die Adresse noreply@olat.uzh.ch als Systemadresse muss allenfalls eingerichtet werden, falls noch nicht vorhanden.</li>
+</ul>
+
+    <h3>Manuelle Tests</h3>
+    <ul><li><b>[.]</b> Benutzerin Berta beantwortet einen Forumsbeitrag "Pr&uuml;fungsfragen" von Alphonse, waehrendessen der Benutzer Alphonse seinen Beitrag l&ouml;scht.</li></ul>
+  
+    <h2>Out-of-Scope</h2>
+    <ul><li>Ein Attachement zum Forumsbeitrag wird nicht als Attachement im E-Mail Kanal an den Benutzer versendet. Grund:Skalierbarkeit.</li>
+    </ul>
+   
+
+
+</body>
+</html>
